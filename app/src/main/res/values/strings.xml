@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Driving School</string>
+    <string name="todo">TODO</string>
+    <string name="car">car</string>
+    <string name="driving_sikh_lo_fraandz">Driving Sikh Lo Fraandz</string>
+    <string name="textview">TextView</string>
+    <string name="dashboard">DashBoard</string>
+    <string name="made_for_project">Made for Project</string>
+    <string name="forget_password">Forget Password?</string>
+    <string name="hello_there_welcome_back">Hello there, Welcome Back</string>
+    <string name="sign_in_to_continue">Sign In to continue</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="go">GO</string>
+    <string name="new_user_sign_up">New User? SIGN UP</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <string name="dashboard1">Dashboard1</string>
+    <string name="title_activity_trial_card">trialCard</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+
+
+</resources>

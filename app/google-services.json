@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "443172983294",
+    "firebase_url": "https://driving-school-bbc95.firebaseio.com",
+    "project_id": "driving-school-bbc95",
+    "storage_bucket": "driving-school-bbc95.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443172983294:android:28f3584fcdb5482732f0af",
+        "android_client_info": {
+          "package_name": "com.example.drivingschool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443172983294-p7mod4tt4aaq1j46utrefuq70o9dvk35.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANIAdCPJ_ycRg08blcu24u4uoteP3_SFs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443172983294-p7mod4tt4aaq1j46utrefuq70o9dvk35.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
