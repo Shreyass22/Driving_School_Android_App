@@ -10,6 +10,14 @@
             android:id="@+id/nav_instructions"
             android:icon="@drawable/icon_instructions"
             android:title="Instructions" />
+        <item
+            android:id="@+id/nav_admin"
+            android:icon="@drawable/icon_admin"
+            android:title="Admin" />
+        <item
+            android:id="@+id/nav_trainer"
+            android:icon="@drawable/icon_trainer"
+            android:title="Trainer" />
 
     </group>
 
@@ -45,18 +53,5 @@
                 android:icon="@drawable/icon_rate"/>
         </menu>
     </item>
-
-<!--    <group android:checkableBehavior="single">-->
-<!--        <item-->
-<!--            android:id=""-->
-<!--            android:title="   " />" />-->
-<!--        <item-->
-<!--            android:id=""-->
-<!--            android:title="" />-->
-<!--        <item-->
-<!--            android:id=""-->
-<!--            android:title="" />-->
-
-<!--    </group>-->
 
 </menu>

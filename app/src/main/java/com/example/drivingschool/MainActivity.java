@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, Cardview.class);
+                Intent intent = new Intent(MainActivity.this, Dashboard.class);
                 Pair[] pairs = new Pair[3];
                 pairs[0] = new Pair<View,String>(image,"logo_image");
                 pairs[1] = new Pair<View,String>(text,"logo_text");

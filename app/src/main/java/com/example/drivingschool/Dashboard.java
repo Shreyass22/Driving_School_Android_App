@@ -68,6 +68,11 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             case R.id.nav_dashboard:
                 break;
 
+            case R.id.nav_admin:
+                Intent intent2 = new Intent(Dashboard.this, AdminDashboard.class);
+                startActivity(intent2);
+                break;
+
             case R.id.nav_login:
                 Intent intent = new Intent(Dashboard.this, Login.class);
                 startActivity(intent);
