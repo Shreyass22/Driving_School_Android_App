@@ -11,7 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminDashboard"></activity>
+        <activity android:name=".BlahblahCard"></activity>
+        <activity android:name=".ContactusCard" />
+        <activity android:name=".DrivesafeCard" />
+        <activity android:name=".InstructionsCard" />
+        <activity android:name=".AdminDashboard" />
         <activity android:name=".Cardview" />
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld

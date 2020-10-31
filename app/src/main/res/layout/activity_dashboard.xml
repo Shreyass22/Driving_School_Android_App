@@ -70,6 +70,7 @@
             app:layout_constraintTop_toBottomOf="@+id/card_dashboard">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/instructions_card"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -81,7 +82,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/card1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/imagecard1"
@@ -101,6 +101,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/drivesafe_card"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -147,6 +148,7 @@
             app:layout_constraintVertical_bias="0.0">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/contactus_card"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -178,6 +180,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/blahblah_card"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -204,7 +207,7 @@
                         android:layout_height="75dp"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"
-                        app:srcCompat="@drawable/lovely_time" />
+                        app:srcCompat="@drawable/family_time" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
