@@ -11,9 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BlahblahCard"></activity>
+        <activity android:name=".NavigationDrawer" />
+        <activity android:name=".Rate" />
+        <activity android:name=".BlahblahCard" />
         <activity android:name=".ContactusCard" />
-        <activity android:name=".DrivesafeCard" />
+        <activity android:name=".DrivesafeCard"/>
         <activity android:name=".InstructionsCard" />
         <activity android:name=".AdminDashboard" />
         <activity android:name=".Cardview" />

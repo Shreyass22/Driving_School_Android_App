@@ -87,28 +87,36 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 Intent intent3 = new Intent(Dashboard.this, Dashboard.class);
                 startActivity(intent3);
                 break;
-
             case R.id.nav_admin:
                 Intent intent2 = new Intent(Dashboard.this, AdminDashboard.class);
                 startActivity(intent2);
                 break;
-
+            case R.id.nav_instructions:
+                Intent intent4 = new Intent(Dashboard.this, InstructionsCard.class);
+                startActivity(intent4);
+                break;
+            case R.id.nav_aboutus:
+                Intent intent5 = new Intent(Dashboard.this, ContactusCard.class);
+                startActivity(intent5);
+                break;
             case R.id.nav_login:
                 Intent intent = new Intent(Dashboard.this, Login.class);
                 startActivity(intent);
                 break;
-
             case R.id.nav_update:
                 Intent intent1 = new Intent(Dashboard.this, UserProfile.class);
                 startActivity(intent1);
                 break;
-
             case R.id.nav_logout:
                 break;
+            case R.id.nav_trainer:
+                break;
+            case R.id.nav_rate:
+                Intent intent6 = new Intent(Dashboard.this, Rate.class);
+                startActivity(intent6);
+                break;
         }
-
         drawerLayout.closeDrawer(GravityCompat.START);
-
         return true;
     }
 
@@ -123,6 +131,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             case R.id.blahblah_card : c3 = new Intent(this, BlahblahCard.class); startActivity(c3); break;
             default: break;
         }
-
     }
+    // onClick event on card end
 }
