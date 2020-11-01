@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DrivesafeCard"
+    android:background="@drawable/bg">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/instructionstext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:fontFamily="@font/bangers_regular"
+                android:text="Drive Safe"
+                android:textAlignment="center"
+                android:textSize="50dp" />
+
+            <TextView
+                android:id="@+id/instructionstext1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/instructionstext"
+                android:layout_marginTop="1dp"
+                android:fontFamily="@font/bangers_regular"
+                android:text="Be Safe!"
+                android:textAlignment="center"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:id="@+id/instructionsimage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/instructionstext"
+                android:layout_marginTop="27dp"
+                android:padding="10dp"
+                android:src="@drawable/instruction2" />
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

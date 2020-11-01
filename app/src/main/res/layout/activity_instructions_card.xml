@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InstructionsCard"
+    android:background="@drawable/bg">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/instructionstext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:fontFamily="@font/bangers_regular"
+                android:text="Instructions"
+                android:textAlignment="center"
+                android:textSize="50dp" />
+
+            <ImageView
+                android:id="@+id/instructionsimage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/instructionstext"
+                android:src="@drawable/instruction1_1"
+                android:padding="10dp"/>
+            <ImageView
+                android:id="@+id/instructionsimage1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/instructionsimage"
+                android:src="@drawable/instruction1_2"
+                android:padding="10dp"/>
+            <ImageView
+                android:id="@+id/instructionsimage2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/instructionsimage1"
+                android:src="@drawable/instruction1_3"
+                android:padding="10dp"/>
+            <ImageView
+                android:id="@+id/instructionsimage3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/instructionsimage2"
+                android:src="@drawable/instruction1_4"
+                android:padding="10dp"/>
+
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
