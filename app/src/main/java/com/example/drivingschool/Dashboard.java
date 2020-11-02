@@ -7,6 +7,9 @@ import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,13 +19,11 @@ import android.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class Dashboard extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class Dashboard extends AppCompatActivity implements View.OnClickListener{
 
     //variable
     private CardView instructions_card, drivesafe_card, contactus_card, blahblah_card;
     DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    androidx.appcompat.widget.Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +33,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         //hooks : defining
         //hooks for navigation
         drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        toolbar = findViewById(R.id.toolbar);
 
         //card on click listener starts-------------------------------------------------------------
         //hooks for cardview
@@ -46,80 +45,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         drivesafe_card.setOnClickListener(this);
         contactus_card.setOnClickListener(this);
         blahblah_card.setOnClickListener(this);
-        //continue from line 113 of this file.
+        //continue from line 123 of this file.
         //card on click listener stops--------------------------------------------------------------
-
-        //toolbar
-        setSupportActionBar(toolbar);
-
-        //navigation drawer menu
-//        Menu menu = navigationView.getMenu();
-//        menu.findItem(R.id.nav_login).setVisible(false);
-//        menu.findItem(R.id.nav_logout).setVisible(true);
-
-        navigationView.bringToFront();
-        ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toogle);
-        toogle.syncState();
-
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_dashboard);
     }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen((GravityCompat.START))) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else {
-            super.onBackPressed();
-        }
-    }
-
-    private void setSupportActionBar(Toolbar toolbar) {
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.nav_dashboard:
-                Intent intent3 = new Intent(Dashboard.this, Dashboard.class);
-                startActivity(intent3);
-                break;
-            case R.id.nav_admin:
-                Intent intent2 = new Intent(Dashboard.this, AdminDashboard.class);
-                startActivity(intent2);
-                break;
-            case R.id.nav_instructions:
-                Intent intent4 = new Intent(Dashboard.this, InstructionsCard.class);
-                startActivity(intent4);
-                break;
-            case R.id.nav_aboutus:
-                Intent intent5 = new Intent(Dashboard.this, ContactusCard.class);
-                startActivity(intent5);
-                break;
-            case R.id.nav_login:
-                Intent intent = new Intent(Dashboard.this, Login.class);
-                startActivity(intent);
-                break;
-            case R.id.nav_update:
-                Intent intent1 = new Intent(Dashboard.this, UserProfile.class);
-                startActivity(intent1);
-                break;
-            case R.id.nav_logout:
-                break;
-            case R.id.nav_trainer:
-                break;
-            case R.id.nav_rate:
-                Intent intent6 = new Intent(Dashboard.this, Rate.class);
-                startActivity(intent6);
-                break;
-        }
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
     // onClick event on card
     @Override
     public void onClick(View v) {
@@ -133,4 +61,95 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         }
     }
     // onClick event on card end
+
+
+    //Navigation drawer starts
+    public void ClickMenu(View view){
+        openDrawer(drawerLayout);
+    }
+
+    public static void openDrawer(DrawerLayout drawerLayout) {
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+    public void ClickLogo(View view){
+        closeDrawer(drawerLayout);
+    }
+
+    public static void closeDrawer(DrawerLayout drawerLayout) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+    }
+
+    public void ClickDashboard(View view){
+        recreate();
+    }
+
+    public void ClickInstructions(View view){
+        redirectActivity(this,InstructionsCard.class);
+    }
+
+    public void ClickAdmin(View view){
+        redirectActivity(this,AdminDashboard.class);
+    }
+
+    public void ClickTrainer(View view){
+        redirectActivity(this,Trainer.class);
+    }
+
+    public void ClickClient(View view){
+        redirectActivity(this,Client.class);
+    }
+
+    public void ClickLogin(View view){
+        redirectActivity(this,Login.class);
+    }
+
+    public void ClickUpdate(View view){
+        redirectActivity(this,UserProfile.class);
+    }
+
+    public void ClickRate(View view){
+        redirectActivity(this,Rate.class);
+    }
+
+    public void ClickAboutus(View view){
+        redirectActivity(this,ContactusCard.class);
+    }
+
+    public void ClickLogout(View view){
+        logout(this);
+    }
+
+    public static void logout(final Activity activity){
+        AlertDialog.Builder builder= new AlertDialog.Builder(activity);
+        builder.setTitle("Logout");
+        builder.setMessage("Are you sure you want to logout");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                activity.finishAffinity();
+                System.exit(0);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    public static void redirectActivity(Activity activity, Class aClass) {
+        Intent intent = new Intent(activity,aClass);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
+    }
+
+    protected void onPause(){
+        super.onPause();
+        closeDrawer(drawerLayout);
+    }
+    //Navigation drawer ends
 }

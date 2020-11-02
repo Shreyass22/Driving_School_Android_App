@@ -1,7 +1,10 @@
 package com.example.drivingschool;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,13 +17,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import static com.example.drivingschool.Dashboard.closeDrawer;
+
 public class MainActivity extends AppCompatActivity {
 
     //variables
     Animation top_animation, botton_animation;
     ImageView image;
     TextView text, text2;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

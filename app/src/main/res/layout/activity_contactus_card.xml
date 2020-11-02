@@ -1,47 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".ContactusCard"
-    android:background="@drawable/bg">
+    android:background="@drawable/bg"
+    android:orientation="vertical">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RelativeLayout
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/texttitle"
+            <include
+                android:id="@+id/include"
+                layout="@layout/main_toolbar"
+                app:layout_constraintBottom_toTopOf="@+id/card_dashboard"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:fontFamily="@font/bangers_regular"
-                android:text="Contact Us"
-                android:textAlignment="center"
-                android:textSize="50dp" />
+                android:layout_marginBottom="41dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints">
 
-            <TextView
-                android:id="@+id/textmessage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/texttitle"
-                android:layout_marginTop="73dp"
-                android:fontFamily="@font/antic_regular"
-                android:padding="15dp"
-                android:text="This Android App is made only for Educational purpose as a BE-IT Mini-Projct in SEM7. \n\nThis Mini-Project 'Android Application' is made Under Guidance of \nProf. Bushra Shaikh. \n\nAndroid App is Developed By: \nAltaf Ali - 117A3004 \nRitvij Iyer - 117A3014 \nShreyas Jaiswal - 117A3017 \n\nVisit our website : \nwww.drivingschool.com \nPhone no. : XXXXXXXXXX"
-                android:textAlignment="center"
-                android:textSize="20dp"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/texttitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:fontFamily="@font/bangers_regular"
+                    android:text="Contact Us"
+                    android:textAlignment="center"
+                    android:textSize="50dp" />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/textmessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/texttitle"
+                    android:layout_marginTop="73dp"
+                    android:fontFamily="@font/antic_regular"
+                    android:padding="15dp"
+                    android:text="This Android App is made only for Educational purpose as a BE-IT Mini-Projct in SEM7. \n\nThis Mini-Project 'Android Application' is made Under Guidance of \nProf. Bushra Shaikh. \n\nAndroid App is Developed By: \nAltaf Ali - 117A3004 \nRitvij Iyer - 117A3014 \nShreyas Jaiswal - 117A3017 \n\nVisit our website : \nwww.drivingschool.com \nPhone no. : XXXXXXXXXX"
+                    android:textAlignment="center"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
 
-</ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/white">
+
+        <include
+            layout="@layout/main_nav_drawer"/>
+    </RelativeLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
