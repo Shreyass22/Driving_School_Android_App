@@ -19,38 +19,47 @@ public class ContactusCard extends AppCompatActivity {
     //navigation drawer starts
     public void ClickMenu(View view){
         Dashboard.openDrawer(drawerLayout);
+        this.finish();
     }
 
     public void ClickLogo(View view){
         Dashboard.closeDrawer(drawerLayout);
+        this.finish();
     }
 
     public void ClickDashboard(View view){
         Dashboard.redirectActivity(this,Dashboard.class);
+        this.finish();
     }
 
     public void ClickInstructions(View view){
         Dashboard.redirectActivity(this,InstructionsCard.class);
+        this.finish();
     }
 
     public void ClickAdmin(View view){
         Dashboard.redirectActivity(this,AdminDashboard.class);
+        this.finish();
     }
 
     public void ClickTrainer(View view){
         Dashboard.redirectActivity(this,Trainer.class);
+        this.finish();
     }
 
     public void ClickClient(View view){
         Dashboard.redirectActivity(this,Client.class);
+        this.finish();
     }
 
     public void ClickLogin(View view){
         Dashboard.redirectActivity(this,Login.class);
+        this.finish();
     }
 
     public void ClickUpdate(View view){
         Dashboard.redirectActivity(this,UserProfile.class);
+        this.finish();
     }
 
     public void ClickAboutus(View view){
@@ -59,6 +68,7 @@ public class ContactusCard extends AppCompatActivity {
 
     public void ClickRate(View view){
         Dashboard.redirectActivity(this,Rate.class);
+        this.finish();
     }
 
     public void ClickLogout(View view){

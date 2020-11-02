@@ -78,6 +78,7 @@ public class Login extends AppCompatActivity {
     public void btn_signup(View view) {
         //animation start
         Intent intent = new Intent(Login.this, SignUp.class);
+        this.finish();
         Pair[] pairs = new Pair[6];
         pairs[0] = new Pair<View,String>(imageView,"logo_image");
         pairs[1] = new Pair<View,String>(logo_name,"logo_name");
@@ -178,7 +179,5 @@ public class Login extends AppCompatActivity {
             }
         });
     }
-
-
 
 }

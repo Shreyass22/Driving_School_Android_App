@@ -87,34 +87,42 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     public void ClickInstructions(View view){
         redirectActivity(this,InstructionsCard.class);
+        this.finish();
     }
 
     public void ClickAdmin(View view){
         redirectActivity(this,AdminDashboard.class);
+        this.finish();
     }
 
     public void ClickTrainer(View view){
         redirectActivity(this,Trainer.class);
+        this.finish();
     }
 
     public void ClickClient(View view){
         redirectActivity(this,Client.class);
+        this.finish();
     }
 
     public void ClickLogin(View view){
         redirectActivity(this,Login.class);
+        this.finish();
     }
 
     public void ClickUpdate(View view){
         redirectActivity(this,UserProfile.class);
+        this.finish();
     }
 
     public void ClickRate(View view){
         redirectActivity(this,Rate.class);
+        this.finish();
     }
 
     public void ClickAboutus(View view){
         redirectActivity(this,ContactusCard.class);
+        this.finish();
     }
 
     public void ClickLogout(View view){

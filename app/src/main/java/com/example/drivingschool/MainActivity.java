@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         text2.setAnimation(botton_animation);
 
 
-        int SPLASH_SCREEN = 5000;
+        int SPLASH_SCREEN = 1000;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
