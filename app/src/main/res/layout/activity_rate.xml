@@ -26,6 +26,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <RelativeLayout
+                android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:ignore="MissingConstraints">
@@ -39,16 +40,76 @@
                     android:text="Feedback / Rate"
                     android:textAlignment="center"
                     android:textSize="50dp" />
-
-                <com.hsalf.smilerating.SmileRating
-                    android:id="@+id/smile_rating"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/rate_title"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="118dp"
-                    app:isIndicator="false" />
             </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+                tools:ignore="MissingConstraints">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/trainer_card"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/feedback_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Name : Shreyas"
+                            android:textStyle="bold"
+                            android:textSize="20dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="15dp"/>
+                        <TextView
+                            android:id="@+id/feedback_mail"
+                            android:layout_below="@+id/feedback_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="MailId : shreyasjswl@gmail.com"
+                            android:textStyle="bold"
+                            android:textSize="20dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="15dp"/>
+                        <TextView
+                            android:id="@+id/feedback_msg"
+                            android:layout_below="@+id/feedback_mail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Message : BlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlah \n more feedback will be created as ini after session and all also rating after each will be given if possible."
+                            android:textStyle="bold"
+                            android:textSize="20dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="15dp"/>
+
+                        <com.hsalf.smilerating.SmileRating
+                            android:id="@+id/smile_rating"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/feedback_msg"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="45dp"
+                            app:isIndicator="false" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

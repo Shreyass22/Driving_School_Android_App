@@ -20,12 +20,10 @@ public class BlahblahCard extends AppCompatActivity {
     //navigation drawer starts
     public void ClickMenu(View view){
         Dashboard.openDrawer(drawerLayout);
-        this.finish();
     }
 
     public void ClickLogo(View view){
         Dashboard.closeDrawer(drawerLayout);
-        this.finish();
     }
 
     public void ClickDashboard(View view){

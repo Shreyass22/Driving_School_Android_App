@@ -50,13 +50,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/card_dashboard"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="32dp"
                 android:fontFamily="@font/antic_regular"
                 android:padding="15dp"
                 android:text="Think safe, drive safe. Your key to safe driving. Saving lives through better education. Safe driving is no accident."
                 android:textAlignment="center"
                 android:textSize="20dp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/card_dashboard" />
 
             <LinearLayout
