@@ -46,7 +46,7 @@
                 android:id="@+id/linearLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="95dp"
                 android:orientation="horizontal"
                 android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -71,31 +71,33 @@
                             android:id="@+id/feedback_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Name : Shreyas"
-                            android:textStyle="bold"
-                            android:textSize="20dp"
                             android:layout_marginLeft="15dp"
-                            android:layout_marginTop="15dp"/>
+                            android:layout_marginTop="15dp"
+                            android:text="Name : Shreyas"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
                         <TextView
                             android:id="@+id/feedback_mail"
-                            android:layout_below="@+id/feedback_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="MailId : shreyasjswl@gmail.com"
-                            android:textStyle="bold"
-                            android:textSize="20dp"
+                            android:layout_below="@+id/feedback_name"
                             android:layout_marginLeft="15dp"
-                            android:layout_marginTop="15dp"/>
+                            android:layout_marginTop="15dp"
+                            android:text="MailId : shreyasjswl@gmail.com"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
                         <TextView
                             android:id="@+id/feedback_msg"
-                            android:layout_below="@+id/feedback_mail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Message : BlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlah \n more feedback will be created as ini after session and all also rating after each will be given if possible."
-                            android:textStyle="bold"
-                            android:textSize="20dp"
+                            android:layout_below="@+id/feedback_mail"
                             android:layout_marginLeft="15dp"
-                            android:layout_marginTop="15dp"/>
+                            android:layout_marginTop="15dp"
+                            android:text="Message : BlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlahBlah \n more feedback will be created as ini after session and all also rating after each will be given if possible."
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
 
                         <com.hsalf.smilerating.SmileRating
                             android:id="@+id/smile_rating"
@@ -104,6 +106,7 @@
                             android:layout_below="@+id/feedback_msg"
                             android:layout_centerVertical="true"
                             android:layout_marginTop="45dp"
+                            android:layout_marginBottom="15dp"
                             app:isIndicator="false" />
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
