@@ -1,21 +1,59 @@
 package com.example.drivingschool;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
+import android.widget.Toast;
 
-public class AdminDashboard extends AppCompatActivity {
+import java.util.ArrayList;
+
+import de.codecrafters.tableview.TableView;
+import de.codecrafters.tableview.listeners.TableDataClickListener;
+import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
+import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
+
+public class AdminDashboard extends AppCompatActivity implements View.OnClickListener {
     DrawerLayout drawerLayout;
+    private CardView trainer_card, car_card, client_card;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dashboard);
         drawerLayout = findViewById(R.id.drawer_layout);
+
+        //card on click listener starts-------------------------------------------------------------
+        //hooks for cardview
+        trainer_card = (CardView) findViewById(R.id.trainer_card);
+        car_card = (CardView) findViewById(R.id.car_card);
+        client_card = (CardView) findViewById(R.id.client_card);
+        //Add Click listener to the cards
+        trainer_card.setOnClickListener(this);
+        car_card.setOnClickListener(this);
+        client_card.setOnClickListener(this);
+        //continue from line 123 of this file.
+        //card on click listener stops--------------------------------------------------------------
+
     }
+
+    // onClick event on card
+    public void onClick(View ve) {
+        Intent c, c1, c2, c3;
+        switch (ve.getId()) {
+            case R.id.trainer_card : c = new Intent(this, TrainerAdminCard.class); startActivity(c); break;
+            case R.id.car_card : c1 = new Intent(this, CarAdminCard.class); startActivity(c1); break;
+            case R.id.client_card : c2 = new Intent(this, ClientAdminCard.class); startActivity(c2); break;
+            default: break;
+        }
+    }
+    // onClick event on card end
 
     //table
     private boolean table_flg = false;
@@ -106,5 +144,4 @@ public class AdminDashboard extends AppCompatActivity {
         Dashboard.closeDrawer(drawerLayout);
     }
     //navigation drawer ends
-
 }

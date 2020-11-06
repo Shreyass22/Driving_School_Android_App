@@ -13,6 +13,7 @@ public class BlahblahCard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blahblah_card);
+
         drawerLayout = findViewById(R.id.drawer_layout);
     }
 
