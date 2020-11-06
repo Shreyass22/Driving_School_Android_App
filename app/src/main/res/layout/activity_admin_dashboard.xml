@@ -45,7 +45,7 @@
                 android:id="@+id/admin_schdule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="41dp"
+                android:layout_marginTop="43dp"
                 android:fontFamily="@font/aclonica"
                 android:text="Schdule :"
                 android:textSize="30dp"
@@ -290,6 +290,8 @@
                     android:onClick="collapseTable"
                     android:text="Show Detail"
                     android:textAllCaps="false"
+                    android:textColor="#fff"
+                    android:background="@drawable/button_rounded_blue"
                     tools:ignore="OnClick" />
 
             </LinearLayout>

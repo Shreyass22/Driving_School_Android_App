@@ -54,7 +54,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:layout_marginStart="53dp">
+                    android:padding="15dp"
+                    android:layout_centerHorizontal="true">
 
                     <Button
                         android:id="@+id/trainer_add"
@@ -72,7 +73,7 @@
                         android:background="@drawable/button_rounded"
                         android:text="Delete"
                         android:textColor="#fff"
-                        android:layout_marginLeft="15dp" />
+                        android:layout_marginLeft="15dp"/>
 
                     <Button
                         android:id="@+id/trainer_session"
@@ -81,7 +82,7 @@
                         android:background="@drawable/button_rounded"
                         android:text="Session"
                         android:textColor="#fff"
-                    android:layout_marginLeft="15dp"/>
+                        android:layout_marginLeft="15dp"/>
                 </LinearLayout>
 
 
