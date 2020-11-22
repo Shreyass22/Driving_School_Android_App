@@ -161,22 +161,9 @@ public class TrainerAdProfile extends AppCompatActivity {
                 hashMap.put("phone", phone);
                 hashMap.put("password", password);
                 hashMap.put("gender", gender);
-                // specify if the user is Client
+                // specify if the user is Trainer
                 hashMap.put("isTrainer", "1");
 
-//                df.set(hashMap).addOnCompleteListener(task1 -> {
-//                    login_progess_bar.setVisibility(View.GONE);
-//                    if (task1.isSuccessful()) {
-//                        Intent intent = new Intent(SignUp.this,Dashboard.class);
-//                        Toast.makeText(SignUp.this, "Registration Done", Toast.LENGTH_SHORT).show();
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        startActivity(intent);
-//                        finish();
-//                    }
-//                    else {
-//                        Toast.makeText(SignUp.this, Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
 
                 reference.setValue(hashMap).addOnCompleteListener(task1 -> {
                     add_progess_bar.setVisibility(View.GONE);
@@ -197,39 +184,6 @@ public class TrainerAdProfile extends AppCompatActivity {
 
             }
         });
-
-        //firestore
-//        firebaseAuth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(authResult -> {
-//            FirebaseUser rUser = firebaseAuth.getCurrentUser();
-//            String userID = rUser.getUid();
-//            Toast.makeText(SignUp.this, "Registration Successful", Toast.LENGTH_SHORT).show();
-//            DocumentReference df = fstore.collection("users").document(userID);
-//            Map<String,String> userinfo = new HashMap<>();
-//            userinfo.put("userId", userID);
-//            userinfo.put("name", name);
-//            userinfo.put("email", email);
-//            userinfo.put("phone", phone);
-//            userinfo.put("password", password);
-//            userinfo.put("gender", gender);
-//            userinfo.put("imageUrl", "default");
-//            // specify if the user is admin
-//            userinfo.put("isClient", "1");
-//
-//            df.set(userinfo).addOnCompleteListener(task1 -> {
-//                login_progess_bar.setVisibility(View.GONE);
-//                if (task1.isSuccessful()) {
-//                    Intent intent = new Intent(SignUp.this,Dashboard.class);
-//                    Toast.makeText(SignUp.this, "Registration", Toast.LENGTH_SHORT).show();
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity(intent);
-//                    finish();
-//                }
-//                else {
-//                    Toast.makeText(SignUp.this, Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//            //intent not created
-//        });
     }
 
 }
