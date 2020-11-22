@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Dashboard extends AppCompatActivity implements View.OnClickListener{
 
@@ -133,19 +134,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         AlertDialog.Builder builder= new AlertDialog.Builder(activity);
         builder.setTitle("Logout");
         builder.setMessage("Are you sure you want to logout");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                activity.finishAffinity();
-                System.exit(0);
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setPositiveButton("Yes", (dialog, which) -> FirebaseAuth.getInstance().signOut());
+        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
         builder.show();
     }
 

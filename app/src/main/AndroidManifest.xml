@@ -3,6 +3,9 @@
     package="com.example.drivingschool">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TrainerAdProfile"></activity>
+        <activity android:name=".ForgetPassword"></activity>
+        <activity android:name=".TrainerAdProfile" />
         <activity android:name=".ClientAdminCard" />
         <activity android:name=".CarAdminCard" />
         <activity android:name=".TrainerAdminCard" />
@@ -24,7 +28,6 @@
         <activity android:name=".DrivesafeCard" />
         <activity android:name=".InstructionsCard" />
         <activity android:name=".AdminDashboard" />
-        <activity android:name=".Cardview" />
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.
@@ -40,6 +43,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
 
         <meta-data
             android:name="preloaded_fonts"

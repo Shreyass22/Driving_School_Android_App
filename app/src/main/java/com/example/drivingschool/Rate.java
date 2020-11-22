@@ -3,10 +3,12 @@ package com.example.drivingschool;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.hsalf.smilerating.SmileRating;
 
 public class Rate extends AppCompatActivity {
@@ -112,4 +114,7 @@ public class Rate extends AppCompatActivity {
         Dashboard.closeDrawer(drawerLayout);
     }
     //navigation drawer ends
+
+    public void submit_feedback(View view) {
+    }
 }

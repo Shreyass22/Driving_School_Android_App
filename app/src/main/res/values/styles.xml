@@ -9,5 +9,8 @@
         
         <item name="android:windowContentTransitions">true</item>
     </style>
+    <style name="menuStyle" parent="Theme.AppCompat.Light">
+        <item name="android:background">#fff</item>
+    </style>
 
 </resources>

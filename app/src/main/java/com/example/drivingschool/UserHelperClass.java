@@ -2,19 +2,28 @@ package com.example.drivingschool;
 
 public class UserHelperClass {
 
-    String name, username, email, phone, password;
+    String userId, name, email, phone, password, gender, imageUrl;
 
     public UserHelperClass() {
     }
 
-    public UserHelperClass(String name, String username, String email, String phone, String password) {
+    public UserHelperClass(String userId, String name, String email, String phone, String password, String gender, String imageUrl) {
+        this.userId = userId;
         this.name = name;
-        this.username = username;
         this.email = email;
         this.phone = phone;
         this.password = password;
+        this.gender = gender;
+        this.imageUrl = imageUrl;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getName() {
         return name;
@@ -22,14 +31,6 @@ public class UserHelperClass {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getEmail() {
@@ -54,5 +55,21 @@ public class UserHelperClass {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -1,11 +1,20 @@
 package com.example.drivingschool;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -16,78 +25,40 @@ import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 
 public class TrainerAdminCard extends AppCompatActivity {
 
-    String[] spaceProbeHeaders ={"ID", "Name", "Rating"};
-    String [][] spaceProbes;
+    FloatingActionButton f_add_trainer;
+    RecyclerView recview_trainer;
+    myadapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_admin_card);
 
-        //Trainer list start--------------------------------------------------------------
-        final TableView<String[]> tb = (TableView<String[]>) findViewById(R.id.trainer_list);
-        tb.setColumnCount(3);
-        tb.setHeaderBackgroundColor(Color.parseColor("#2286ff"));
+        f_add_trainer = (FloatingActionButton) findViewById(R.id.f_add_trainer);
+        f_add_trainer.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(),TrainerAdProfile.class)));
 
-        //  Populate
-        populateData();
-        //Adapters
-        tb.setHeaderAdapter(new SimpleTableHeaderAdapter(this,spaceProbeHeaders));
-        tb.setDataAdapter(new SimpleTableDataAdapter(this, spaceProbes));
+        recview_trainer = (RecyclerView) findViewById(R.id.recview_trainer);
+        recview_trainer.setLayoutManager(new LinearLayoutManager(this));
 
-        tb.addDataClickListener(new TableDataClickListener() {
-            @Override
-            public void onDataClicked(int rowIndex, Object clickedData) {
-                Toast.makeText(TrainerAdminCard.this, ((String[])clickedData)[1], Toast.LENGTH_SHORT).show();
+        FirebaseRecyclerOptions<UserHelperClass> options =
+                new FirebaseRecyclerOptions.Builder<UserHelperClass>()
+                        .setQuery(FirebaseDatabase.getInstance().getReference().child("trainer"), UserHelperClass.class)
+                        .build();
 
-            }
-        });
-        //Trainer list stops--------------------------------------------------------------
+        adapter = new myadapter(options);
+        recview_trainer.setAdapter(adapter);
+
     }
 
-    //Trainer list start--------------------------------------------------------------
-    private void populateData()
-    {
-        Spaceprobe spaceprobe=new Spaceprobe();
-        ArrayList<Spaceprobe> spaceprobeList=new ArrayList<>();
-
-
-        spaceprobe.setTr_id("1");
-        spaceprobe.setTr_name("Pioneer");
-        spaceprobe.setTr_rating("4");
-        spaceprobeList.add(spaceprobe);
-
-        spaceprobe=new Spaceprobe();
-        spaceprobe.setTr_id("2");
-        spaceprobe.setTr_name("Casini");
-        spaceprobe.setTr_rating("5");
-        spaceprobeList.add(spaceprobe);
-
-        spaceprobe=new Spaceprobe();
-        spaceprobe.setTr_id("3");
-        spaceprobe.setTr_name("Apollo");
-        spaceprobe.setTr_rating("2");
-        spaceprobeList.add(spaceprobe);
-
-        spaceprobe=new Spaceprobe();
-        spaceprobe.setTr_id("4");
-        spaceprobe.setTr_name("Enterpise");
-        spaceprobe.setTr_rating("3");
-        spaceprobeList.add(spaceprobe);
-
-        spaceProbes= new String[spaceprobeList.size()][3];
-        // spaceProbes= new String[][]{{}};
-
-
-        for (int i=0 ;i< spaceprobeList.size();i++) {
-
-            Spaceprobe s=spaceprobeList.get(i);
-
-            spaceProbes[i][0]=s.getTr_id();
-            spaceProbes[i][1]=s.getTr_name();
-            spaceProbes[i][2]=s.getTr_rating();
-        }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
     }
-    //Trainer list stop--------------------------------------------------------------
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
 }

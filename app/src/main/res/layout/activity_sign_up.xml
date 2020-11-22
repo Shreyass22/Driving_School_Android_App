@@ -66,22 +66,6 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/reg_username"
-            android:transitionName="logo_username"
-            android:hint="Username"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/reg_email"
             android:transitionName="logo_password"
             android:focusable="true"
@@ -128,24 +112,39 @@
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-<!--        <RadioGroup-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal">-->
+        <RadioGroup
+            android:id="@+id/gender_radio_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-<!--            <RadioButton-->
-<!--                android:layout_width="186dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Male"-->
-<!--                android:id="@+id/reg_male"-->
-<!--                android:textSize="20sp" />-->
-<!--            <RadioButton-->
-<!--                android:layout_width="187dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Female"-->
-<!--                android:id="@+id/reg_female"-->
-<!--                android:textSize="20sp" />-->
-<!--        </RadioGroup>-->
+            <RadioButton
+                android:id="@+id/reg_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male"
+                android:textSize="14dp"
+                tools:targetApi="lollipop" />
+
+            <RadioButton
+                android:layout_marginStart="25dp"
+                android:id="@+id/reg_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female"
+                android:textSize="14dp"
+                tools:targetApi="lollipop" />
+        </RadioGroup>
+
+
+        <ProgressBar
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/login_progess_bar"
+            android:layout_gravity="center"
+            tools:targetApi="lollipop"
+            android:visibility="gone"/>
 
         <Button
             android:layout_width="match_parent"

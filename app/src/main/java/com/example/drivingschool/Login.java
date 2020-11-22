@@ -11,26 +11,41 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Map;
 
 public class Login extends AppCompatActivity {
 
-    Button login_btn, btn_signup;
+    Button login_btn, btn_signup, forget_password;
     ImageView imageView;
     TextView logo_name, slogan_name;
-    TextInputLayout login_username, login_password;
-    String passwordFromDB;
+    TextInputLayout login_e_mail, login_password;
+    ProgressBar login_progess_bar;
+    FirebaseAuth firebaseAuth;
+    FirebaseFirestore fstore;
+    DatabaseReference databaseReference;
+    Switch active;
 
 
     @Override
@@ -42,22 +57,34 @@ public class Login extends AppCompatActivity {
         imageView = findViewById(R.id.imageView);
         logo_name = findViewById(R.id.logo_name);
         slogan_name = findViewById(R.id.slogan_name);
-        login_username = findViewById(R.id.login_username);
+        login_e_mail = findViewById(R.id.login_e_mail);
         login_password = findViewById(R.id.login_password);
         login_btn = findViewById(R.id.login_btn);
         btn_signup = findViewById(R.id.btn_signup);
+        login_progess_bar = findViewById(R.id.login_progess_bar);
+        forget_password = findViewById(R.id.forget_password);
+//        active = findViewById(R.id.active);
+
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        fstore = FirebaseFirestore.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
+
+        forget_password.setOnClickListener(v -> startActivity(new Intent(Login.this, ForgetPassword.class)));
+
 
     }
 
     private Boolean validateUsername () {
-        String val = login_username.getEditText().getText().toString();
+        String val = login_e_mail.getEditText().getText().toString();
         if(val.isEmpty()) {
-            login_username.setError("Field cannot be empty");
+            login_e_mail.setError("Field cannot be empty");
             return false;
         }
         else{
-            login_username.setError(null);
-            login_username.setErrorEnabled(false);
+            login_e_mail.setError(null);
+            login_e_mail.setErrorEnabled(false);
             return true;
         }
     }
@@ -75,6 +102,7 @@ public class Login extends AppCompatActivity {
         }
     }
 
+    //animation
     public void btn_signup(View view) {
         //animation start
         Intent intent = new Intent(Login.this, SignUp.class);
@@ -83,7 +111,7 @@ public class Login extends AppCompatActivity {
         pairs[0] = new Pair<View,String>(imageView,"logo_image");
         pairs[1] = new Pair<View,String>(logo_name,"logo_name");
         pairs[2] = new Pair<View,String>(slogan_name,"slogan_name");
-        pairs[3] = new Pair<View,String>(login_username,"login_username");
+        pairs[3] = new Pair<View,String>(login_e_mail,"login_e_mail");
         pairs[4] = new Pair<View,String>(login_password,"login_password");
         pairs[5] = new Pair<View,String>(login_btn,"login_btn");
 
@@ -92,92 +120,181 @@ public class Login extends AppCompatActivity {
         //animation end
     }
 
+
+    //check validation
     public void login_btn(View view) {
-        //db
+        String userEnteredName = login_e_mail.getEditText().getText().toString().trim();
+        String userEnteredPassword = login_password.getEditText().getText().toString().trim();
         //validate
         if(!validateUsername() | !validatePassword()) {
             return;
         }
         else{
-            isUser();
-            Toast t = Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT);
-            t.show();
+            login(userEnteredName,userEnteredPassword);
         }
-        //db end
     }
 
-    private void isUser() {
+    private void login(String userEnteredName, String userEnteredPassword) {
+        login_progess_bar.setVisibility(View.VISIBLE);
+        //RDB
+//        databaseReference.child("users").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (snapshot.child(userEnteredName).exists()) {
+//                    if (snapshot.child(userEnteredName).child("password").getValue(String.class).equals(userEnteredPassword)) {
+//                        if (active.isChecked()) {
+//                            if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Admin")) {
+//                                preferences.setDataLogin(Login.this, true);
+//                                preferences.setDataAs(Login.this, "Admin");
+//                                startActivity(new Intent(getApplicationContext(),AdminDashboard.class));
+//                            }
+//                            else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Trainer")) {
+//                                preferences.setDataLogin(Login.this, true);
+//                                preferences.setDataAs(Login.this, "Trainer");
+//                                startActivity(new Intent(getApplicationContext(),Trainer.class));
+//                            }
+//                            else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Client")){
+//                                preferences.setDataLogin(Login.this, true);
+//                                preferences.setDataAs(Login.this, "Client");
+//                                startActivity(new Intent(getApplicationContext(),Client.class));
+//                            }
+//                        }
+//                        else {
+//                            if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Admin")) {
+//                                preferences.setDataLogin(Login.this, false);
+//                                startActivity(new Intent(getApplicationContext(),AdminDashboard.class));
+//                            }
+//                            else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Trainer")) {
+//                                preferences.setDataLogin(Login.this, false);
+//                                startActivity(new Intent(getApplicationContext(),Trainer.class));
+//                            }
+//                            else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Client")){
+//                                preferences.setDataLogin(Login.this, false);
+//                                startActivity(new Intent(getApplicationContext(),Client.class));
+//                            }
+//                        }
+//                    }
+//                    else {
+//                        Toast.makeText(Login.this, "Password doesnot match", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                }
+//                else {
+//                    Toast.makeText(Login.this, "Email doesnot exist", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(Login.this, "ERROR : 404", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
-        String userEnteredName = login_username.getEditText().getText().toString().trim();
-        String userEnteredPassword = login_password.getEditText().getText().toString().trim();
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                Log.d("tag1", "Value is: " + map);
+        //login with rdb
+        firebaseAuth.signInWithEmailAndPassword(userEnteredName,userEnteredPassword).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Intent intent = new Intent(Login.this, Dashboard.class);
+                Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
             }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("2", "Failed to read value.", error.toException());
-            }
-        });
-        Query checkUser = reference.orderByChild("username").equalTo(userEnteredName);
-        checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot messageSnapshot: snapshot.getChildren()) {
-                        passwordFromDB = (String) messageSnapshot.child("password").getValue();
-                        //Log.d("pass", "onDataChange: "+passwordFromDB);
-                    }
-                    login_username.setError(null);
-                    login_username.setErrorEnabled(false);
-
-                    String passwordFromDB = snapshot.child(userEnteredName).child("password").getValue(String.class);
-
-//                    Log.d("TAG", "onDataChange:" + passwordFromDB);
-                    if (userEnteredPassword.equals(passwordFromDB)){
-                        
-
-                        login_username.setError(null);
-                        login_username.setErrorEnabled(false);
-
-                        String nameFromDB = snapshot.child(userEnteredName).child("name").getValue(String.class);
-                        String usernameFromDB = snapshot.child(userEnteredName).child("username").getValue(String.class);
-                        String emailFromDB = snapshot.child(userEnteredName).child("email").getValue(String.class);
-                        String phoneFromDB = snapshot.child(userEnteredName).child("phone").getValue(String.class);
-
-                        Intent intent = new Intent(getApplicationContext(), Dashboard.class);
-                        intent.putExtra("name", nameFromDB);
-                        intent.putExtra("username", usernameFromDB);
-                        intent.putExtra("email", emailFromDB);
-                        intent.putExtra("phone", phoneFromDB);
-                        intent.putExtra("password", passwordFromDB);
-
-                        startActivity(intent);
-                    }
-                    else {
-                        login_password.setError("Wrong Password");
-                        login_password.requestFocus();
-                    }
-                }
-                else {
-                    login_username.setError("No such User exit");
-                    login_username.requestFocus();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            else {
+                Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Firestore
+//        firebaseAuth.signInWithEmailAndPassword(userEnteredName,userEnteredPassword).addOnSuccessListener(authResult -> {
+//            checkUserAccessLevel(authResult.getUser().getUid());
+//            Intent intent = new Intent(Login.this, Dashboard.class);
+//            Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
+//            startActivity(intent);
+//            finish();
+//        });
     }
 
+//    private void checkUserAccessLevel(String uid) {
+//        DocumentReference df = fstore.collection("users").document(uid);
+//        df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                Log.d("TAG", "onSuccess" + documentSnapshot.getData());
+//
+//                if (documentSnapshot.getString("isAdmin") != null) {
+//                    startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
+//                    finish();
+//                }
+//                if (documentSnapshot.getString("isTrainer") != null) {
+//                    startActivity(new Intent(getApplicationContext(), Trainer.class));
+//                    finish();
+//                }
+//                if (documentSnapshot.getString("isClient") != null) {
+//                    startActivity(new Intent(getApplicationContext(), Client.class));
+//                    finish();
+//                }
+//            }
+//        });
+//    }
+
+
+
+
+
+
+    //onstart : when app starts
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            startActivity(new Intent(getApplicationContext(),Dashboard.class));
+        }
+
+        //as per firestore
+//        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+//            DocumentReference df = FirebaseFirestore.getInstance().collection("users")
+//                    .document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+//            df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                @Override
+//                public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                    if (documentSnapshot.getString("isAdmin") != null) {
+//                        startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
+//                        finish();
+//                    }
+//                    if (documentSnapshot.getString("isTrainer") != null) {
+//                        startActivity(new Intent(getApplicationContext(), Trainer.class));
+//                        finish();
+//                    }
+//                    if (documentSnapshot.getString("isClient") != null) {
+//                        startActivity(new Intent(getApplicationContext(), Client.class));
+//                        finish();
+//                    }
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    FirebaseAuth.getInstance().signOut();
+//                    startActivity(new Intent(getApplicationContext(), Login.class));
+//                    finish();
+//                }
+//            });
+//        }
+
+
+        //as per RDB
+//        if (preferences.getDataLogin(this)) {
+//            if (preferences.getDataAs(this).equals("Admin")) {
+//                startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
+//                finish();
+//            }
+//            else if (preferences.getDataAs(this).equals("Trainer")) {
+//                startActivity(new Intent(getApplicationContext(), Trainer.class));
+//                finish();
+//            }
+//            else if (preferences.getDataAs(this).equals("Client")) {
+//                startActivity(new Intent(getApplicationContext(), Client.class));
+//                finish();
+//            }
+//        }
+    }
 }

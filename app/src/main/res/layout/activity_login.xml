@@ -51,9 +51,9 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/login_username"
+            android:id="@+id/login_e_mail"
             android:transitionName="logo_username"
-            android:hint="@string/username"
+            android:hint="@string/Email"
             android:focusable="true"
             android:focusableInTouchMode="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -61,7 +61,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="textEmailAddress"
                 android:autofillHints="" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,6 +83,16 @@
                 android:autofillHints="" />
         </com.google.android.material.textfield.TextInputLayout>
 
+<!--        <Switch-->
+<!--            android:id="@+id/active"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:gravity="end"-->
+<!--            android:text="Remember me"/>-->
+
         <Button
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -90,7 +100,16 @@
             android:layout_margin="5dp"
             android:background="#00000000"
             android:elevation="0dp"
+            android:id="@+id/forget_password"
             android:text="@string/forget_password" />
+
+        <ProgressBar
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/login_progess_bar"
+            android:layout_gravity="center"
+            tools:targetApi="lollipop"
+            android:visibility="gone"/>
 
         <Button
             android:layout_width="match_parent"
@@ -114,6 +133,7 @@
             android:text="@string/new_user_sign_up"
             android:textColor="#000"
             android:onClick="btn_signup"/>
+
 
     </LinearLayout>
 

@@ -1,20 +1,72 @@
 package com.example.drivingschool;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
 
-public class UserProfile extends AppCompatActivity {
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-    DrawerLayout drawerLayout;
-    TextInputLayout full_name_profile, email_profile, phone_profile, password_profile;
-    TextView full_name, user_name;
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class UserProfile<TaskUri> extends AppCompatActivity {
+
+    private DrawerLayout drawerLayout;
+    private TextInputLayout full_name_profile, email_profile, phone_profile, password_profile;
+    private TextView full_name, email_profilee;
+    private CircleImageView profile_user;
+    private FirebaseUser firebaseUser;
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
+    private StorageTask storageTask;
+    private Uri imageUri;
+    private String myUri = "";
+    private StorageReference storageReference;
+    private UserHelperClass usersData;
+    private Button update_data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,90 +76,191 @@ public class UserProfile extends AppCompatActivity {
 
         //hooks
         full_name = findViewById(R.id.full_name);
-        user_name = findViewById(R.id.user_name);
+        email_profilee = findViewById(R.id.email_profilee);
         full_name_profile = findViewById(R.id.full_name_profile);
         email_profile = findViewById(R.id.email_profile);
         phone_profile = findViewById(R.id.phone_profile);
         password_profile = findViewById(R.id.password_profile);
+        profile_user = findViewById(R.id.profile_user);
+        update_data = findViewById(R.id.update_data);
 
-        //ShowAllUserData
-        showAllUserData();
+        storageReference = FirebaseStorage.getInstance().getReference().child("profile_images");
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        //fstore = FirebaseFirestore.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    for (DataSnapshot snap2 : snap.getChildren()) {
+                        //Log.d("client1", "onDataChange: " + snap2.toString());
+                        if (snap2.getKey().equals(firebaseUser.getUid())) {
+                            //Log.d("client2", "HEllo");
+                            usersData = snap2.getValue(UserHelperClass.class);
+                            assert usersData != null;
+                            email_profilee.setText(usersData.getEmail());
+                            full_name.setText(usersData.getName());
+                            full_name_profile.getEditText().setText(usersData.getName());
+                            email_profile.getEditText().setText((usersData.getEmail()));
+                            phone_profile.getEditText().setText((usersData.getPhone()));
+                            password_profile.getEditText().setText((usersData.getPassword()));
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(UserProfile.this, error.getMessage(), Toast.LENGTH_SHORT);
+            }
+        });
+
+
+        update_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadProfileImage();
+            }
+        });
+
+        profile_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CropImage.activity().setAspectRatio(1, 1).start(UserProfile.this);
+            }
+        });
+
+        getImageInfo();
     }
 
-    private void showAllUserData() {
-        Intent intent = getIntent();
-        String user_Name = intent.getStringExtra("name");
-        String user_username = intent.getStringExtra("username");
-        String user_email = intent.getStringExtra("email");
-        String user_phone = intent.getStringExtra("phone");
-        String user_password = intent.getStringExtra("password");
+    private void getImageInfo() {
+        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
+                    if (snapshot.hasChild("image")) {
+                        String image = snapshot.child("image").getValue().toString();
+                        Picasso.get().load(image).into(profile_user);
+                    }
+                }
+            }
 
-        full_name.setText(user_Name);
-        full_name_profile.getEditText().setText(user_Name);
-        user_name.setText(user_username);
-        email_profile.getEditText().setText(user_email);
-        phone_profile.getEditText().setText(user_phone);
-        password_profile.getEditText().setText(user_password);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            imageUri = result.getUri();
+            profile_user.setImageURI(imageUri);
+        } else {
+            Toast.makeText(this, "Error, try again", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void uploadProfileImage() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Set your Profile");
+        progressDialog.setMessage("Please wait, While we are setting your data");
+        progressDialog.show();
+
+        if (imageUri != null) {
+            final StorageReference fileRef = storageReference.child(firebaseAuth.getCurrentUser().getUid() + ".jpg");
+            storageTask = fileRef.putFile(imageUri);
+            storageTask.continueWithTask(new Continuation() {
+                @Override
+                public Object then(@NonNull Task task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return fileRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        myUri = downloadUri.toString();
+
+                        HashMap<String, Object> userMap = new HashMap<>();
+                        userMap.put("image", myUri);
+
+                        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).updateChildren(userMap);
+                        progressDialog.dismiss();
+                    }
+                }
+            });
+        } else {
+            progressDialog.dismiss();
+            Toast.makeText(this, "Image not selected", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     //navigation drawer starts
-    public void ClickMenu(View view){
+    public void ClickMenu(View view) {
         Dashboard.openDrawer(drawerLayout);
     }
 
-    public void ClickLogo(View view){
+    public void ClickLogo(View view) {
         Dashboard.closeDrawer(drawerLayout);
     }
 
-    public void ClickDashboard(View view){
-        Dashboard.redirectActivity(this,Dashboard.class);
+    public void ClickDashboard(View view) {
+        Dashboard.redirectActivity(this, Dashboard.class);
         this.finish();
     }
 
-    public void ClickInstructions(View view){
-        Dashboard.redirectActivity(this,InstructionsCard.class);
+    public void ClickInstructions(View view) {
+        Dashboard.redirectActivity(this, InstructionsCard.class);
         this.finish();
     }
 
-    public void ClickAdmin(View view){
-        Dashboard.redirectActivity(this,AdminDashboard.class);
+    public void ClickAdmin(View view) {
+        Dashboard.redirectActivity(this, AdminDashboard.class);
         this.finish();
     }
 
-    public void ClickTrainer(View view){
-        Dashboard.redirectActivity(this,Trainer.class);
+    public void ClickTrainer(View view) {
+        Dashboard.redirectActivity(this, Trainer.class);
         this.finish();
     }
 
-    public void ClickClient(View view){
-        Dashboard.redirectActivity(this,Client.class);
+    public void ClickClient(View view) {
+        Dashboard.redirectActivity(this, Client.class);
         this.finish();
     }
 
-    public void ClickLogin(View view){
-        Dashboard.redirectActivity(this,Login.class);
+    public void ClickLogin(View view) {
+        Dashboard.redirectActivity(this, Login.class);
         this.finish();
     }
 
-    public void ClickUpdate(View view){
+    public void ClickUpdate(View view) {
         recreate();
     }
 
-    public void ClickAboutus(View view){
-        Dashboard.redirectActivity(this,ContactusCard.class);
+    public void ClickAboutus(View view) {
+        Dashboard.redirectActivity(this, ContactusCard.class);
         this.finish();
     }
 
-    public void ClickRate(View view){
-        Dashboard.redirectActivity(this,Rate.class);
+    public void ClickRate(View view) {
+        Dashboard.redirectActivity(this, Rate.class);
         this.finish();
     }
 
-    public void ClickLogout(View view){
+    public void ClickLogout(View view) {
         Dashboard.logout(this);
     }
 
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         Dashboard.closeDrawer(drawerLayout);
     }

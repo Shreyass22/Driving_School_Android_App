@@ -22,7 +22,6 @@ import static com.example.drivingschool.Dashboard.closeDrawer;
 public class MainActivity extends AppCompatActivity {
 
     //variables
-    Animation top_animation, botton_animation;
     ImageView image;
     TextView text, text2;
 
@@ -47,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
         text2.setAnimation(botton_animation);
 
 
-        int SPLASH_SCREEN = 1000;
+        int SPLASH_SCREEN = 2000;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, Dashboard.class);
+                Intent intent = new Intent(MainActivity.this, Login.class);
                 Pair[] pairs = new Pair[3];
                 pairs[0] = new Pair<View,String>(image,"logo_image");
                 pairs[1] = new Pair<View,String>(text,"logo_text");
@@ -59,7 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, pairs);
                 startActivity(intent,options.toBundle());
+                //finish();
             }
         }, SPLASH_SCREEN);
+
     }
 }

@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 
 import de.codecrafters.tableview.TableView;

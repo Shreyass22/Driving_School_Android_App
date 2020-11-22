@@ -247,6 +247,7 @@
                 android:layout_marginStart="20dp"/>
             <TextView
                 android:id="@+id/nav_logout"
+                android:onClick="logout"
                 android:text="Logout"
                 tools:ignore="Suspicious0dp"
                 android:layout_width="0dp"
