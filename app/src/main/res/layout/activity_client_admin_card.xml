@@ -42,74 +42,43 @@
                 tools:ignore="MissingConstraints"
                 tools:layout_editor_absoluteX="0dp" />
 
-            <RelativeLayout
-                android:id="@+id/client_buttons"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recview_trainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="120dp"
-                app:layout_constraintTop_toBottomOf="@+id/clientList"
-                tools:layout_editor_absoluteX="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:padding="15dp"
-                    android:layout_centerHorizontal="true">
-
-                    <Button
-                        android:id="@+id/client_add"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/button_rounded"
-                        android:text="Add"
-                        android:textColor="#fff"
-                        android:layout_marginLeft="15dp"/>
-
-                    <Button
-                        android:id="@+id/client_edit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/button_rounded"
-                        android:text="Edit"
-                        android:textColor="#fff"
-                        android:layout_marginLeft="15dp" />
-
-                    <Button
-                        android:id="@+id/client_session"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/button_rounded"
-                        android:text="Allot to"
-                        android:textColor="#fff"
-                        android:layout_marginLeft="15dp"/>
-                </LinearLayout>
-
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayout3"
-                android:layout_width="match_parent"
-                android:layout_height="145dp"
-                android:layout_marginTop="350dp"
-                android:layout_marginBottom="36dp"
-                app:layout_constraintTop_toBottomOf="@+id/client_buttons"
+                android:layout_height="match_parent"
+                android:layout_marginTop="110dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <de.codecrafters.tableview.TableView
-                    android:id="@+id/client_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/carList"
-                    tools:ignore="NotSibling" />
-            </LinearLayout>
+                app:layout_constraintTop_toBottomOf="@+id/clientList"
+                android:layout_marginLeft="15sp"
+                android:layout_marginRight="15sp"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/f_add_client"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="280dp"
+            android:layout_marginTop="490dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginBottom="190dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/icon_add" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
         android:layout_width="300dp"

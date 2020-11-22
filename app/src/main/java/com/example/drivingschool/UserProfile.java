@@ -137,15 +137,22 @@ public class UserProfile<TaskUri> extends AppCompatActivity {
     }
 
     private void getImageInfo() {
-        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
-                    if (snapshot.hasChild("image")) {
-                        String image = snapshot.child("image").getValue().toString();
-                        Picasso.get().load(image).into(profile_user);
+                for(DataSnapshot snap : snapshot.getChildren()){
+                    for(DataSnapshot snap2 : snap.getChildren()){
+                        if(snap2.getKey().equals(firebaseAuth.getCurrentUser().getUid())){
+                            if (snap2.exists() && snap2.getChildrenCount() > 0) {
+                                if (snap2.hasChild("image")) {
+                                    String image = snap2.child("image").getValue().toString();
+                                    Picasso.get().load(image).into(profile_user);
+                                }
+                            }
+                        }
                     }
                 }
+
             }
 
             @Override
@@ -174,7 +181,7 @@ public class UserProfile<TaskUri> extends AppCompatActivity {
         progressDialog.show();
 
         if (imageUri != null) {
-            final StorageReference fileRef = storageReference.child(firebaseAuth.getCurrentUser().getDisplayName() + ".jpg");
+            final StorageReference fileRef = storageReference.child(firebaseAuth.getCurrentUser() + ".jpg");
             storageTask = fileRef.putFile(imageUri);
 
             storageTask.continueWithTask(new Continuation() {
@@ -194,9 +201,26 @@ public class UserProfile<TaskUri> extends AppCompatActivity {
 
                         HashMap<String, Object> userMap = new HashMap<>();
                         userMap.put("image", myUri);
+                        databaseReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for(DataSnapshot snap : snapshot.getChildren()){
+                                    for(DataSnapshot snap2 : snap.getChildren()){
+                                        if(snap2.getKey().equals(firebaseAuth.getCurrentUser().getUid())) {
+                                        databaseReference.child(snap.getKey()).child(firebaseAuth.getCurrentUser().getUid()).updateChildren(userMap);
+                                            progressDialog.dismiss();
+                                        }
+                                    }
+                                }
+                            }
 
-                        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).updateChildren(userMap);
-                        progressDialog.dismiss();
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+//                        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).updateChildren(userMap);
+
                     }
                 }
             });
