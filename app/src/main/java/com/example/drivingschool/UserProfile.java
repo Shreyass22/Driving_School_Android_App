@@ -2,13 +2,16 @@ package com.example.drivingschool;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -171,8 +174,9 @@ public class UserProfile<TaskUri> extends AppCompatActivity {
         progressDialog.show();
 
         if (imageUri != null) {
-            final StorageReference fileRef = storageReference.child(firebaseAuth.getCurrentUser().getUid() + ".jpg");
+            final StorageReference fileRef = storageReference.child(firebaseAuth.getCurrentUser().getDisplayName() + ".jpg");
             storageTask = fileRef.putFile(imageUri);
+
             storageTask.continueWithTask(new Continuation() {
                 @Override
                 public Object then(@NonNull Task task) throws Exception {
@@ -256,8 +260,24 @@ public class UserProfile<TaskUri> extends AppCompatActivity {
         this.finish();
     }
 
-    public void ClickLogout(View view) {
-        Dashboard.logout(this);
+    public void ClickLogout(View view){
+        logout(this);
+    }
+
+    public void logout(final Activity activity){
+        android.app.AlertDialog.Builder builder= new AlertDialog.Builder(activity);
+        builder.setTitle("Logout");
+        builder.setMessage("Are you sure you want to logout");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseAuth.getInstance().signOut();
+                Intent myIntent = new Intent(((Dialog) dialog).getContext(), Login.class);
+                startActivity(myIntent);
+                return;
+            }
+        });
+        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+        builder.show();
     }
 
     protected void onPause() {

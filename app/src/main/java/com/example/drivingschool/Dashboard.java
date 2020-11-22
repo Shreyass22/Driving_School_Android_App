@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -130,11 +131,18 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         logout(this);
     }
 
-    public static void logout(final Activity activity){
+    public void logout(final Activity activity){
         AlertDialog.Builder builder= new AlertDialog.Builder(activity);
         builder.setTitle("Logout");
         builder.setMessage("Are you sure you want to logout");
-        builder.setPositiveButton("Yes", (dialog, which) -> FirebaseAuth.getInstance().signOut());
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseAuth.getInstance().signOut();
+                Intent myIntent = new Intent(((Dialog) dialog).getContext(), Login.class);
+                startActivity(myIntent);
+                return;
+            }
+        });
         builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
         builder.show();
     }

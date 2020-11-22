@@ -238,7 +238,8 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:onClick="ClickLogout"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:id="@+id/nav_logout">
 
             <ImageView
                 android:src="@drawable/icon_logout"
@@ -246,8 +247,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"/>
             <TextView
-                android:id="@+id/nav_logout"
-                android:onClick="logout"
                 android:text="Logout"
                 tools:ignore="Suspicious0dp"
                 android:layout_width="0dp"
