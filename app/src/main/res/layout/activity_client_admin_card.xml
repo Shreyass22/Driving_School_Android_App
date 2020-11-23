@@ -43,16 +43,14 @@
                 tools:layout_editor_absoluteX="0dp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recview_trainer"
+                android:id="@+id/recview_client"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="110dp"
+                android:layout_marginTop="90dp"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clientList"
-                android:layout_marginLeft="15sp"
-                android:layout_marginRight="15sp"/>
+                app:layout_constraintTop_toBottomOf="@+id/clientList"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

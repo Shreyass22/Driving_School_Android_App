@@ -26,14 +26,31 @@ import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 
 public class AdminDashboard extends AppCompatActivity implements View.OnClickListener {
+    private long backPressedTime;
     DrawerLayout drawerLayout;
     private CardView trainer_card, car_card, client_card;
+
+    //on back press app exit
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 3000 > System.currentTimeMillis()){
+            super.onBackPressed();
+//            System.exit(0);
+            return;
+        }
+        else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        backPressedTime = System.currentTimeMillis();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dashboard);
         drawerLayout = findViewById(R.id.drawer_layout);
+
+
 
         //card on click listener starts-------------------------------------------------------------
         //hooks for cardview

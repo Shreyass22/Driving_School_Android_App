@@ -19,7 +19,7 @@
             android:src="@drawable/icon_user"
             android:layout_centerVertical="true"
             app:civ_border_width="2dp"
-            app:civ_border_color="#fff"/>
+            app:civ_border_color="#000"/>
 
         <TextView
             android:id="@+id/nametext"

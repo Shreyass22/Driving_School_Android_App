@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
@@ -24,13 +25,31 @@ import com.google.firebase.auth.FirebaseAuth;
 public class Dashboard extends AppCompatActivity implements View.OnClickListener{
 
     //variable
+    private long backPressedTime;
     private CardView instructions_card, drivesafe_card, contactus_card, blahblah_card;
     DrawerLayout drawerLayout;
+
+        //on back press app exit
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 3000 > System.currentTimeMillis()){
+            super.onBackPressed();
+//            System.exit(0);
+            return;
+        }
+        else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        backPressedTime = System.currentTimeMillis();
+    }
+        //on back press app exit
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+
 
         //hooks : defining
         //hooks for navigation

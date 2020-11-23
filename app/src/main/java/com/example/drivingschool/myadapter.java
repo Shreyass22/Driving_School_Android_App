@@ -54,15 +54,22 @@ public class myadapter extends FirebaseRecyclerAdapter<UserHelperClass, myadapte
         holder.nametext.setText(model.getName());
         holder.phonetext.setText(model.getPhone());
         holder.emailtext.setText(model.getEmail());
-        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
-                    if (snapshot.hasChild("image")) {
-                        String image = snapshot.child("image").getValue().toString();
-                        Glide.with(holder.img1.getContext()).load(image).into(holder.img1);
+                for(DataSnapshot snap : snapshot.getChildren()){
+                    for(DataSnapshot snap2 : snap.getChildren()){
+                        if(snap2.getKey().equals(firebaseAuth.getCurrentUser().getUid())){
+                            if (snap2.exists() && snap2.getChildrenCount() > 0) {
+                                if (snap2.hasChild("image")) {
+                                    String image = snap2.child("image").getValue().toString();
+                                    Glide.with(holder.img1.getContext()).load(image).into(holder.img1);
+                                }
+                            }
+                        }
                     }
                 }
+
             }
 
             @Override

@@ -17,12 +17,29 @@ import com.hsalf.smilerating.SmileRating;
 
 public class Rate extends AppCompatActivity {
 
+    private long backPressedTime;
     DrawerLayout drawerLayout;
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 3000 > System.currentTimeMillis()){
+            super.onBackPressed();
+//            System.exit(0);
+            return;
+        }
+        else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        backPressedTime = System.currentTimeMillis();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate);
         drawerLayout = findViewById(R.id.drawer_layout);
+
+
         //rate
         SmileRating smileRating = (SmileRating) findViewById(R.id.smile_rating);
         smileRating.setOnSmileySelectionListener(new SmileRating.OnSmileySelectionListener() {

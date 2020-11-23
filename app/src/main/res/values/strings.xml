@@ -32,6 +32,10 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="Email">Email</string>
+    <string name="color">Color</string>
+    <string name="company">Company</string>
+    <string name="model_no">Model no.</string>
+    <string name="name">Name</string>
 
 
 </resources>

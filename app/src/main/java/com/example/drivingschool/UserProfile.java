@@ -57,6 +57,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserProfile<TaskUri> extends AppCompatActivity {
 
+    private long backPressedTime;
     private DrawerLayout drawerLayout;
     private TextInputLayout full_name_profile, email_profile, phone_profile, password_profile;
     private TextView full_name, email_profilee;
@@ -72,10 +73,25 @@ public class UserProfile<TaskUri> extends AppCompatActivity {
     private Button update_data;
 
     @Override
+    public void onBackPressed() {
+        if (backPressedTime + 3000 > System.currentTimeMillis()){
+            super.onBackPressed();
+//            System.exit(0);
+            return;
+        }
+        else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        backPressedTime = System.currentTimeMillis();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         drawerLayout = findViewById(R.id.drawer_layout);
+
+
 
         //hooks
         full_name = findViewById(R.id.full_name);

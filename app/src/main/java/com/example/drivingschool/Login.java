@@ -248,6 +248,7 @@ public class Login extends AppCompatActivity {
         super.onStart();
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(),Dashboard.class));
+            finish();
         }
 
         //as per firestore
