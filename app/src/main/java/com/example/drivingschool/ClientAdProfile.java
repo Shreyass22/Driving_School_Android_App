@@ -181,7 +181,7 @@ public class ClientAdProfile extends AppCompatActivity {
                 hashMap.put("password", password);
                 hashMap.put("gender", gender);
                 // specify if the user is client
-                hashMap.put("isClient", "1");
+                hashMap.put("type", "Client");
 
 
                 reference.setValue(hashMap).addOnCompleteListener(task1 -> {

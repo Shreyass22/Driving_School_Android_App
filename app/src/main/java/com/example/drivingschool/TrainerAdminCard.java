@@ -66,7 +66,7 @@ public class TrainerAdminCard extends AppCompatActivity {
 
         FirebaseRecyclerOptions<UserHelperClass> options =
                 new FirebaseRecyclerOptions.Builder<UserHelperClass>()
-                        .setQuery(FirebaseDatabase.getInstance().getReference().child("trainer"), UserHelperClass.class)
+                        .setQuery(FirebaseDatabase.getInstance().getReference().child("users"), UserHelperClass.class)
                         .build();
 
         adapter = new myadapter(options);

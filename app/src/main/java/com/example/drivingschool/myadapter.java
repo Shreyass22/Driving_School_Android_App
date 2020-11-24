@@ -49,27 +49,21 @@ public class myadapter extends FirebaseRecyclerAdapter<UserHelperClass, myadapte
         storageReference = FirebaseStorage.getInstance().getReference().child("profile_images");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("trainer").child(firebaseUser.getUid());
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid());
 
         holder.nametext.setText(model.getName());
         holder.phonetext.setText(model.getPhone());
         holder.emailtext.setText(model.getEmail());
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        holder.typetext.setText(model.getType());
+        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot snap : snapshot.getChildren()){
-                    for(DataSnapshot snap2 : snap.getChildren()){
-                        if(snap2.getKey().equals(firebaseAuth.getCurrentUser().getUid())){
-                            if (snap2.exists() && snap2.getChildrenCount() > 0) {
-                                if (snap2.hasChild("image")) {
-                                    String image = snap2.child("image").getValue().toString();
-                                    Glide.with(holder.img1.getContext()).load(image).into(holder.img1);
-                                }
-                            }
-                        }
+                if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
+                    if (snapshot.hasChild("image")) {
+                        String image = snapshot.child("image").getValue().toString();
+                        Glide.with(holder.img1.getContext()).load(image).into(holder.img1);
                     }
                 }
-
             }
 
             @Override
@@ -88,7 +82,7 @@ public class myadapter extends FirebaseRecyclerAdapter<UserHelperClass, myadapte
 
     class myviewholder extends RecyclerView.ViewHolder{
         CircleImageView img1;
-        TextView nametext, phonetext, emailtext;
+        TextView nametext, phonetext, emailtext, typetext;
 
         public myviewholder(@NonNull View itemView) {
             super(itemView);
@@ -96,6 +90,7 @@ public class myadapter extends FirebaseRecyclerAdapter<UserHelperClass, myadapte
             nametext = (TextView) itemView.findViewById(R.id.nametext);
             phonetext = (TextView) itemView.findViewById(R.id.phonetext);
             emailtext = (TextView) itemView.findViewById(R.id.emailtext);
+            typetext = (TextView) itemView.findViewById(R.id.typetext);
         }
     }
 

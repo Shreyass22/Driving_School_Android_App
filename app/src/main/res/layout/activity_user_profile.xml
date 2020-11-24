@@ -59,15 +59,29 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/email_profilee"
+                    android:id="@+id/type_profilee"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/full_name"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="1dp"
                     android:layout_toRightOf="@+id/profile_user"
                     android:includeFontPadding="false"
                     android:text=""
                     android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/email_profilee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/full_name"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_toRightOf="@+id/profile_user"
+                    android:includeFontPadding="false"
+                    android:text=""
+                    android:textSize="14sp" />
+
             </RelativeLayout>
 
             <LinearLayout
@@ -89,7 +103,10 @@
                         android:drawableLeft="@drawable/icon_user"
                         android:drawablePadding="10dp"
                         android:inputType="text"
-                        android:text=""/>
+                        android:text=""
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        app:passwordToggleEnabled="true"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,7 +123,10 @@
                         android:drawableLeft="@drawable/icon_mail"
                         android:drawablePadding="10dp"
                         android:inputType="textEmailAddress"
-                        android:text=""/>
+                        android:text=""
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        app:passwordToggleEnabled="true"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -123,7 +143,10 @@
                         android:drawableLeft="@drawable/icon_phone"
                         android:drawablePadding="10dp"
                         android:inputType="number"
-                        android:text=""/>
+                        android:text=""
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        app:passwordToggleEnabled="true"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -141,9 +164,10 @@
                         android:drawablePadding="10dp"
                         android:inputType="textPassword"
                         android:text=""
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        app:passwordToggleEnabled="true"/>
+                        android:editable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        app:passwordToggleEnabled="false"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 

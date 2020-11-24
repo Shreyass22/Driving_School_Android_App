@@ -137,11 +137,8 @@ public class CarAdProfile extends AppCompatActivity {
 
     private void processinsertCar(String name, String model, String company, String color) {
         add_progess_bar.setVisibility(View.VISIBLE);
-        FirebaseUser rUser = firebaseAuth.getCurrentUser();
-        String userID = rUser.getUid();
-        reference = rootNode.getReference("car").child(userID); //realtimedb
+        reference = rootNode.getReference("car").child(name); //realtimedb
         HashMap<String,String> hashMap = new HashMap<>();
-        hashMap.put("userId", userID);
         hashMap.put("name", name);
         hashMap.put("model", model);
         hashMap.put("company", company);

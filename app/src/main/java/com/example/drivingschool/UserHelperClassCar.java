@@ -2,25 +2,16 @@ package com.example.drivingschool;
 
 public class UserHelperClassCar {
 
-    String userId, name, company, model, color;
+    String name, company, model, color;
 
     public UserHelperClassCar() {
     }
 
-    public UserHelperClassCar(String userId, String name, String company, String model, String color) {
-        this.userId = userId;
+    public UserHelperClassCar(String name, String company, String model, String color) {
         this.name = name;
         this.company = company;
         this.model = model;
         this.color = color;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getName() {

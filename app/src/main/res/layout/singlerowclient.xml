@@ -13,7 +13,7 @@
         android:padding="15dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img3"
+            android:id="@+id/img1"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/icon_user"
@@ -29,8 +29,20 @@
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="#000"
-            android:layout_toRightOf="@+id/img3"
+            android:layout_toRightOf="@+id/img1"
             android:layout_marginStart="25dp"/>
+
+        <TextView
+            android:id="@+id/typetext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Type"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:textColor="#000"
+            android:layout_toRightOf="@+id/img1"
+            android:layout_marginStart="25dp"
+            android:layout_below="@+id/nametext"/>
 
         <TextView
             android:id="@+id/phonetext"
@@ -40,9 +52,9 @@
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="#000"
-            android:layout_toRightOf="@+id/img3"
+            android:layout_toRightOf="@+id/img1"
             android:layout_marginStart="25dp"
-            android:layout_below="@+id/nametext"/>
+            android:layout_below="@+id/typetext"/>
 
         <TextView
             android:id="@+id/emailtext"
@@ -52,7 +64,7 @@
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="#000"
-            android:layout_toRightOf="@+id/img3"
+            android:layout_toRightOf="@+id/img1"
             android:layout_marginStart="25dp"
             android:layout_below="@+id/phonetext"/>
     </RelativeLayout>

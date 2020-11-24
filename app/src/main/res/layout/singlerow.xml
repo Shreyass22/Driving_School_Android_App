@@ -33,6 +33,18 @@
             android:layout_marginStart="25dp"/>
 
         <TextView
+            android:id="@+id/typetext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Type"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:textColor="#000"
+            android:layout_toRightOf="@+id/img1"
+            android:layout_marginStart="25dp"
+            android:layout_below="@+id/nametext"/>
+
+        <TextView
             android:id="@+id/phonetext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +54,7 @@
             android:textColor="#000"
             android:layout_toRightOf="@+id/img1"
             android:layout_marginStart="25dp"
-            android:layout_below="@+id/nametext"/>
+            android:layout_below="@+id/typetext"/>
 
         <TextView
             android:id="@+id/emailtext"
@@ -55,5 +67,6 @@
             android:layout_toRightOf="@+id/img1"
             android:layout_marginStart="25dp"
             android:layout_below="@+id/phonetext"/>
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

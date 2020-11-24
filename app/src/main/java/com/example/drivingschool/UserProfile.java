@@ -60,7 +60,7 @@ public class UserProfile<TaskUri> extends AppCompatActivity {
     private long backPressedTime;
     private DrawerLayout drawerLayout;
     private TextInputLayout full_name_profile, email_profile, phone_profile, password_profile;
-    private TextView full_name, email_profilee;
+    private TextView full_name, email_profilee, type_profilee;
     private CircleImageView profile_user;
     private FirebaseUser firebaseUser;
     private FirebaseAuth firebaseAuth;
@@ -74,12 +74,11 @@ public class UserProfile<TaskUri> extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (backPressedTime + 3000 > System.currentTimeMillis()){
+        if (backPressedTime + 3000 > System.currentTimeMillis()) {
             super.onBackPressed();
 //            System.exit(0);
             return;
-        }
-        else {
+        } else {
             Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
         }
         backPressedTime = System.currentTimeMillis();
@@ -92,11 +91,11 @@ public class UserProfile<TaskUri> extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
 
 
-
         //hooks
         full_name = findViewById(R.id.full_name);
         email_profilee = findViewById(R.id.email_profilee);
         full_name_profile = findViewById(R.id.full_name_profile);
+        type_profilee = findViewById(R.id.type_profilee);
         email_profile = findViewById(R.id.email_profile);
         phone_profile = findViewById(R.id.phone_profile);
         password_profile = findViewById(R.id.password_profile);
@@ -106,28 +105,25 @@ public class UserProfile<TaskUri> extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference().child("profile_images");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        //fstore = FirebaseFirestore.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot snap : snapshot.getChildren()) {
-                    for (DataSnapshot snap2 : snap.getChildren()) {
-                        //Log.d("client1", "onDataChange: " + snap2.toString());
-                        if (snap2.getKey().equals(firebaseUser.getUid())) {
-                            //Log.d("client2", "HEllo");
-                            usersData = snap2.getValue(UserHelperClass.class);
-                            assert usersData != null;
-                            email_profilee.setText(usersData.getEmail());
-                            full_name.setText(usersData.getName());
-                            full_name_profile.getEditText().setText(usersData.getName());
-                            email_profile.getEditText().setText((usersData.getEmail()));
-                            phone_profile.getEditText().setText((usersData.getPhone()));
-                            password_profile.getEditText().setText((usersData.getPassword()));
-                        }
-                    }
-                }
+                //Log.d("client1", "onDataChange: " + snap2.toString());
+//                if (snapshot.getKey().equals(firebaseUser.getUid())) {
+                    Log.d("client2", "HEllo" + snapshot.getValue().toString());
+                    usersData = snapshot.getValue(UserHelperClass.class);
+                    assert usersData != null;
+                    email_profilee.setText(usersData.getEmail());
+                    full_name.setText(usersData.getName());
+                    type_profilee.setText(usersData.getType());
+                    full_name_profile.getEditText().setText(usersData.getName());
+                    email_profile.getEditText().setText((usersData.getEmail()));
+                    phone_profile.getEditText().setText((usersData.getPhone()));
+                    password_profile.getEditText().setText((usersData.getPassword()));
+//                }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(UserProfile.this, error.getMessage(), Toast.LENGTH_SHORT);
@@ -153,27 +149,33 @@ public class UserProfile<TaskUri> extends AppCompatActivity {
     }
 
     private void getImageInfo() {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot snap : snapshot.getChildren()){
-                    for(DataSnapshot snap2 : snap.getChildren()){
-                        if(snap2.getKey().equals(firebaseAuth.getCurrentUser().getUid())){
-                            if (snap2.exists() && snap2.getChildrenCount() > 0) {
-                                if (snap2.hasChild("image")) {
-                                    String image = snap2.child("image").getValue().toString();
-                                    Picasso.get().load(image).into(profile_user);
-                                }
-                            }
-                        }
+                if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
+                    if (snapshot.hasChild("image")) {
+                        String image = snapshot.child("image").getValue().toString();
+                        Picasso.get().load(image).into(profile_user);
                     }
                 }
+//                for (DataSnapshot snap : snapshot.getChildren()) {
+//                    for (DataSnapshot snap2 : snap.getChildren()) {
+//                        if (snap2.getKey().equals(firebaseAuth.getCurrentUser().getUid())) {
+//                            if (snap2.exists() && snap2.getChildrenCount() > 0) {
+//                                if (snap2.hasChild("image")) {
+//                                    String image = snap2.child("image").getValue().toString();
+//                                    Picasso.get().load(image).into(profile_user);
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                startActivity(new Intent(getApplicationContext(), Login.class));
             }
         });
     }
@@ -197,7 +199,7 @@ public class UserProfile<TaskUri> extends AppCompatActivity {
         progressDialog.show();
 
         if (imageUri != null) {
-            final StorageReference fileRef = storageReference.child(firebaseAuth.getCurrentUser() + ".jpg");
+            final StorageReference fileRef = storageReference.child(firebaseAuth.getUid() + ".jpg");
             storageTask = fileRef.putFile(imageUri);
 
             storageTask.continueWithTask(new Continuation() {
@@ -217,26 +219,9 @@ public class UserProfile<TaskUri> extends AppCompatActivity {
 
                         HashMap<String, Object> userMap = new HashMap<>();
                         userMap.put("image", myUri);
-                        databaseReference.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for(DataSnapshot snap : snapshot.getChildren()){
-                                    for(DataSnapshot snap2 : snap.getChildren()){
-                                        if(snap2.getKey().equals(firebaseAuth.getCurrentUser().getUid())) {
-                                        databaseReference.child(snap.getKey()).child(firebaseAuth.getCurrentUser().getUid()).updateChildren(userMap);
-                                            progressDialog.dismiss();
-                                        }
-                                    }
-                                }
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-//                        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).updateChildren(userMap);
-
+                        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).updateChildren(userMap);
+                        progressDialog.dismiss();
                     }
                 }
             });
@@ -300,12 +285,12 @@ public class UserProfile<TaskUri> extends AppCompatActivity {
         this.finish();
     }
 
-    public void ClickLogout(View view){
+    public void ClickLogout(View view) {
         logout(this);
     }
 
-    public void logout(final Activity activity){
-        android.app.AlertDialog.Builder builder= new AlertDialog.Builder(activity);
+    public void logout(final Activity activity) {
+        android.app.AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Logout");
         builder.setMessage("Are you sure you want to logout");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {

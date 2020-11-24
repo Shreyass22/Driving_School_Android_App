@@ -49,13 +49,14 @@ public class myadapterClient extends FirebaseRecyclerAdapter<UserHelperClass, my
         holder.nametext.setText(model.getName());
         holder.phonetext.setText(model.getPhone());
         holder.emailtext.setText(model.getEmail());
+        holder.typetext.setText(model.getType());
         databaseReference.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
                     if (snapshot.hasChild("image")) {
                         String image = snapshot.child("image").getValue().toString();
-                        Glide.with(holder.img3.getContext()).load(image).into(holder.img3);
+                        Glide.with(holder.img1.getContext()).load(image).into(holder.img1);
                     }
                 }
             }
@@ -75,15 +76,16 @@ public class myadapterClient extends FirebaseRecyclerAdapter<UserHelperClass, my
     }
 
     class myviewholder extends RecyclerView.ViewHolder{
-        CircleImageView img3;
-        TextView nametext, phonetext, emailtext;
+        CircleImageView img1;
+        TextView nametext, phonetext, emailtext, typetext;
 
         public myviewholder(@NonNull View itemView) {
             super(itemView);
-            img3 = (CircleImageView) itemView.findViewById(R.id.img3);
+            img1 = (CircleImageView) itemView.findViewById(R.id.img1);
             nametext = (TextView) itemView.findViewById(R.id.nametext);
             phonetext = (TextView) itemView.findViewById(R.id.phonetext);
             emailtext = (TextView) itemView.findViewById(R.id.emailtext);
+            typetext = (TextView) itemView.findViewById(R.id.typetext);
         }
     }
 

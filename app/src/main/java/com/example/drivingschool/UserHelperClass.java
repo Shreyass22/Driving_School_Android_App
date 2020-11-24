@@ -2,12 +2,12 @@ package com.example.drivingschool;
 
 public class UserHelperClass {
 
-    String userId, name, email, phone, password, gender, imageUrl;
+    String userId, name, email, phone, password, gender, imageUrl, type;
 
     public UserHelperClass() {
     }
 
-    public UserHelperClass(String userId, String name, String email, String phone, String password, String gender, String imageUrl) {
+    public UserHelperClass(String userId, String name, String email, String phone, String password, String gender, String imageUrl, String type) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -71,5 +71,13 @@ public class UserHelperClass {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

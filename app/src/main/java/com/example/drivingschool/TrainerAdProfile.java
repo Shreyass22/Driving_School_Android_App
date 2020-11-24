@@ -176,7 +176,7 @@ public class TrainerAdProfile extends AppCompatActivity {
             if(task.isSuccessful()) {
                 FirebaseUser rUser = firebaseAuth.getCurrentUser();
                 String userID = rUser.getUid();
-                reference = rootNode.getReference("trainer").child(userID); //realtimedb
+                reference = rootNode.getReference("users").child(userID); //realtimedb
                 HashMap<String,String> hashMap = new HashMap<>();
                 hashMap.put("userId", userID);
                 hashMap.put("name", name);
@@ -185,7 +185,7 @@ public class TrainerAdProfile extends AppCompatActivity {
                 hashMap.put("password", password);
                 hashMap.put("gender", gender);
                 // specify if the user is Trainer
-                hashMap.put("isTrainer", "1");
+                hashMap.put("type", "Trainer");
 
 
                 reference.setValue(hashMap).addOnCompleteListener(task1 -> {

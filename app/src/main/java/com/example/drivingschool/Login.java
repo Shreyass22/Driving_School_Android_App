@@ -76,26 +76,24 @@ public class Login extends AppCompatActivity {
 
     }
 
-    private Boolean validateUsername () {
+    private Boolean validateUsername() {
         String val = login_e_mail.getEditText().getText().toString();
-        if(val.isEmpty()) {
+        if (val.isEmpty()) {
             login_e_mail.setError("Field cannot be empty");
             return false;
-        }
-        else{
+        } else {
             login_e_mail.setError(null);
             login_e_mail.setErrorEnabled(false);
             return true;
         }
     }
 
-    private Boolean validatePassword () {
+    private Boolean validatePassword() {
         String val = login_password.getEditText().getText().toString();
-        if(val.isEmpty()) {
+        if (val.isEmpty()) {
             login_password.setError("Field cannot be empty");
             return false;
-        }
-        else{
+        } else {
             login_password.setError(null);
             login_password.setErrorEnabled(false);
             return true;
@@ -108,15 +106,15 @@ public class Login extends AppCompatActivity {
         Intent intent = new Intent(Login.this, SignUp.class);
         this.finish();
         Pair[] pairs = new Pair[6];
-        pairs[0] = new Pair<View,String>(imageView,"logo_image");
-        pairs[1] = new Pair<View,String>(logo_name,"logo_name");
-        pairs[2] = new Pair<View,String>(slogan_name,"slogan_name");
-        pairs[3] = new Pair<View,String>(login_e_mail,"login_e_mail");
-        pairs[4] = new Pair<View,String>(login_password,"login_password");
-        pairs[5] = new Pair<View,String>(login_btn,"login_btn");
+        pairs[0] = new Pair<View, String>(imageView, "logo_image");
+        pairs[1] = new Pair<View, String>(logo_name, "logo_name");
+        pairs[2] = new Pair<View, String>(slogan_name, "slogan_name");
+        pairs[3] = new Pair<View, String>(login_e_mail, "login_e_mail");
+        pairs[4] = new Pair<View, String>(login_password, "login_password");
+        pairs[5] = new Pair<View, String>(login_btn, "login_btn");
 
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(Login.this, pairs);
-        startActivity(intent,options.toBundle());
+        startActivity(intent, options.toBundle());
         //animation end
     }
 
@@ -126,67 +124,66 @@ public class Login extends AppCompatActivity {
         String userEnteredName = login_e_mail.getEditText().getText().toString().trim();
         String userEnteredPassword = login_password.getEditText().getText().toString().trim();
         //validate
-        if(!validateUsername() | !validatePassword()) {
+        if (!validateUsername() | !validatePassword()) {
             return;
-        }
-        else{
-            login(userEnteredName,userEnteredPassword);
+        } else {
+            login(userEnteredName, userEnteredPassword);
         }
     }
 
     private void login(String userEnteredName, String userEnteredPassword) {
         login_progess_bar.setVisibility(View.VISIBLE);
         //RDB
-//        databaseReference.child("users").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (snapshot.child(userEnteredName).exists()) {
-//                    if (snapshot.child(userEnteredName).child("password").getValue(String.class).equals(userEnteredPassword)) {
-//                        if (active.isChecked()) {
-//                            if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Admin")) {
-//                                preferences.setDataLogin(Login.this, true);
-//                                preferences.setDataAs(Login.this, "Admin");
-//                                startActivity(new Intent(getApplicationContext(),AdminDashboard.class));
+//        firebaseAuth.signInWithEmailAndPassword(userEnteredName, userEnteredPassword).addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                databaseReference.child("users").addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        if (snapshot.child(userEnteredName).exists()) {
+//                            if (snapshot.child(userEnteredName).child("password").getValue(String.class).equals(userEnteredPassword)) {
+//                                if (active.isChecked()) {
+//                                    if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Admin")) {
+//                                        preferences.setDataLogin(Login.this, true);
+//                                        preferences.setDataAs(Login.this, "Admin");
+//                                        startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
+//                                    } else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Trainer")) {
+//                                        preferences.setDataLogin(Login.this, true);
+//                                        preferences.setDataAs(Login.this, "Trainer");
+//                                        startActivity(new Intent(getApplicationContext(), Trainer.class));
+//                                    } else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Client")) {
+//                                        preferences.setDataLogin(Login.this, true);
+//                                        preferences.setDataAs(Login.this, "Client");
+//                                        startActivity(new Intent(getApplicationContext(), Client.class));
+//                                    }
+//                                } else {
+//                                    if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Admin")) {
+//                                        preferences.setDataLogin(Login.this, false);
+//                                        startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
+//                                    } else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Trainer")) {
+//                                        preferences.setDataLogin(Login.this, false);
+//                                        startActivity(new Intent(getApplicationContext(), Trainer.class));
+//                                    } else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Client")) {
+//                                        preferences.setDataLogin(Login.this, false);
+//                                        startActivity(new Intent(getApplicationContext(), Client.class));
+//                                    }
+//                                }
+//                            } else {
+//                                Toast.makeText(Login.this, "Password doesnot match", Toast.LENGTH_SHORT).show();
 //                            }
-//                            else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Trainer")) {
-//                                preferences.setDataLogin(Login.this, true);
-//                                preferences.setDataAs(Login.this, "Trainer");
-//                                startActivity(new Intent(getApplicationContext(),Trainer.class));
-//                            }
-//                            else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Client")){
-//                                preferences.setDataLogin(Login.this, true);
-//                                preferences.setDataAs(Login.this, "Client");
-//                                startActivity(new Intent(getApplicationContext(),Client.class));
-//                            }
-//                        }
-//                        else {
-//                            if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Admin")) {
-//                                preferences.setDataLogin(Login.this, false);
-//                                startActivity(new Intent(getApplicationContext(),AdminDashboard.class));
-//                            }
-//                            else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Trainer")) {
-//                                preferences.setDataLogin(Login.this, false);
-//                                startActivity(new Intent(getApplicationContext(),Trainer.class));
-//                            }
-//                            else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Client")){
-//                                preferences.setDataLogin(Login.this, false);
-//                                startActivity(new Intent(getApplicationContext(),Client.class));
-//                            }
+//
+//                        } else {
+//                            Toast.makeText(Login.this, "Email doesnot exist", Toast.LENGTH_SHORT).show();
 //                        }
 //                    }
-//                    else {
-//                        Toast.makeText(Login.this, "Password doesnot match", Toast.LENGTH_SHORT).show();
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//                        Toast.makeText(Login.this, "ERROR : 404", Toast.LENGTH_SHORT).show();
 //                    }
+//                });
 //
-//                }
-//                else {
-//                    Toast.makeText(Login.this, "Email doesnot exist", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(Login.this, "ERROR : 404", Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 //            }
 //        });
 
@@ -204,84 +201,16 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        // Firestore
-//        firebaseAuth.signInWithEmailAndPassword(userEnteredName,userEnteredPassword).addOnSuccessListener(authResult -> {
-//            checkUserAccessLevel(authResult.getUser().getUid());
-//            Intent intent = new Intent(Login.this, Dashboard.class);
-//            Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
-//            startActivity(intent);
-//            finish();
-//        });
     }
-
-//    private void checkUserAccessLevel(String uid) {
-//        DocumentReference df = fstore.collection("users").document(uid);
-//        df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                Log.d("TAG", "onSuccess" + documentSnapshot.getData());
-//
-//                if (documentSnapshot.getString("isAdmin") != null) {
-//                    startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
-//                    finish();
-//                }
-//                if (documentSnapshot.getString("isTrainer") != null) {
-//                    startActivity(new Intent(getApplicationContext(), Trainer.class));
-//                    finish();
-//                }
-//                if (documentSnapshot.getString("isClient") != null) {
-//                    startActivity(new Intent(getApplicationContext(), Client.class));
-//                    finish();
-//                }
-//            }
-//        });
-//    }
-
-
-
-
-
 
     //onstart : when app starts
     @Override
     protected void onStart() {
         super.onStart();
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(),Dashboard.class));
+            startActivity(new Intent(getApplicationContext(), Dashboard.class));
             finish();
         }
-
-        //as per firestore
-//        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-//            DocumentReference df = FirebaseFirestore.getInstance().collection("users")
-//                    .document(FirebaseAuth.getInstance().getCurrentUser().getUid());
-//            df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                @Override
-//                public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                    if (documentSnapshot.getString("isAdmin") != null) {
-//                        startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
-//                        finish();
-//                    }
-//                    if (documentSnapshot.getString("isTrainer") != null) {
-//                        startActivity(new Intent(getApplicationContext(), Trainer.class));
-//                        finish();
-//                    }
-//                    if (documentSnapshot.getString("isClient") != null) {
-//                        startActivity(new Intent(getApplicationContext(), Client.class));
-//                        finish();
-//                    }
-//                }
-//            }).addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception e) {
-//                    FirebaseAuth.getInstance().signOut();
-//                    startActivity(new Intent(getApplicationContext(), Login.class));
-//                    finish();
-//                }
-//            });
-//        }
-
-
         //as per RDB
 //        if (preferences.getDataLogin(this)) {
 //            if (preferences.getDataAs(this).equals("Admin")) {
