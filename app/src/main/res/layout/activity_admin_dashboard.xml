@@ -445,6 +445,62 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            app:fab_addButtonColorNormal="#30336B"
+            app:fab_addButtonColorPressed="#0A3D62"
+            app:fab_addButtonPlusIconColor="#EAF0F1"
+            app:fab_labelStyle="@style/custom_fab">
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_colorNormal="#EAF0F1"
+                app:fab_colorPressed="#99AAAB"
+                app:fab_icon="@drawable/icon_add"
+                app:fab_size="normal"
+                app:fab_title="Add Schedule"
+                android:id="@+id/f_add_schedule"/>
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_colorNormal="#EAF0F1"
+                app:fab_colorPressed="#99AAAB"
+                app:fab_icon="@drawable/icon_add"
+                app:fab_size="normal"
+                app:fab_title="Add Trainer"
+                android:id="@+id/f_add_trainer"/>
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_colorNormal="#EAF0F1"
+                app:fab_colorPressed="#99AAAB"
+                app:fab_icon="@drawable/icon_add"
+                app:fab_size="normal"
+                app:fab_title="Add Client"
+                android:id="@+id/f_add_client"/>
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_colorNormal="#EAF0F1"
+                app:fab_colorPressed="#99AAAB"
+                app:fab_icon="@drawable/icon_add"
+                app:fab_size="normal"
+                app:fab_title="Add Car"
+                android:id="@+id/f_add_car"/>
+
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
+    </RelativeLayout>
     <RelativeLayout
         android:layout_width="300dp"
         android:layout_height="match_parent"

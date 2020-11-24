@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -49,6 +50,35 @@ public class AdminDashboard extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dashboard);
         drawerLayout = findViewById(R.id.drawer_layout);
+
+        FloatingActionButton f_add_schedule = findViewById(R.id.f_add_schedule);
+        f_add_schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), TrainerAdProfile.class));
+            }
+        });
+        FloatingActionButton f_add_trainer = findViewById(R.id.f_add_trainer);
+        f_add_trainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), TrainerAdProfile.class));
+            }
+        });
+        FloatingActionButton f_add_client = findViewById(R.id.f_add_client);
+        f_add_client.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ClientAdProfile.class));
+            }
+        });
+        FloatingActionButton f_add_car = findViewById(R.id.f_add_car);
+        f_add_car.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), CarAdProfile.class));
+            }
+        });
 
 
 

@@ -58,8 +58,8 @@ public class TrainerAdminCard extends AppCompatActivity {
 
 
 
-        f_add_trainer = (FloatingActionButton) findViewById(R.id.f_add_trainer);
-        f_add_trainer.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(),TrainerAdProfile.class)));
+//        f_add_trainer = (FloatingActionButton) findViewById(R.id.f_add_trainer);
+//        f_add_trainer.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(),TrainerAdProfile.class)));
 
         recview_trainer = (RecyclerView) findViewById(R.id.recview_trainer);
         recview_trainer.setLayoutManager(new LinearLayoutManager(this));

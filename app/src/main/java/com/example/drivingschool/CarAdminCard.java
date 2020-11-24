@@ -57,8 +57,8 @@ public class CarAdminCard extends AppCompatActivity {
 
 
 
-        f_add_car = (FloatingActionButton) findViewById(R.id.f_add_car);
-        f_add_car.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(),CarAdProfile.class)));
+//        f_add_car = (FloatingActionButton) findViewById(R.id.f_add_car);
+//        f_add_car.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(),CarAdProfile.class)));
 
         recview_car = (RecyclerView) findViewById(R.id.recview_car);
         recview_car.setLayoutManager(new LinearLayoutManager(this));

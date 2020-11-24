@@ -56,8 +56,8 @@ public class ClientAdminCard extends AppCompatActivity {
 
 
 
-        f_add_client = (FloatingActionButton) findViewById(R.id.f_add_client);
-        f_add_client.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(),ClientAdProfile.class)));
+//        f_add_client = (FloatingActionButton) findViewById(R.id.f_add_client);
+//        f_add_client.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(),ClientAdProfile.class)));
 
         recview_client = (RecyclerView) findViewById(R.id.recview_client);
         recview_client.setLayoutManager(new LinearLayoutManager(this));
