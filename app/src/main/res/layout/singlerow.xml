@@ -22,7 +22,7 @@
             app:civ_border_color="#000"/>
 
         <TextView
-            android:id="@+id/nametext"
+            android:id="@+id/nametext1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Name"
@@ -33,7 +33,7 @@
             android:layout_marginStart="25dp"/>
 
         <TextView
-            android:id="@+id/typetext"
+            android:id="@+id/typetext1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Type"
@@ -42,10 +42,10 @@
             android:textColor="#000"
             android:layout_toRightOf="@+id/img1"
             android:layout_marginStart="25dp"
-            android:layout_below="@+id/nametext"/>
+            android:layout_below="@+id/nametext1"/>
 
         <TextView
-            android:id="@+id/phonetext"
+            android:id="@+id/phonetext1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Phone no."
@@ -54,10 +54,10 @@
             android:textColor="#000"
             android:layout_toRightOf="@+id/img1"
             android:layout_marginStart="25dp"
-            android:layout_below="@+id/typetext"/>
+            android:layout_below="@+id/typetext1"/>
 
         <TextView
-            android:id="@+id/emailtext"
+            android:id="@+id/emailtext1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="E-mail"
@@ -66,7 +66,7 @@
             android:textColor="#000"
             android:layout_toRightOf="@+id/img1"
             android:layout_marginStart="25dp"
-            android:layout_below="@+id/phonetext"/>
+            android:layout_below="@+id/phonetext1"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

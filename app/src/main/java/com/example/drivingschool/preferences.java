@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 
 public class preferences {
     private static final String DATA_LOGIN = "status_login",
-            DATA_AS = "asIn";
+            DATA_AS = "type";
 
 
     private static SharedPreferences getSharedPreferences(Context context) {

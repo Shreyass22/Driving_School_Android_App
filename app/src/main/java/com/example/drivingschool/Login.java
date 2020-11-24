@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -134,72 +135,62 @@ public class Login extends AppCompatActivity {
     private void login(String userEnteredName, String userEnteredPassword) {
         login_progess_bar.setVisibility(View.VISIBLE);
         //RDB
-//        firebaseAuth.signInWithEmailAndPassword(userEnteredName, userEnteredPassword).addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                databaseReference.child("users").addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        if (snapshot.child(userEnteredName).exists()) {
-//                            if (snapshot.child(userEnteredName).child("password").getValue(String.class).equals(userEnteredPassword)) {
-//                                if (active.isChecked()) {
-//                                    if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Admin")) {
-//                                        preferences.setDataLogin(Login.this, true);
-//                                        preferences.setDataAs(Login.this, "Admin");
-//                                        startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
-//                                    } else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Trainer")) {
-//                                        preferences.setDataLogin(Login.this, true);
-//                                        preferences.setDataAs(Login.this, "Trainer");
-//                                        startActivity(new Intent(getApplicationContext(), Trainer.class));
-//                                    } else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Client")) {
-//                                        preferences.setDataLogin(Login.this, true);
-//                                        preferences.setDataAs(Login.this, "Client");
-//                                        startActivity(new Intent(getApplicationContext(), Client.class));
-//                                    }
-//                                } else {
-//                                    if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Admin")) {
-//                                        preferences.setDataLogin(Login.this, false);
-//                                        startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
-//                                    } else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Trainer")) {
-//                                        preferences.setDataLogin(Login.this, false);
-//                                        startActivity(new Intent(getApplicationContext(), Trainer.class));
-//                                    } else if (snapshot.child(userEnteredName).child("asIn").getValue(String.class).equals("Client")) {
-//                                        preferences.setDataLogin(Login.this, false);
-//                                        startActivity(new Intent(getApplicationContext(), Client.class));
-//                                    }
-//                                }
-//                            } else {
-//                                Toast.makeText(Login.this, "Password doesnot match", Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                        } else {
-//                            Toast.makeText(Login.this, "Email doesnot exist", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//                        Toast.makeText(Login.this, "ERROR : 404", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//
-//            } else {
-//                Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-        //login with rdb
-        firebaseAuth.signInWithEmailAndPassword(userEnteredName,userEnteredPassword).addOnCompleteListener(task -> {
+        firebaseAuth.signInWithEmailAndPassword(userEnteredName, userEnteredPassword).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Intent intent = new Intent(Login.this, Dashboard.class);
-                Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
-            }
-            else {
+                FirebaseUser rUser = firebaseAuth.getCurrentUser(); //
+                String userID = rUser.getUid();  //
+                databaseReference.child("users").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        if (snapshot.child(userID).child("type").getValue(String.class).equals("Admin")) {
+
+//                            preferences.setDataLogin(Login.this, true);
+//                            preferences.setDataAs(Login.this, "Admin");
+                            startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
+                        } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Trainer")) {
+
+//                            preferences.setDataLogin(Login.this, true);
+//                            preferences.setDataAs(Login.this, "Trainer");
+                            startActivity(new Intent(getApplicationContext(), Trainer.class));
+                        } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Client")) {
+
+//                            preferences.setDataLogin(Login.this, true);
+//                            preferences.setDataAs(Login.this, "Client");
+                            startActivity(new Intent(getApplicationContext(), Client.class));
+                        } else {
+                            login_progess_bar.setVisibility(View.GONE);
+                            Toast.makeText(Login.this, "Email doesnot exist", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        login_progess_bar.setVisibility(View.GONE);
+                        Toast.makeText(Login.this, "ERROR : 404", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            } else {
+                login_progess_bar.setVisibility(View.GONE);
                 Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        //login with rdb
+//        firebaseAuth.signInWithEmailAndPassword(userEnteredName,userEnteredPassword).addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                Intent intent = new Intent(Login.this, Dashboard.class);
+//                Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
+//                finish();
+//            }
+//            else {
+//                login_progess_bar.setVisibility(View.GONE);
+//                Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
     }
 
@@ -216,12 +207,10 @@ public class Login extends AppCompatActivity {
 //            if (preferences.getDataAs(this).equals("Admin")) {
 //                startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
 //                finish();
-//            }
-//            else if (preferences.getDataAs(this).equals("Trainer")) {
+//            } else if (preferences.getDataAs(this).equals("Trainer")) {
 //                startActivity(new Intent(getApplicationContext(), Trainer.class));
 //                finish();
-//            }
-//            else if (preferences.getDataAs(this).equals("Client")) {
+//            } else if (preferences.getDataAs(this).equals("Client")) {
 //                startActivity(new Intent(getApplicationContext(), Client.class));
 //                finish();
 //            }

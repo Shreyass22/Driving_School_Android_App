@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -48,8 +49,9 @@ public class TrainerAdProfile extends AppCompatActivity {
     ProgressBar add_progess_bar;
 
     FirebaseDatabase rootNode;
-    FirebaseAuth firebaseAuth;
+    FirebaseAuth firebaseAuth,firebaseAuth1;
     DatabaseReference reference;
+    FirebaseUser user;
 
     @Override
     public void onBackPressed() {
@@ -82,6 +84,7 @@ public class TrainerAdProfile extends AppCompatActivity {
         //db Firebase instance
         rootNode = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
     }
 
     private Boolean validateName () {
@@ -172,10 +175,13 @@ public class TrainerAdProfile extends AppCompatActivity {
 
     private void processinsert(String name, String email, String phone, String password, String gender) {
         add_progess_bar.setVisibility(View.VISIBLE);
+
         firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 FirebaseUser rUser = firebaseAuth.getCurrentUser();
+//                firebaseAuth1.signOut();
                 String userID = rUser.getUid();
+
                 reference = rootNode.getReference("users").child(userID); //realtimedb
                 HashMap<String,String> hashMap = new HashMap<>();
                 hashMap.put("userId", userID);
@@ -189,14 +195,17 @@ public class TrainerAdProfile extends AppCompatActivity {
 
 
                 reference.setValue(hashMap).addOnCompleteListener(task1 -> {
-                    add_progess_bar.setVisibility(View.GONE);
+                    add_progess_bar.setVisibility(View.VISIBLE);
                     if (task1.isSuccessful()) {
+                        firebaseAuth.updateCurrentUser(user);
+                        Log.d("TAG1", "processinsert: "+firebaseAuth.getCurrentUser().getUid().toString());
                         Intent intent = new Intent(TrainerAdProfile.this,TrainerAdminCard.class);
                         Toast.makeText(TrainerAdProfile.this, "Trainer Registration Successful", Toast.LENGTH_SHORT).show();
                         startActivity(intent);
                         finish();
                     }
                     else {
+                        add_progess_bar.setVisibility(View.GONE);
                         Toast.makeText(TrainerAdProfile.this, Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });

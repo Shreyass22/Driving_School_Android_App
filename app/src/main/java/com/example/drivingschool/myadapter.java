@@ -49,13 +49,13 @@ public class myadapter extends FirebaseRecyclerAdapter<UserHelperClass, myadapte
         storageReference = FirebaseStorage.getInstance().getReference().child("profile_images");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid());
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
-        holder.nametext.setText(model.getName());
-        holder.phonetext.setText(model.getPhone());
-        holder.emailtext.setText(model.getEmail());
-        holder.typetext.setText(model.getType());
-        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        holder.nametext1.setText(model.getName());
+        holder.phonetext1.setText(model.getPhone());
+        holder.emailtext1.setText(model.getEmail());
+        holder.typetext1.setText(model.getType());
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
@@ -82,15 +82,15 @@ public class myadapter extends FirebaseRecyclerAdapter<UserHelperClass, myadapte
 
     class myviewholder extends RecyclerView.ViewHolder{
         CircleImageView img1;
-        TextView nametext, phonetext, emailtext, typetext;
+        TextView nametext1, phonetext1, emailtext1, typetext1;
 
         public myviewholder(@NonNull View itemView) {
             super(itemView);
             img1 = (CircleImageView) itemView.findViewById(R.id.img1);
-            nametext = (TextView) itemView.findViewById(R.id.nametext);
-            phonetext = (TextView) itemView.findViewById(R.id.phonetext);
-            emailtext = (TextView) itemView.findViewById(R.id.emailtext);
-            typetext = (TextView) itemView.findViewById(R.id.typetext);
+            nametext1 = (TextView) itemView.findViewById(R.id.nametext1);
+            phonetext1 = (TextView) itemView.findViewById(R.id.phonetext1);
+            emailtext1 = (TextView) itemView.findViewById(R.id.emailtext1);
+            typetext1 = (TextView) itemView.findViewById(R.id.typetext1);
         }
     }
 

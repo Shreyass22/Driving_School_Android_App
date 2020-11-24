@@ -30,7 +30,7 @@ import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 public class ClientAdminCard extends AppCompatActivity {
 
     private long backPressedTime;
-    DrawerLayout drawerLayout;
+    private DrawerLayout drawerLayout;
     FloatingActionButton f_add_client;
     RecyclerView recview_client;
     myadapterClient adapter;

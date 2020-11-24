@@ -105,8 +105,8 @@ public class UserProfile<TaskUri> extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference().child("profile_images");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid());
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //Log.d("client1", "onDataChange: " + snap2.toString());

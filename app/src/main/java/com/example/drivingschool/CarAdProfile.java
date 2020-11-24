@@ -153,6 +153,7 @@ public class CarAdProfile extends AppCompatActivity {
                 Toast.makeText(CarAdProfile.this, "Car Registration Successful", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
                 finish();
+
             }
             else {
                 Toast.makeText(CarAdProfile.this, Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
