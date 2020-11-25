@@ -125,6 +125,10 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         redirectActivity(this,Client.class);
         this.finish();
     }
+    public void ClickMap(View view){
+        redirectActivity(this,Map.class);
+        this.finish();
+    }
 
     public void ClickLogin(View view){
         redirectActivity(this,Login.class);

@@ -84,6 +84,10 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                 Intent intent5 = new Intent(NavigationDrawer.this, ContactusCard.class);
                 startActivity(intent5);
                 break;
+            case R.id.nav_map:
+                Intent intent9 = new Intent(NavigationDrawer.this, Map.class);
+                startActivity(intent9);
+                break;
             case R.id.nav_login:
                 Intent intent = new Intent(NavigationDrawer.this, Login.class);
                 startActivity(intent);

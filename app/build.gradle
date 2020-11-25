@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.2.0'
     implementation 'com.google.firebase:firebase-firestore:22.0.0'
     implementation 'com.firebaseui:firebase-ui-database:6.2.1'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -63,6 +64,11 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
 
     implementation 'com.getbase:floatingactionbutton:1.10.1'
+
+    //maps
+    implementation 'com.karumi:dexter:5.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
 
 
 }

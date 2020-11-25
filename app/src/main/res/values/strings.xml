@@ -36,6 +36,8 @@
     <string name="company">Company</string>
     <string name="model_no">Model no.</string>
     <string name="name">Name</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_retrive_maps">Map</string>
 
 
 </resources>
