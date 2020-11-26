@@ -30,6 +30,7 @@ public class Map extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), RetriveMapsActivity.class));
     }
 
-
-
 }
+
+
+

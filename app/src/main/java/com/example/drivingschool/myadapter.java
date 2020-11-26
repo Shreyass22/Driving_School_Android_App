@@ -49,7 +49,7 @@ public class myadapter extends FirebaseRecyclerAdapter<UserHelperClass, myadapte
         storageReference = FirebaseStorage.getInstance().getReference().child("profile_images");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid());
 
         holder.nametext1.setText(model.getName());
         holder.phonetext1.setText(model.getPhone());

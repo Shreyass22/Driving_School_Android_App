@@ -44,7 +44,6 @@ public class Login extends AppCompatActivity {
     TextInputLayout login_e_mail, login_password;
     ProgressBar login_progess_bar;
     FirebaseAuth firebaseAuth;
-    FirebaseFirestore fstore;
     DatabaseReference databaseReference;
     Switch active;
 
@@ -68,7 +67,6 @@ public class Login extends AppCompatActivity {
 
 
         firebaseAuth = FirebaseAuth.getInstance();
-        fstore = FirebaseFirestore.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
 

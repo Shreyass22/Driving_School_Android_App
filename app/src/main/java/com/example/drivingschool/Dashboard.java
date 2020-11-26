@@ -21,6 +21,12 @@ import android.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Dashboard extends AppCompatActivity implements View.OnClickListener{
 
@@ -28,6 +34,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     private long backPressedTime;
     private CardView instructions_card, drivesafe_card, contactus_card, blahblah_card;
     DrawerLayout drawerLayout;
+    FirebaseAuth firebaseAuth;
+    DatabaseReference databaseReference;
 
         //on back press app exit
     @Override
@@ -49,6 +57,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
 
         //hooks : defining
@@ -82,6 +92,47 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         }
     }
     // onClick event on card end
+
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+//        return super.onPrepareOptionsMenu(menu);
+//        FirebaseUser rUser = firebaseAuth.getCurrentUser(); //
+//        String userID = rUser.getUid();  //
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                if (snapshot.child(userID).child("type").getValue(String.class).equals("Admin")) {
+//
+//                    menu.removeItem(R.id.nav_login);
+//                    menu.removeItem(R.id.nav_trainer);
+//                    menu.removeItem(R.id.nav_client);
+//
+//                } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Trainer")) {
+//
+//                    menu.removeItem(R.id.nav_login);
+//                    menu.removeItem(R.id.nav_admin);
+//                    menu.removeItem(R.id.nav_client);
+//
+//                } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Client")) {
+//
+//                    menu.removeItem(R.id.nav_login);
+//                    menu.removeItem(R.id.nav_trainer);
+//                    menu.removeItem(R.id.nav_admin);
+//
+//                } else {
+//                    Toast.makeText(Dashboard.this, "ERROR : 404 : 1", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(Dashboard.this, "ERROR : 404 : 2", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+
+
 
 
     //Navigation drawer starts

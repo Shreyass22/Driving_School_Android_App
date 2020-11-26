@@ -3,21 +3,27 @@ package com.example.drivingschool;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -30,6 +36,15 @@ public class AdminDashboard extends AppCompatActivity implements View.OnClickLis
     private long backPressedTime;
     DrawerLayout drawerLayout;
     private CardView trainer_card, car_card, client_card;
+    AlertDialog.Builder builder;
+    Context context;
+
+
+
+    RecyclerView sch_recev;
+    ArrayList<dataUser> list = new ArrayList<>();
+    AdapterItem adapterItem;
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     //on back press app exit
     @Override
@@ -51,11 +66,30 @@ public class AdminDashboard extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_admin_dashboard);
         drawerLayout = findViewById(R.id.drawer_layout);
 
+        sch_recev = findViewById(R.id.sch_recev);
+
+//        Spinner myspinner = (Spinner) findViewById(R.id.spinner);
+//        ArrayAdapter<String> myadapter = new ArrayAdapter<String>(AdminDashboard.this,
+//                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.names));
+//        myadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        myspinner.setAdapter(myadapter);
+//
+//        Spinner myspinner1 = (Spinner) findViewById(R.id.spinner1);
+//        ArrayAdapter<String> myadapter1 = new ArrayAdapter<String>(AdminDashboard.this,
+//                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Cnames));
+//        myadapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        myspinner1.setAdapter(myadapter);
+
+        context = this;
+
+        builder = new AlertDialog.Builder(context);
+
         FloatingActionButton f_add_schedule = findViewById(R.id.f_add_schedule);
         f_add_schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), TrainerAdProfile.class));
+                inputData();
+                //startActivity(new Intent(getApplicationContext(), AddSchedule.class));
             }
         });
         FloatingActionButton f_add_trainer = findViewById(R.id.f_add_trainer);
@@ -96,6 +130,10 @@ public class AdminDashboard extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    private void inputData() {
+
+    }
+
     // onClick event on card
     public void onClick(View ve) {
         Intent c, c1, c2, c3;
@@ -108,30 +146,7 @@ public class AdminDashboard extends AppCompatActivity implements View.OnClickLis
     }
     // onClick event on card end
 
-    //table
-    private boolean table_flg = false;
-    public void collapseTable(View view) {
-        TableLayout table = findViewById(R.id.table);
-        Button switchBtn = findViewById(R.id.switchBtn);
 
-        // setColumnCollapsed(int columnIndex, boolean isCollapsed)
-        table.setColumnCollapsed(1, table_flg);
-        table.setColumnCollapsed(2, table_flg);
-        table.setColumnCollapsed(3, table_flg);
-        table.setColumnCollapsed(4, table_flg);
-
-        if (table_flg) {
-            // Close
-            table_flg = false;
-            switchBtn.setText("Show Detail");
-        } else {
-            // Open
-            table_flg = true;
-            switchBtn.setText("Hide Detail");
-        }
-
-    }
-    //table end
 
     //navigation drawer starts
     public void ClickMenu(View view){

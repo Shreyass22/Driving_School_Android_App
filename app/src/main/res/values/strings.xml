@@ -38,6 +38,19 @@
     <string name="name">Name</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_retrive_maps">Map</string>
+    
+    <string-array name="Tnames">
+        <item>Trainer 1</item>
+        <item>Trainer 2</item>
+        <item>Trainer 3</item>
+        <item>Trainer 4</item>
+    </string-array>
+    <string-array name="Cnames">
+        <item>Car 1</item>
+        <item>Car 2</item>
+        <item>Car 3</item>
+        <item>Car 4</item>
+    </string-array>
 
 
 </resources>
