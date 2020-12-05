@@ -1,21 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context=".AddSchedule">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleTextColor="#fff">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/sch_recev"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/schedule_layout"/>
-</RelativeLayout>
+            <TextView
+                android:id="@+id/trainerList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                android:fontFamily="@font/aclonica"
+                android:text="Add Schedule"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textSize="40dp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/include"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="170dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                android:padding="30dp">
+
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/sch_c_name"-->
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:focusable="true"-->
+<!--                    android:focusableInTouchMode="true"-->
+<!--                    android:hint="Client Name"-->
+<!--                    android:transitionName="logo_username">-->
+
+<!--                    <EditText-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:inputType="text" />-->
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+                <Spinner
+                    android:textAlignment="center"
+                    android:id="@+id/mySpinnerCl"
+                    android:entries="@array/Clnames"
+                    android:background="#0ABDE3"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="10sp"
+                    android:spinnerMode="dialog"
+                    android:layout_marginTop="15dp"
+                    />
+                <Spinner
+                    android:textAlignment="center"
+                    android:id="@+id/mySpinnerTr"
+                    android:entries="@array/Tnames"
+                    android:background="#0ABDE3"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="10sp"
+                    android:spinnerMode="dialog"
+                    android:layout_marginTop="15dp"
+                    />
+                <Spinner
+                    android:textAlignment="center"
+                    android:id="@+id/mySpinnerCr"
+                    android:entries="@array/Crnames"
+                    android:background="#0ABDE3"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="10sp"
+                    android:spinnerMode="dialog"
+                    android:layout_marginTop="15dp"
+                    />
+                <Spinner
+                    android:textAlignment="center"
+                    android:id="@+id/mySpinnerTime"
+                    android:entries="@array/Time"
+                    android:background="#0ABDE3"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="10sp"
+                    android:spinnerMode="dialog"
+                    android:layout_marginTop="15dp"
+                    />
+
+                <TextView
+                    android:id="@+id/mySpinnerDate"
+                    android:text="Select a Date"
+                    android:textAlignment="center"
+                    android:textSize="20dp"
+                    android:textColor="#fff"
+                    android:paddingTop="10dp"
+                    android:background="#0ABDE3"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="15dp"/>
+
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/sch_t_name"-->
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:focusable="true"-->
+<!--                    android:focusableInTouchMode="true"-->
+<!--                    android:hint="Trainer Name"-->
+<!--                    android:transitionName="logo_username">-->
+
+<!--                    <EditText-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:inputType="text" />-->
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/sch_cr_name"-->
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:focusable="true"-->
+<!--                    android:focusableInTouchMode="true"-->
+<!--                    android:hint="Car Name"-->
+<!--                    android:transitionName="logo_username">-->
+
+<!--                    <EditText-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:inputType="text" />-->
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/sch_d_name"-->
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:focusable="true"-->
+<!--                    android:focusableInTouchMode="true"-->
+<!--                    android:hint="Date"-->
+<!--                    android:transitionName="logo_username">-->
+
+<!--                    <EditText-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:inputType="text" />-->
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/sch_ti_name"-->
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:focusable="true"-->
+<!--                    android:focusableInTouchMode="true"-->
+<!--                    android:hint="Time"-->
+<!--                    android:transitionName="logo_username">-->
+
+<!--                    <EditText-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:inputType="text" />-->
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+                <ProgressBar
+                    android:id="@+id/add_progess_bar"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    tools:targetApi="lollipop" />
+
+                <Button
+                    android:id="@+id/add_sch_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/button_rounded_blueee"
+                    android:onClick="addSch"
+                    android:text="Add Schdule"
+                    android:textColor="#fff" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

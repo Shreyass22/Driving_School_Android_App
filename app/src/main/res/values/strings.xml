@@ -38,18 +38,30 @@
     <string name="name">Name</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_retrive_maps">Map</string>
-    
+
+    <string-array name="Clnames">
+        <item>Client 1</item>
+        <item>Client 2</item>
+        <item>Client 3</item>
+        <item>Client 4</item>
+    </string-array>
     <string-array name="Tnames">
         <item>Trainer 1</item>
         <item>Trainer 2</item>
         <item>Trainer 3</item>
         <item>Trainer 4</item>
     </string-array>
-    <string-array name="Cnames">
+    <string-array name="Crnames">
         <item>Car 1</item>
         <item>Car 2</item>
         <item>Car 3</item>
         <item>Car 4</item>
+    </string-array>
+    <string-array name="Time">
+        <item>10am to 11am</item>
+        <item>12pm to 1pm</item>
+        <item>3pm to 4pm</item>
+        <item>5pm to 6pm</item>
     </string-array>
 
 

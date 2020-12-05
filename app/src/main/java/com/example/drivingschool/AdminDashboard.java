@@ -17,12 +17,20 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -32,7 +40,6 @@ public class AdminDashboard extends AppCompatActivity implements View.OnClickLis
     private CardView trainer_card, car_card, client_card;
     myadapterSchedule madapter;
     RecyclerView sch_recev;
-
 
     //on back press app exit
     @Override
@@ -53,6 +60,7 @@ public class AdminDashboard extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dashboard);
         drawerLayout = findViewById(R.id.drawer_layout);
+
 
         sch_recev = findViewById(R.id.sch_recev);
 
@@ -141,7 +149,6 @@ public class AdminDashboard extends AppCompatActivity implements View.OnClickLis
 
 
     }
-
 
     // onClick event on card
     public void onClick(View ve) {
