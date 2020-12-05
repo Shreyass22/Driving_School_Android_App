@@ -3,6 +3,8 @@
     <color name="colorPrimary">#2874a6</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="green">#26ae60</color>
+    <color name="red">#E71C23</color>
 
 <!--    colors by me-->
     <color name="blue1">#0e81d1</color> // bg image ka same hai color in dashboard

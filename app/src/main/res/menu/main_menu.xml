@@ -20,6 +20,14 @@
             android:id="@+id/nav_trainer"
             android:icon="@drawable/icon_trainer"
             android:title="Trainer" />
+        <item
+            android:id="@+id/nav_client"
+            android:icon="@drawable/icon_client"
+            android:title="Client" />
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/icon_map"
+            android:title="Map" />
 
     </group>
 

@@ -38,10 +38,6 @@ public class RetriveMapsActivity extends FragmentActivity implements OnMapReadyC
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
 
-    private MarkerOptions place1, place2;
-    private Button getDirection;
-    private Polyline currentPolyline;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,9 +55,6 @@ public class RetriveMapsActivity extends FragmentActivity implements OnMapReadyC
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        place1 = new MarkerOptions().position(new LatLng(27.658143, 85.3199503)).title("Location 1");
-        place2 = new MarkerOptions().position(new LatLng(27.667491, 85.3208583)).title("Location 2");
     }
 
     /**
@@ -76,9 +69,6 @@ public class RetriveMapsActivity extends FragmentActivity implements OnMapReadyC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        mMap.addMarker(place1);
-        mMap.addMarker(place2);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();

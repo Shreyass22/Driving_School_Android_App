@@ -1,7 +1,10 @@
 package com.example.drivingschool;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +13,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +30,7 @@ import de.codecrafters.tableview.TableView;
 import de.codecrafters.tableview.listeners.TableDataClickListener;
 import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class ClientAdminCard extends AppCompatActivity {
 
@@ -70,6 +75,51 @@ public class ClientAdminCard extends AppCompatActivity {
         adapter = new myadapterClient(options);
         recview_client.setAdapter(adapter);
 
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int pos = viewHolder.getAdapterPosition();
+
+                switch (direction) {
+                    case ItemTouchHelper.LEFT:
+                        Toast.makeText(ClientAdminCard.this, "Deleted", Toast.LENGTH_SHORT).show();
+                        adapter.delCl(pos);
+                        adapter.notifyItemRemoved(pos);
+                        break;
+
+                    //archived
+                    case ItemTouchHelper.RIGHT:
+                        Toast.makeText(ClientAdminCard.this, "Archived", Toast.LENGTH_SHORT).show();
+//                        final DatabaseReference trName = adapter.getRef(pos);
+//                        archivedTr.add(trName);
+//
+//                        adapter.
+                        break;
+                }
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+                                    float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(ClientAdminCard.this, R.color.red))
+                        .addSwipeLeftActionIcon(R.drawable.icon_delete)
+                        .addSwipeRightBackgroundColor(ContextCompat.getColor(ClientAdminCard.this,R.color.green))
+                        .addSwipeRightActionIcon(R.drawable.icon_archive)
+                        .create()
+                        .decorate();
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        }).attachToRecyclerView(recview_client);
+
     }
 
     @Override
@@ -84,84 +134,4 @@ public class ClientAdminCard extends AppCompatActivity {
         adapter.stopListening();
     }
 
-
-    //navigation drawer starts
-    public void ClickMenu(View view) {
-        Dashboard.openDrawer(drawerLayout);
-    }
-
-    public void ClickLogo(View view) {
-        Dashboard.closeDrawer(drawerLayout);
-    }
-
-    public void ClickDashboard(View view) {
-        Dashboard.redirectActivity(this, Dashboard.class);
-        this.finish();
-    }
-
-    public void ClickInstructions(View view) {
-        Dashboard.redirectActivity(this, InstructionsCard.class);
-        this.finish();
-    }
-
-    public void ClickAdmin(View view) {
-        Dashboard.redirectActivity(this, AdminDashboard.class);
-        this.finish();
-    }
-
-    public void ClickTrainer(View view) {
-        Dashboard.redirectActivity(this, Trainer.class);
-        this.finish();
-    }
-
-    public void ClickClient(View view) {
-        Dashboard.redirectActivity(this, Client.class);
-        this.finish();
-    }
-
-    public void ClickLogin(View view) {
-        Dashboard.redirectActivity(this, Login.class);
-        this.finish();
-    }
-
-    public void ClickUpdate(View view) {
-        Dashboard.redirectActivity(this, UserProfile.class);
-        this.finish();
-    }
-
-    public void ClickAboutus(View view) {
-        Dashboard.redirectActivity(this, ContactusCard.class);
-        this.finish();
-    }
-
-    public void ClickRate(View view) {
-        Dashboard.redirectActivity(this, Rate.class);
-        this.finish();
-    }
-
-    public void ClickLogout(View view){
-        logout(this);
-    }
-
-    public void logout(final Activity activity){
-        android.app.AlertDialog.Builder builder= new AlertDialog.Builder(activity);
-        builder.setTitle("Logout");
-        builder.setMessage("Are you sure you want to logout");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                FirebaseAuth.getInstance().signOut();
-                Intent myIntent = new Intent(((Dialog) dialog).getContext(), Login.class);
-                startActivity(myIntent);
-                return;
-            }
-        });
-        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
-        builder.show();
-    }
-
-    protected void onPause() {
-        super.onPause();
-        Dashboard.closeDrawer(drawerLayout);
-    }
-    //navigation drawer ends
 }

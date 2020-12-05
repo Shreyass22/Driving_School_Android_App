@@ -13,7 +13,7 @@
         android:padding="15dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img2"
+            android:id="@+id/img5"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/icon_user"
@@ -22,50 +22,50 @@
             app:civ_border_color="#fff"/>
 
         <TextView
-            android:id="@+id/nametext"
+            android:id="@+id/nametext5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/name"
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="#000"
-            android:layout_toRightOf="@+id/img2"
+            android:layout_toRightOf="@+id/img5"
             android:layout_marginStart="25dp"/>
 
         <TextView
-            android:id="@+id/modeltext"
+            android:id="@+id/modeltext5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/model_no"
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="#000"
-            android:layout_toRightOf="@+id/img2"
+            android:layout_toRightOf="@+id/img5"
             android:layout_marginStart="25dp"
-            android:layout_below="@+id/nametext"/>
+            android:layout_below="@+id/nametext5"/>
 
         <TextView
-            android:id="@+id/companytext"
+            android:id="@+id/companytext5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/company"
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="#000"
-            android:layout_toRightOf="@+id/img2"
+            android:layout_toRightOf="@+id/img5"
             android:layout_marginStart="25dp"
-            android:layout_below="@+id/modeltext"/>
+            android:layout_below="@+id/modeltext5"/>
 
         <TextView
-            android:id="@+id/colortext"
+            android:id="@+id/colortext5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/color"
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="#000"
-            android:layout_toRightOf="@+id/img2"
+            android:layout_toRightOf="@+id/img5"
             android:layout_marginStart="25dp"
-            android:layout_below="@+id/companytext"/>
+            android:layout_below="@+id/companytext5"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

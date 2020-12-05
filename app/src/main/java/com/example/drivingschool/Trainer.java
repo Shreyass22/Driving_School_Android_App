@@ -2,6 +2,8 @@ package com.example.drivingschool;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,12 +14,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Trainer extends AppCompatActivity {
 
     private long backPressedTime;
     DrawerLayout drawerLayout;
+    myadapterSchedule adapter;
+    RecyclerView sch_recev;
 
     @Override
     public void onBackPressed() {
@@ -38,85 +44,33 @@ public class Trainer extends AppCompatActivity {
         setContentView(R.layout.activity_trainer);
         drawerLayout = findViewById(R.id.drawer_layout);
 
+        sch_recev = findViewById(R.id.sch_recev);
+
+        sch_recev = (RecyclerView) findViewById(R.id.sch_recev);
+        sch_recev.setLayoutManager(new LinearLayoutManager(this));
+
+        FirebaseRecyclerOptions<UserHelperClassSchedule> options =
+                new FirebaseRecyclerOptions.Builder<UserHelperClassSchedule>()
+                        .setQuery(FirebaseDatabase.getInstance().getReference().child("schedule"), UserHelperClassSchedule.class)
+                        .build();
+
+        adapter = new myadapterSchedule(options);
+        sch_recev.setAdapter(adapter);
+
 
     }
 
-    //navigation drawer starts
-    public void ClickMenu(View view){
-        Dashboard.openDrawer(drawerLayout);
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
     }
 
-    public void ClickLogo(View view){
-        Dashboard.closeDrawer(drawerLayout);
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 
-    public void ClickDashboard(View view){
-        Dashboard.redirectActivity(this,Dashboard.class);
-        this.finish();
-    }
-
-    public void ClickInstructions(View view){
-        Dashboard.redirectActivity(this,InstructionsCard.class);
-        this.finish();
-    }
-
-    public void ClickAdmin(View view){
-        Dashboard.redirectActivity(this,AdminDashboard.class);
-        this.finish();
-    }
-
-    public void ClickTrainer(View view){
-        recreate();
-    }
-
-    public void ClickClient(View view){
-        Dashboard.redirectActivity(this,Client.class);
-        this.finish();
-    }
-
-    public void ClickLogin(View view){
-        Dashboard.redirectActivity(this,Login.class);
-        this.finish();
-    }
-
-    public void ClickUpdate(View view){
-        Dashboard.redirectActivity(this,UserProfile.class);
-        this.finish();
-    }
-
-    public void ClickAboutus(View view){
-        Dashboard.redirectActivity(this,ContactusCard.class);
-        this.finish();
-    }
-
-    public void ClickRate(View view){
-        Dashboard.redirectActivity(this,Rate.class);
-        this.finish();
-    }
-
-    public void ClickLogout(View view){
-        logout(this);
-    }
-
-    public void logout(final Activity activity){
-        AlertDialog.Builder builder= new AlertDialog.Builder(activity);
-        builder.setTitle("Logout");
-        builder.setMessage("Are you sure you want to logout");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                FirebaseAuth.getInstance().signOut();
-                Intent myIntent = new Intent(((Dialog) dialog).getContext(), Login.class);
-                startActivity(myIntent);
-                return;
-            }
-        });
-        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
-        builder.show();
-    }
-
-    protected void onPause(){
-        super.onPause();
-        Dashboard.closeDrawer(drawerLayout);
-    }
-    //navigation drawer ends
 }

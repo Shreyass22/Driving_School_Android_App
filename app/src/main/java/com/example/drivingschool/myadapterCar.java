@@ -56,7 +56,7 @@ public class myadapterCar extends FirebaseRecyclerAdapter<UserHelperClassCar, my
                 if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
                     if (snapshot.hasChild("image")) {
                         String image = snapshot.child("image").getValue().toString();
-                        Glide.with(holder.img2.getContext()).load(image).into(holder.img2);
+                        Glide.with(holder.img5.getContext()).load(image).into(holder.img5);
                     }
                 }
             }
@@ -68,6 +68,10 @@ public class myadapterCar extends FirebaseRecyclerAdapter<UserHelperClassCar, my
         });
     }
 
+    public void delCr(int position){
+        FirebaseDatabase.getInstance().getReference().child("car").child(getRef(position).getKey()).removeValue();
+    }
+
     @NonNull
     @Override
     public myviewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -76,16 +80,16 @@ public class myadapterCar extends FirebaseRecyclerAdapter<UserHelperClassCar, my
     }
 
     class myviewholder extends RecyclerView.ViewHolder{
-        CircleImageView img2;
+        CircleImageView img5;
         TextView nametext, modeltext, companytext, colortext;
 
         public myviewholder(@NonNull View itemView) {
             super(itemView);
-            img2 = (CircleImageView) itemView.findViewById(R.id.img2);
-            nametext = (TextView) itemView.findViewById(R.id.nametext);
-            modeltext = (TextView) itemView.findViewById(R.id.modeltext);
-            companytext = (TextView) itemView.findViewById(R.id.companytext);
-            colortext = (TextView) itemView.findViewById(R.id.colortext);
+            img5 = (CircleImageView) itemView.findViewById(R.id.img5);
+            nametext = (TextView) itemView.findViewById(R.id.nametext5);
+            modeltext = (TextView) itemView.findViewById(R.id.modeltext5);
+            companytext = (TextView) itemView.findViewById(R.id.companytext5);
+            colortext = (TextView) itemView.findViewById(R.id.colortext5);
         }
     }
 

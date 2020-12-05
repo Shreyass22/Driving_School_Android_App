@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 public class Dashboard extends AppCompatActivity implements View.OnClickListener{
 
     //variable
@@ -91,145 +92,102 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             default: break;
         }
     }
-    // onClick event on card end
-
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        return super.onPrepareOptionsMenu(menu);
-//        FirebaseUser rUser = firebaseAuth.getCurrentUser(); //
-//        String userID = rUser.getUid();  //
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
-//                if (snapshot.child(userID).child("type").getValue(String.class).equals("Admin")) {
-//
-//                    menu.removeItem(R.id.nav_login);
-//                    menu.removeItem(R.id.nav_trainer);
-//                    menu.removeItem(R.id.nav_client);
-//
-//                } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Trainer")) {
-//
-//                    menu.removeItem(R.id.nav_login);
-//                    menu.removeItem(R.id.nav_admin);
-//                    menu.removeItem(R.id.nav_client);
-//
-//                } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Client")) {
-//
-//                    menu.removeItem(R.id.nav_login);
-//                    menu.removeItem(R.id.nav_trainer);
-//                    menu.removeItem(R.id.nav_admin);
-//
-//                } else {
-//                    Toast.makeText(Dashboard.this, "ERROR : 404 : 1", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(Dashboard.this, "ERROR : 404 : 2", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-
-
-
 
     //Navigation drawer starts
-    public void ClickMenu(View view){
-        openDrawer(drawerLayout);
-    }
-
-    public static void openDrawer(DrawerLayout drawerLayout) {
-        drawerLayout.openDrawer(GravityCompat.START);
-    }
-    public void ClickLogo(View view){
-        closeDrawer(drawerLayout);
-    }
-
-    public static void closeDrawer(DrawerLayout drawerLayout) {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }
-    }
-
-    public void ClickDashboard(View view){
-        recreate();
-    }
-
-    public void ClickInstructions(View view){
-        redirectActivity(this,InstructionsCard.class);
-        this.finish();
-    }
-
-    public void ClickAdmin(View view){
-        redirectActivity(this,AdminDashboard.class);
-        this.finish();
-    }
-
-    public void ClickTrainer(View view){
-        redirectActivity(this,Trainer.class);
-        this.finish();
-    }
-
-    public void ClickClient(View view){
-        redirectActivity(this,Client.class);
-        this.finish();
-    }
-    public void ClickMap(View view){
-        redirectActivity(this,Map.class);
-        this.finish();
-    }
-
-    public void ClickLogin(View view){
-        redirectActivity(this,Login.class);
-        this.finish();
-    }
-
-    public void ClickUpdate(View view){
-        redirectActivity(this,UserProfile.class);
-        this.finish();
-    }
-
-    public void ClickRate(View view){
-        redirectActivity(this,Rate.class);
-        this.finish();
-    }
-
-    public void ClickAboutus(View view){
-        redirectActivity(this,ContactusCard.class);
-        this.finish();
-    }
-
-    public void ClickLogout(View view){
-        logout(this);
-    }
-
-    public void logout(final Activity activity){
-        AlertDialog.Builder builder= new AlertDialog.Builder(activity);
-        builder.setTitle("Logout");
-        builder.setMessage("Are you sure you want to logout");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                FirebaseAuth.getInstance().signOut();
-                Intent myIntent = new Intent(((Dialog) dialog).getContext(), Login.class);
-                startActivity(myIntent);
-                return;
-            }
-        });
-        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
-        builder.show();
-    }
-
-    public static void redirectActivity(Activity activity, Class aClass) {
-        Intent intent = new Intent(activity,aClass);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        activity.startActivity(intent);
-    }
-
-    protected void onPause(){
-        super.onPause();
-        closeDrawer(drawerLayout);
-    }
+//    public void ClickMenu(View view){
+//        openDrawer(drawerLayout);
+//    }
+//
+//    public static void openDrawer(DrawerLayout drawerLayout) {
+//        drawerLayout.openDrawer(GravityCompat.START);
+//    }
+//    public void ClickLogo(View view){
+//        closeDrawer(drawerLayout);
+//    }
+//
+//    public static void closeDrawer(DrawerLayout drawerLayout) {
+//        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+//            drawerLayout.closeDrawer(GravityCompat.START);
+//        }
+//    }
+//
+//    public void ClickDashboard(View view){
+//        recreate();
+//    }
+//
+//    public void ClickInstructions(View view){
+//        redirectActivity(this,InstructionsCard.class);
+//        this.finish();
+//    }
+//
+//    public void ClickAdmin(View view){
+//        redirectActivity(this,AdminDashboard.class);
+//        this.finish();
+//    }
+//
+//    public void ClickTrainer(View view){
+//        redirectActivity(this,Trainer.class);
+//        this.finish();
+//    }
+//
+//    public void ClickClient(View view){
+//        redirectActivity(this,Client.class);
+//        this.finish();
+//    }
+//    public void ClickMap(View view){
+//        redirectActivity(this,Map.class);
+//        this.finish();
+//    }
+//
+//    public void ClickLogin(View view){
+//        redirectActivity(this,Login.class);
+//        this.finish();
+//    }
+//
+//    public void ClickUpdate(View view){
+//        redirectActivity(this,UserProfile.class);
+//        this.finish();
+//    }
+//
+//    public void ClickRate(View view){
+//        redirectActivity(this,Rate.class);
+//        this.finish();
+//    }
+//
+//    public void ClickAboutus(View view){
+//        redirectActivity(this,ContactusCard.class);
+//        this.finish();
+//    }
+//
+//    public void ClickLogout(View view){
+//        logout(this);
+//    }
+//
+//    public void logout(final Activity activity){
+//        AlertDialog.Builder builder= new AlertDialog.Builder(activity);
+//        builder.setTitle("Logout");
+//        builder.setMessage("Are you sure you want to logout");
+//        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int which) {
+//                FirebaseAuth.getInstance().signOut();
+//                Intent myIntent = new Intent(((Dialog) dialog).getContext(), Login.class);
+//                startActivity(myIntent);
+//                return;
+//            }
+//        });
+//        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+//        builder.show();
+//    }
+//
+//    public static void redirectActivity(Activity activity, Class aClass) {
+//        Intent intent = new Intent(activity,aClass);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        activity.startActivity(intent);
+//    }
+//
+//    protected void onPause(){
+//        super.onPause();
+//        closeDrawer(drawerLayout);
+//    }
     //Navigation drawer ends
 }

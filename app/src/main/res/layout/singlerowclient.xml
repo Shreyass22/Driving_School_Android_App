@@ -13,7 +13,7 @@
         android:padding="15dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img1"
+            android:id="@+id/img7"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/icon_user"
@@ -22,50 +22,50 @@
             app:civ_border_color="#000"/>
 
         <TextView
-            android:id="@+id/nametext"
+            android:id="@+id/nametext7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Name"
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="#000"
-            android:layout_toRightOf="@+id/img1"
+            android:layout_toRightOf="@+id/img7"
             android:layout_marginStart="25dp"/>
 
         <TextView
-            android:id="@+id/typetext"
+            android:id="@+id/typetext7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Type"
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="#000"
-            android:layout_toRightOf="@+id/img1"
+            android:layout_toRightOf="@+id/img7"
             android:layout_marginStart="25dp"
-            android:layout_below="@+id/nametext"/>
+            android:layout_below="@+id/nametext7"/>
 
         <TextView
-            android:id="@+id/phonetext"
+            android:id="@+id/phonetext7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Phone no."
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="#000"
-            android:layout_toRightOf="@+id/img1"
+            android:layout_toRightOf="@+id/img7"
             android:layout_marginStart="25dp"
-            android:layout_below="@+id/typetext"/>
+            android:layout_below="@+id/typetext7"/>
 
         <TextView
-            android:id="@+id/emailtext"
+            android:id="@+id/emailtext7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="E-mail"
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="#000"
-            android:layout_toRightOf="@+id/img1"
+            android:layout_toRightOf="@+id/img7"
             android:layout_marginStart="25dp"
-            android:layout_below="@+id/phonetext"/>
+            android:layout_below="@+id/phonetext7"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

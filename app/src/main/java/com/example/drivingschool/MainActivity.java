@@ -17,7 +17,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import static com.example.drivingschool.Dashboard.closeDrawer;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -19,14 +19,6 @@
             android:layout_height="wrap_content"
             app:titleTextColor="#fff">
 
-
-            <include
-                android:id="@+id/include"
-                layout="@layout/main_toolbar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/clientList"
                 android:layout_width="match_parent"
@@ -50,7 +42,8 @@
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clientList"/>
+                app:layout_constraintTop_toBottomOf="@+id/clientList"
+                tools:listitem="@layout/singlerowclient"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -78,13 +71,5 @@
 <!--            app:srcCompat="@drawable/icon_add" />-->
 <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-    <RelativeLayout
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@android:color/white">
-        <include
-            layout="@layout/main_nav_drawer"/>
-    </RelativeLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

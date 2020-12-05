@@ -80,7 +80,11 @@ public class myadapter extends FirebaseRecyclerAdapter<UserHelperClass, myadapte
         return new myviewholder(view);
     }
 
-    class myviewholder extends RecyclerView.ViewHolder{
+    public void delTr(int position){
+        FirebaseDatabase.getInstance().getReference().child("users").child(getRef(position).getKey()).removeValue();
+    }
+
+    static class myviewholder extends RecyclerView.ViewHolder{
         CircleImageView img1;
         TextView nametext1, phonetext1, emailtext1, typetext1;
 

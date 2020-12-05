@@ -18,14 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include
-                android:id="@+id/include"
-                layout="@layout/main_toolbar"
-                app:layout_constraintBottom_toTopOf="@+id/card_dashboard"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,13 +56,4 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <RelativeLayout
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@android:color/white">
-
-        <include
-            layout="@layout/main_nav_drawer"/>
-    </RelativeLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

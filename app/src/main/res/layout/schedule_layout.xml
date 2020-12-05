@@ -10,7 +10,7 @@
     android:padding="10dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/trainer_card"
+        android:id="@+id/trainer_c"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
@@ -25,17 +25,17 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/C_name"
+                android:id="@+id/c_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Client Name"/>
             <TextView
-                android:id="@+id/T_name"
+                android:id="@+id/t_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Trainer Name"/>
             <TextView
-                android:id="@+id/Car_name"
+                android:id="@+id/car_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Car"/>

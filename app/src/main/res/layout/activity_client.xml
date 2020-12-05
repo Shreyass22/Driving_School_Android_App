@@ -19,13 +19,6 @@
         android:layout_height="wrap_content"
         app:titleTextColor="#fff">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/main_toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/trainerList"
             android:layout_width="match_parent"
@@ -40,16 +33,28 @@
             app:layout_constraintTop_toBottomOf="@+id/include"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="0dp" />
+
+        <RelativeLayout
+            android:layout_marginTop="40dp"
+            android:id="@+id/table_schdule"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="14dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trainerList">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/sch_recev"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/schedule_layout"/>
+
+        </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <RelativeLayout
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@android:color/white">
-
-        <include
-            layout="@layout/main_nav_drawer"/>
-    </RelativeLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

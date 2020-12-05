@@ -48,7 +48,7 @@
         <activity android:name=".TrainerAdminCard" />
         <activity android:name=".Client" />
         <activity android:name=".Trainer" />
-        <activity android:name=".NavigationDrawer" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".Rate" />
         <activity android:name=".BlahblahCard" />
         <activity android:name=".ContactusCard" />
@@ -63,7 +63,7 @@
         <activity android:name=".SignUp" />
         <activity android:name=".Login" />
         <activity android:name=".Dashboard" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".NavigationDrawer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
