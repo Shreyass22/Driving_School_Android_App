@@ -2,16 +2,17 @@ package com.example.drivingschool;
 
 public class UserHelperClassCar {
 
-    String name, company, model, color;
+    String name, company, model, color, image;
 
     public UserHelperClassCar() {
     }
 
-    public UserHelperClassCar(String name, String company, String model, String color) {
+    public UserHelperClassCar(String name, String company, String model, String color, String image) {
         this.name = name;
         this.company = company;
         this.model = model;
         this.color = color;
+        this.image = image;
     }
 
     public String getName() {
@@ -44,5 +45,13 @@ public class UserHelperClassCar {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

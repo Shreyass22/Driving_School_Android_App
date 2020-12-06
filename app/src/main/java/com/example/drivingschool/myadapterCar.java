@@ -50,22 +50,23 @@ public class myadapterCar extends FirebaseRecyclerAdapter<UserHelperClassCar, my
         holder.modeltext.setText(model.getModel());
         holder.companytext.setText(model.getCompany());
         holder.colortext.setText(model.getColor());
-        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
-                    if (snapshot.hasChild("image")) {
-                        String image = snapshot.child("image").getValue().toString();
-                        Glide.with(holder.img5.getContext()).load(image).into(holder.img5);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        Glide.with(holder.img5.getContext()).load(model.getImage()).into(holder.img5);
+//        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
+//                    if (snapshot.hasChild("image")) {
+//                        String image = snapshot.child("image").getValue().toString();
+//                        Glide.with(holder.img5.getContext()).load(image).into(holder.img5);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
     }
 
     public void delCr(int position){

@@ -55,22 +55,23 @@ public class myadapter extends FirebaseRecyclerAdapter<UserHelperClass, myadapte
         holder.phonetext1.setText(model.getPhone());
         holder.emailtext1.setText(model.getEmail());
         holder.typetext1.setText(model.getType());
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
-                    if (snapshot.hasChild("image")) {
-                        String image = snapshot.child("image").getValue().toString();
-                        Glide.with(holder.img1.getContext()).load(image).into(holder.img1);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        Glide.with(holder.img1.getContext()).load(model.getImage()).into(holder.img1);
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
+//                    if (snapshot.hasChild("image")) {
+//                        String image = snapshot.child("image").getValue().toString();
+//                        Glide.with(holder.img1.getContext()).load(image).into(holder.img1);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
     }
 
     @NonNull
