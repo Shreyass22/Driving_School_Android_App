@@ -41,7 +41,7 @@ public class myadapterCar extends FirebaseRecyclerAdapter<UserHelperClassCar, my
 
     @Override
     protected void onBindViewHolder(@NonNull myviewholder holder, int position, @NonNull UserHelperClassCar model) {
-        storageReference = FirebaseStorage.getInstance().getReference().child("profile_images");
+        storageReference = FirebaseStorage.getInstance().getReference().child("car_images");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("car").child(firebaseUser.getUid());
