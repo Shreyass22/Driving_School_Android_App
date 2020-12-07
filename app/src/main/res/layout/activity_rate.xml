@@ -108,7 +108,7 @@
                             android:layout_marginTop="15dp"
                             android:hint="Message"
                             android:textSize="20dp"
-                            android:inputType="textMultiLine"
+                            android:inputType="textLongMessage"
                             android:textStyle="bold" />
 
                         <com.hsalf.smilerating.SmileRating

@@ -3,16 +3,22 @@ package com.example.drivingschool;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +30,8 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -46,15 +54,16 @@ public class ClientAdProfile extends Fragment {
                     "$");
 
     private long backPressedTime;
-    DrawerLayout drawerLayout;
-    TextInputLayout cl_name, cl_email, cl_phone, cl_password;
-    RadioGroup gender_radio_btn;
-    ProgressBar add_progess_bar;
-    Button addDataCl;
+    private DrawerLayout drawerLayout;
+    private TextInputLayout cl_name, cl_email, cl_phone, cl_password;
+    private RadioGroup gender_radio_btn;
+    private ProgressBar add_progess_bar;
+    private Button addDataCl;
 
-    FirebaseDatabase rootNode;
-    FirebaseAuth firebaseAuth;
-    DatabaseReference reference;
+    private FirebaseDatabase rootNode;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth mAuth2;
+    private DatabaseReference reference;
 
 //    @Override
 //    public void onBackPressed() {
@@ -90,10 +99,23 @@ public class ClientAdProfile extends Fragment {
         rootNode = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
+
+        FirebaseOptions firebaseOptions = new FirebaseOptions.Builder()
+                .setDatabaseUrl("https://driving-school-bbc95.firebaseio.com/")             //[Database_url_here]
+                .setApiKey("AIzaSyANIAdCPJ_ycRg08blcu24u4uoteP3_SFs")                       //Web_API_KEY_HERE
+                .setApplicationId("driving-school-bbc95").build();                          //PROJECT_ID_HERE
+
+        try { FirebaseApp myApp = FirebaseApp.initializeApp(getContext(), firebaseOptions, "Driving School");
+            mAuth2 = FirebaseAuth.getInstance(myApp);
+        } catch (IllegalStateException e){
+            mAuth2 = FirebaseAuth.getInstance(FirebaseApp.getInstance("Driving School"));
+        }
+
         addDataCl = rootView.findViewById(R.id.add_btn33);
         addDataCl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String name = cl_name.getEditText().getText().toString();
                 String email = cl_email.getEditText().getText().toString();
                 String phone = cl_phone.getEditText().getText().toString();
@@ -111,6 +133,14 @@ public class ClientAdProfile extends Fragment {
                     }
                     else{
                         processinsert(name, email, phone, password, gender);
+                        int permissionCheck = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.SEND_SMS);
+                        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+                            myMessage();
+                        }
+                        else {
+                            Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                            //ActivityCompat.requestPermissions(getContext(), new String[] {Manifest.permission.SEND_SMS}, 0);
+                        }
                     }
                 }
             }
@@ -119,7 +149,7 @@ public class ClientAdProfile extends Fragment {
         return rootView;
     }
 
-//    @Override
+    //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_client_ad_profile);
@@ -192,9 +222,9 @@ public class ClientAdProfile extends Fragment {
 
     private void processinsert(String name, String email, String phone, String password, String gender) {
         add_progess_bar.setVisibility(View.VISIBLE);
-        firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
+        mAuth2.createUserWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
-                FirebaseUser rUser = firebaseAuth.getCurrentUser();
+                FirebaseUser rUser = mAuth2.getCurrentUser();
                 String userID = rUser.getUid();
                 reference = rootNode.getReference("users").child(userID); //realtimedb
                 HashMap<String,String> hashMap = new HashMap<>();
@@ -211,10 +241,11 @@ public class ClientAdProfile extends Fragment {
                 reference.setValue(hashMap).addOnCompleteListener(task1 -> {
                     add_progess_bar.setVisibility(View.GONE);
                     if (task1.isSuccessful()) {
-                        Fragment fm = new Fragment();
-                        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                        ft.replace(R.id.drawer_layout, new ClientAdminCard()).commit();
-                        Toast.makeText(getContext(), "Client Registration Successful", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), "Client Registration Successful", Toast.LENGTH_SHORT).show();
+//                        Fragment fm = new Fragment();
+//                        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+//                        ft.replace(R.id.drawer_layout, new ClientAdminCard()).commit();
+                        mAuth2.signOut();
                         //startActivity(intent);
                         //finish();
                     }
@@ -230,5 +261,36 @@ public class ClientAdProfile extends Fragment {
             }
         });
     }
+
+    private void myMessage() {
+        String name1 = cl_name.getEditText().getText().toString();
+        String email1 = cl_email.getEditText().getText().toString();
+        String phone1 = cl_phone.getEditText().getText().toString();
+        String password1 = cl_password.getEditText().getText().toString();
+        String msg1 = "Greetings from Driving School!\n This message is related to the credentials for Login in our app.\n Name:-" + name1 +"\n" +
+                "Mailid:-" + email1 + "\n" + "Password:-" + password1 + "\n" +
+                "Please don't share this credentials with anyone\n Thank You,\n Regards,\n Driving School.";
+
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(phone1, null, msg1, null, null);
+        Toast.makeText(getContext(), "Message Send", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case 0:
+                if (grantResults.length >= 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    myMessage();
+                }
+                else {
+                    Toast.makeText(getContext(), "You don't have Required Permission", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
 
 }

@@ -26,6 +26,8 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -50,16 +52,17 @@ public class TrainerAdProfile extends Fragment {
                     "$");
 
     private long backPressedTime;
-    DrawerLayout drawerLayout;
-    TextInputLayout tr_name, tr_email, tr_phone, tr_password;
-    RadioGroup gender_radio_btn;
-    ProgressBar add_progess_bar;
-    Button addData;
+    private DrawerLayout drawerLayout;
+    private TextInputLayout tr_name, tr_email, tr_phone, tr_password;
+    private RadioGroup gender_radio_btn;
+    private ProgressBar add_progess_bar;
+    private Button addData;
 
-    FirebaseDatabase rootNode;
-    FirebaseAuth firebaseAuth,firebaseAuth1;
-    DatabaseReference reference;
-    FirebaseUser user;
+    private FirebaseDatabase rootNode;
+    private FirebaseAuth firebaseAuth,firebaseAuth1;
+    private DatabaseReference reference;
+    private FirebaseAuth mAuth2;
+    private FirebaseUser user;
 
 //    @Override
 //    public void onBackPressed() {
@@ -95,6 +98,17 @@ public class TrainerAdProfile extends Fragment {
         rootNode = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
+
+        FirebaseOptions firebaseOptions = new FirebaseOptions.Builder()
+                .setDatabaseUrl("https://driving-school-bbc95.firebaseio.com/")             //[Database_url_here]
+                .setApiKey("AIzaSyANIAdCPJ_ycRg08blcu24u4uoteP3_SFs")                       //Web_API_KEY_HERE
+                .setApplicationId("driving-school-bbc95").build();                          //PROJECT_ID_HERE
+
+        try { FirebaseApp myApp = FirebaseApp.initializeApp(getContext(), firebaseOptions, "Driving School");
+            mAuth2 = FirebaseAuth.getInstance(myApp);
+        } catch (IllegalStateException e){
+            mAuth2 = FirebaseAuth.getInstance(FirebaseApp.getInstance("Driving School"));
+        }
 
         addData = rootView.findViewById(R.id.add_btn22);
         addData.setOnClickListener(new View.OnClickListener() {
@@ -201,9 +215,9 @@ public class TrainerAdProfile extends Fragment {
     private void processinsert(String name, String email, String phone, String password, String gender) {
         add_progess_bar.setVisibility(View.VISIBLE);
 
-        firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
+        mAuth2.createUserWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
-                FirebaseUser rUser = firebaseAuth.getCurrentUser();
+                FirebaseUser rUser = mAuth2.getCurrentUser();
 //                firebaseAuth1.signOut();
                 String userID = rUser.getUid();
 
@@ -222,13 +236,14 @@ public class TrainerAdProfile extends Fragment {
                 reference.setValue(hashMap).addOnCompleteListener(task1 -> {
                     add_progess_bar.setVisibility(View.VISIBLE);
                     if (task1.isSuccessful()) {
-                        firebaseAuth.updateCurrentUser(user);
-                        Log.d("TAG1", "processinsert: "+firebaseAuth.getCurrentUser().getUid().toString());
-                        Fragment fm = new Fragment();
-                        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                        ft.replace(R.id.drawer_layout, new TrainerAdminCard()).commit();
-                        Toast.makeText(getContext(), "Trainer Registration Successful", Toast.LENGTH_SHORT).show();
+//                        firebaseAuth.updateCurrentUser(user);
+//                        Log.d("TAG1", "processinsert: "+firebaseAuth.getCurrentUser().getUid().toString());
+//                        Fragment fm = new Fragment();
+//                        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+//                        ft.replace(R.id.drawer_layout, new TrainerAdminCard()).commit();
+//                        Toast.makeText(getContext(), "Trainer Registration Successful", Toast.LENGTH_SHORT).show();
                         //finish();
+                        mAuth2.signOut();
                     }
                     else {
                         add_progess_bar.setVisibility(View.GONE);

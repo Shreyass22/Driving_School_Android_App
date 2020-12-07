@@ -80,7 +80,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         toogle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_dashboard);
+//        navigationView.setCheckedItem(R.id.nav_dashboard);
 
 //        fragmentManager = getSupportFragmentManager();
 //        fragmentTransaction = fragmentManager.beginTransaction();
