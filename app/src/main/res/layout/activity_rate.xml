@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="80dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -27,7 +28,6 @@
                     android:id="@+id/rate_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="60dp"
                     android:fontFamily="@font/bangers_regular"
                     android:text="Feedback / Rate"
                     android:textAlignment="center"
@@ -108,6 +108,7 @@
                             android:layout_marginTop="15dp"
                             android:hint="Message"
                             android:textSize="20dp"
+                            android:inputType="textMultiLine"
                             android:textStyle="bold" />
 
                         <com.hsalf.smilerating.SmileRating

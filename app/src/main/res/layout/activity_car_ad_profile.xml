@@ -15,6 +15,7 @@
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="80dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextColor="#fff">
@@ -25,7 +26,6 @@
                 android:id="@+id/carList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="21dp"
                 android:fontFamily="@font/aclonica"
                 android:text="Car Add"
                 android:textAlignment="center"
