@@ -143,13 +143,12 @@
                     tools:targetApi="lollipop" />
 
                 <Button
-                    android:id="@+id/add_btn"
+                    android:id="@+id/add_btn22"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/button_rounded_blueee"
-                    android:onClick="addData"
                     android:text="Add Trainer"
                     android:textColor="#fff" />
 

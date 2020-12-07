@@ -1,7 +1,10 @@
 package com.example.drivingschool;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,43 +14,47 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class Trainer extends AppCompatActivity {
+public class Trainer extends Fragment {
 
     private long backPressedTime;
     DrawerLayout drawerLayout;
     myadapterSchedule adapter;
     RecyclerView sch_recev;
 
+//    @Override
+//    public void onBackPressed() {
+//        if (backPressedTime + 3000 > System.currentTimeMillis()){
+//            super.onBackPressed();
+////            System.exit(0);
+//            return;
+//        }
+//        else {
+//            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+//        }
+//        backPressedTime = System.currentTimeMillis();
+//    }
+
+
+    @Nullable
     @Override
-    public void onBackPressed() {
-        if (backPressedTime + 3000 > System.currentTimeMillis()){
-            super.onBackPressed();
-//            System.exit(0);
-            return;
-        }
-        else {
-            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
-        }
-        backPressedTime = System.currentTimeMillis();
-    }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_trainer, container, false);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trainer);
-        drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout = rootView.findViewById(R.id.drawer_layout);
 
-        sch_recev = findViewById(R.id.sch_recev);
+        sch_recev = rootView.findViewById(R.id.sch_recev);
 
-        sch_recev = (RecyclerView) findViewById(R.id.sch_recev);
-        sch_recev.setLayoutManager(new LinearLayoutManager(this));
+        sch_recev = (RecyclerView) rootView.findViewById(R.id.sch_recev);
+        sch_recev.setLayoutManager(new LinearLayoutManager(getContext()));
 
         FirebaseRecyclerOptions<UserHelperClassSchedule> options =
                 new FirebaseRecyclerOptions.Builder<UserHelperClassSchedule>()
@@ -57,18 +64,24 @@ public class Trainer extends AppCompatActivity {
         adapter = new myadapterSchedule(options);
         sch_recev.setAdapter(adapter);
 
-
+        return rootView;
     }
+
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_trainer);
+//    }
 
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         adapter.startListening();
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         adapter.stopListening();
     }

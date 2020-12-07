@@ -1,60 +1,60 @@
 package com.example.drivingschool;
 
 public class UserHelperClassSchedule {
-    private String c_name;
-    private String t_name;
-    private String car_name;
-    private String datee;
-    private String timee;
+    private String name;
+    private String trainer;
+    private String car;
+    private String date;
+    private String time;
 
     public UserHelperClassSchedule() {
     }
 
-    public UserHelperClassSchedule(String c_name, String t_name, String car_name, String datee, String timee) {
-        this.c_name = c_name;
-        this.t_name = t_name;
-        this.car_name = car_name;
-        this.datee = datee;
-        this.timee = timee;
+    public UserHelperClassSchedule(String name, String trainer, String car, String date, String time) {
+        this.name = name;
+        this.trainer = trainer;
+        this.car = car;
+        this.date = date;
+        this.time = time;
     }
 
-    public String getC_name() {
-        return c_name;
+    public String getName() {
+        return name;
     }
 
-    public void setC_name(String c_name) {
-        this.c_name = c_name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getT_name() {
-        return t_name;
+    public String getTrainer() {
+        return trainer;
     }
 
-    public void setT_name(String t_name) {
-        this.t_name = t_name;
+    public void setTrainer(String trainer) {
+        this.trainer = trainer;
     }
 
-    public String getCar_name() {
-        return car_name;
+    public String getCar() {
+        return car;
     }
 
-    public void setCar_name(String car_name) {
-        this.car_name = car_name;
+    public void setCar(String car) {
+        this.car = car;
     }
 
-    public String getDatee() {
-        return datee;
+    public String getDate() {
+        return date;
     }
 
-    public void setDatee(String datee) {
-        this.datee = datee;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getTimee() {
-        return timee;
+    public String getTime() {
+        return time;
     }
 
-    public void setTimee(String timee) {
-        this.timee = timee;
+    public void setTime(String time) {
+        this.time = time;
     }
 }

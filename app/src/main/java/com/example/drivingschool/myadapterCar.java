@@ -44,7 +44,7 @@ public class myadapterCar extends FirebaseRecyclerAdapter<UserHelperClassCar, my
         storageReference = FirebaseStorage.getInstance().getReference().child("car_images");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("car").child(firebaseUser.getUid());
+        databaseReference = FirebaseDatabase.getInstance().getReference("car");
 
         holder.nametext.setText(model.getName());
         holder.modeltext.setText(model.getModel());

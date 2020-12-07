@@ -1,8 +1,11 @@
 package com.example.drivingschool;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
@@ -11,8 +14,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -34,12 +40,13 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class AddSchedule extends AppCompatActivity {
+public class AddSchedule extends Fragment {
 
 
     DrawerLayout drawerLayout;
     //TextInputLayout sch_c_name, sch_t_name, sch_cr_name, sch_d_name, sch_ti_name;
     ProgressBar add_progess_bar;
+    Button addSch;
 
     FirebaseDatabase rootNode;
     FirebaseAuth firebaseAuth;
@@ -55,11 +62,13 @@ public class AddSchedule extends AppCompatActivity {
     ArrayList<String> spinnerDtCl;
     private UserHelperClass usersData;
 
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_schedule);
-        drawerLayout = findViewById(R.id.drawer_layout);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_add_schedule, container, false);
+
+        drawerLayout = rootView.findViewById(R.id.drawer_layout);
 
 
 //        sch_c_name = findViewById(R.id.sch_c_name);
@@ -67,7 +76,7 @@ public class AddSchedule extends AppCompatActivity {
 //        sch_cr_name = findViewById(R.id.sch_cr_name);
 //        sch_d_name = findViewById(R.id.sch_d_name);
 //        sch_ti_name = findViewById(R.id.sch_ti_name);
-        add_progess_bar = findViewById(R.id.add_progess_bar);
+        add_progess_bar = rootView.findViewById(R.id.add_progess_bar);
 
         //db Firebase instance
         rootNode = FirebaseDatabase.getInstance();
@@ -75,13 +84,13 @@ public class AddSchedule extends AppCompatActivity {
         user = firebaseAuth.getCurrentUser();
 
         databaseReferenceCl = FirebaseDatabase.getInstance().getReference("users");
-        spinnerCl = (Spinner) findViewById(R.id.mySpinnerCl);
-        spinnerTr = (Spinner) findViewById(R.id.mySpinnerTr);
-        spinnerCr = (Spinner) findViewById(R.id.mySpinnerCr);
-        spinnerTime = (Spinner) findViewById(R.id.mySpinnerTime);
+        spinnerCl = (Spinner) rootView.findViewById(R.id.mySpinnerCl);
+        spinnerTr = (Spinner) rootView.findViewById(R.id.mySpinnerTr);
+        spinnerCr = (Spinner) rootView.findViewById(R.id.mySpinnerCr);
+        spinnerTime = (Spinner) rootView.findViewById(R.id.mySpinnerTime);
 
 
-        spinnerDate = findViewById(R.id.mySpinnerDate);
+        spinnerDate = rootView.findViewById(R.id.mySpinnerDate);
         spinnerDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +99,7 @@ public class AddSchedule extends AppCompatActivity {
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog dialog = new DatePickerDialog(AddSchedule.this,
+                DatePickerDialog dialog = new DatePickerDialog(getContext(),
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         dateSetListener,
                         year,month,day);
@@ -110,7 +119,7 @@ public class AddSchedule extends AppCompatActivity {
 
         //spinnerDtCl = new ArrayList<>();
         //client
-        adapterCl = new ArrayAdapter<>(AddSchedule.this,
+        adapterCl = new ArrayAdapter<>(getContext(),
                 R.layout.custom_spinner,
                 getResources().getStringArray(R.array.Clnames));
         adapterCl.setDropDownViewResource(R.layout.custom_spinner_dropdown);
@@ -118,28 +127,48 @@ public class AddSchedule extends AppCompatActivity {
         //retriveCl();
 
         //trainer
-        adapterTr = new ArrayAdapter<>(AddSchedule.this,
+        adapterTr = new ArrayAdapter<>(getContext(),
                 R.layout.custom_spinner,
                 getResources().getStringArray(R.array.Tnames));
         adapterTr.setDropDownViewResource(R.layout.custom_spinner_dropdown);
         spinnerTr.setAdapter(adapterTr);
 
         //car
-        adapterCr = new ArrayAdapter<>(AddSchedule.this,
+        adapterCr = new ArrayAdapter<>(getContext(),
                 R.layout.custom_spinner,
                 getResources().getStringArray(R.array.Crnames));
         adapterCr.setDropDownViewResource(R.layout.custom_spinner_dropdown);
         spinnerCr.setAdapter(adapterCr);
 
         //date
-        adapterTime = new ArrayAdapter<>(AddSchedule.this,
+        adapterTime = new ArrayAdapter<>(getContext(),
                 R.layout.custom_spinner,
                 getResources().getStringArray(R.array.Time));
         adapterTime.setDropDownViewResource(R.layout.custom_spinner_dropdown);
         spinnerTime.setAdapter(adapterTime);
 
+        addSch = rootView.findViewById(R.id.add_sch_btn);
+        addSch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String c_name = spinnerCl.getSelectedItem().toString();
+                String t_name = spinnerTr.getSelectedItem().toString();
+                String car_name = spinnerCr.getSelectedItem().toString();
+                String timee = spinnerTime.getSelectedItem().toString();
+                String datee = spinnerDate.getText().toString();
 
+                processinsertsch(c_name, t_name, car_name, datee, timee);
+            }
+        });
+
+        return rootView;
     }
+
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_add_schedule);
+//            }
 
     //spinnner retrive data
 //    public void retriveCl() {
@@ -161,16 +190,16 @@ public class AddSchedule extends AppCompatActivity {
 //    }
 
     //save data in firebase on button click
-    public void addSch(View view) {
-
-        String c_name = spinnerCl.getSelectedItem().toString();
-        String t_name = spinnerTr.getSelectedItem().toString();
-        String car_name = spinnerCr.getSelectedItem().toString();
-        String timee = spinnerTime.getSelectedItem().toString();
-        String datee = spinnerDate.getText().toString();
-
-        processinsertsch(c_name, t_name, car_name, datee, timee);
-    }
+//    public void addSch(View view) {
+//
+//        String c_name = spinnerCl.getSelectedItem().toString();
+//        String t_name = spinnerTr.getSelectedItem().toString();
+//        String car_name = spinnerCr.getSelectedItem().toString();
+//        String timee = spinnerTime.getSelectedItem().toString();
+//        String datee = spinnerDate.getText().toString();
+//
+//        processinsertsch(c_name, t_name, car_name, datee, timee);
+//    }
 
     private void processinsertsch(String c_name, String t_name, String car_name, String datee, String timee) {
         add_progess_bar.setVisibility(View.VISIBLE);
@@ -187,14 +216,15 @@ public class AddSchedule extends AppCompatActivity {
         reference.setValue(hashMap).addOnCompleteListener(task1 -> {
             add_progess_bar.setVisibility(View.GONE);
             if (task1.isSuccessful()) {
-                Intent intent = new Intent(AddSchedule.this,AdminDashboard.class);
-                Toast.makeText(AddSchedule.this, "Schdule Added", Toast.LENGTH_SHORT).show();
-                startActivity(intent);
-                finish();
+                Fragment fm = new Fragment();
+                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                ft.add(R.id.drawer_layout, new AdminDashboard()).commit();
+                Toast.makeText(getContext(), "Schdule Added", Toast.LENGTH_SHORT).show();
+                //getActivity().finish();
 
             }
             else {
-                Toast.makeText(AddSchedule.this, Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

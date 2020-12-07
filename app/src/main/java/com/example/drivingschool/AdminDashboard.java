@@ -1,10 +1,13 @@
 package com.example.drivingschool;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +19,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -34,7 +39,7 @@ import java.util.ArrayList;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class AdminDashboard extends AppCompatActivity implements View.OnClickListener {
+public class AdminDashboard extends Fragment implements View.OnClickListener {
     private long backPressedTime;
     DrawerLayout drawerLayout;
     private CardView trainer_card, car_card, client_card;
@@ -42,30 +47,32 @@ public class AdminDashboard extends AppCompatActivity implements View.OnClickLis
     RecyclerView sch_recev;
 
     //on back press app exit
+//    @Override
+//    public void onBackPressed() {
+//        if (backPressedTime + 3000 > System.currentTimeMillis()){
+//            super.onBackPressed();
+////            System.exit(0);
+//            return;
+//        }
+//        else {
+//            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+//        }
+//        backPressedTime = System.currentTimeMillis();
+//    }
+
+
+    @Nullable
     @Override
-    public void onBackPressed() {
-        if (backPressedTime + 3000 > System.currentTimeMillis()){
-            super.onBackPressed();
-//            System.exit(0);
-            return;
-        }
-        else {
-            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
-        }
-        backPressedTime = System.currentTimeMillis();
-    }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_admin_dashboard, container, false);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_dashboard);
-        drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout = rootView.findViewById(R.id.drawer_layout);
 
 
-        sch_recev = findViewById(R.id.sch_recev);
+        sch_recev = rootView.findViewById(R.id.sch_recev);
 
-        sch_recev = (RecyclerView) findViewById(R.id.sch_recev);
-        sch_recev.setLayoutManager(new LinearLayoutManager(this));
+        sch_recev = (RecyclerView) rootView.findViewById(R.id.sch_recev);
+        sch_recev.setLayoutManager(new LinearLayoutManager(getContext()));
 
         FirebaseRecyclerOptions<UserHelperClassSchedule> options =
                 new FirebaseRecyclerOptions.Builder<UserHelperClassSchedule>()
@@ -88,14 +95,14 @@ public class AdminDashboard extends AppCompatActivity implements View.OnClickLis
 
                 switch (direction) {
                     case ItemTouchHelper.LEFT:
-                        Toast.makeText(AdminDashboard.this, "Deleted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
                         madapter.delSch(pos);
                         madapter.notifyItemRemoved(pos);
                         break;
 
                     //archived
                     case ItemTouchHelper.RIGHT:
-                        Toast.makeText(AdminDashboard.this, "Archived", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Archived", Toast.LENGTH_SHORT).show();
 //                        final DatabaseReference trName = adapter.getRef(pos);
 //                        archivedTr.add(trName);
 //
@@ -109,9 +116,9 @@ public class AdminDashboard extends AppCompatActivity implements View.OnClickLis
                                     float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(AdminDashboard.this, R.color.red))
+                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.red))
                         .addSwipeLeftActionIcon(R.drawable.icon_delete)
-                        .addSwipeRightBackgroundColor(ContextCompat.getColor(AdminDashboard.this,R.color.green))
+                        .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(),R.color.green))
                         .addSwipeRightActionIcon(R.drawable.icon_archive)
                         .create()
                         .decorate();
@@ -121,25 +128,25 @@ public class AdminDashboard extends AppCompatActivity implements View.OnClickLis
         }).attachToRecyclerView(sch_recev);
 
 
-        FloatingActionButton f_add_schedule = findViewById(R.id.f_add_schedule);
-        f_add_schedule.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), AddSchedule.class)));
+        FloatingActionButton f_add_schedule = rootView.findViewById(R.id.f_add_schedule);
+        f_add_schedule.setOnClickListener(this);
 
-        FloatingActionButton f_add_trainer = findViewById(R.id.f_add_trainer);
-        f_add_trainer.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), TrainerAdProfile.class)));
+        FloatingActionButton f_add_trainer = rootView.findViewById(R.id.f_add_trainer);
+        f_add_trainer.setOnClickListener(this);
 
-        FloatingActionButton f_add_client = findViewById(R.id.f_add_client);
-        f_add_client.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ClientAdProfile.class)));
+        FloatingActionButton f_add_client = rootView.findViewById(R.id.f_add_client);
+        f_add_client.setOnClickListener(this);
 
-        FloatingActionButton f_add_car = findViewById(R.id.f_add_car);
-        f_add_car.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), CarAdProfile.class)));
+        FloatingActionButton f_add_car = rootView.findViewById(R.id.f_add_car);
+        f_add_car.setOnClickListener(this);
 
 
 
         //card on click listener starts-------------------------------------------------------------
         //hooks for cardview
-        trainer_card = (CardView) findViewById(R.id.trainer_card);
-        car_card = (CardView) findViewById(R.id.car_card);
-        client_card = (CardView) findViewById(R.id.client_card);
+        trainer_card = (CardView) rootView.findViewById(R.id.trainer_card);
+        car_card = (CardView) rootView.findViewById(R.id.car_card);
+        client_card = (CardView) rootView.findViewById(R.id.client_card);
         //Add Click listener to the cards
         trainer_card.setOnClickListener(this);
         car_card.setOnClickListener(this);
@@ -148,15 +155,57 @@ public class AdminDashboard extends AppCompatActivity implements View.OnClickLis
         //card on click listener stops--------------------------------------------------------------
 
 
+        return rootView;
     }
+
+    //floating button
+//    public void onClick(View vi) {
+//        Fragment fm = new Fragment();
+//        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+//        switch (vi.getId()) {
+//
+//            default: break;
+//        }
+//    }
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_admin_dashboard);
+//    }
 
     // onClick event on card
     public void onClick(View ve) {
-        Intent c, c1, c2, c3;
+        Fragment fm = new Fragment();
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         switch (ve.getId()) {
-            case R.id.trainer_card : c = new Intent(this, TrainerAdminCard.class); startActivity(c); break;
-            case R.id.car_card : c1 = new Intent(this, CarAdminCard.class); startActivity(c1); break;
-            case R.id.client_card : c2 = new Intent(this, ClientAdminCard.class); startActivity(c2); break;
+
+            //admin cardsss
+            case R.id.trainer_card : ft.replace(R.id.drawer_layout,
+                    new TrainerAdminCard()).commit();
+                break;
+            case R.id.car_card : ft.replace(R.id.drawer_layout,
+                    new CarAdminCard()).commit();
+                break;
+            case R.id.client_card : ft.replace(R.id.drawer_layout,
+                    new ClientAdminCard()).commit();
+                break;
+
+                //admin cards end
+
+            //floating cards
+            case R.id.f_add_schedule : ft.replace(R.id.drawer_layout,
+                    new AddSchedule()).commit();
+                break;
+            case R.id.f_add_trainer : ft.replace(R.id.drawer_layout,
+                    new TrainerAdProfile()).commit();
+                break;
+            case R.id.f_add_client : ft.replace(R.id.drawer_layout,
+                    new ClientAdProfile()).commit();
+                break;
+            case R.id.f_add_car : ft.replace(R.id.drawer_layout,
+                    new CarAdProfile()).commit();
+                break;
+            //floating cards end
             default: break;
         }
     }
@@ -164,13 +213,13 @@ public class AdminDashboard extends AppCompatActivity implements View.OnClickLis
 
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         madapter.startListening();
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         madapter.stopListening();
     }

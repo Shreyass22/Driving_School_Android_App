@@ -38,12 +38,12 @@ public class myadapterSchedule extends FirebaseRecyclerAdapter<UserHelperClassSc
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("schedule");
 
-        Log.d("TAG111", "onclick:" + model.getC_name());
-        holder.c_name0.setText("hi");
-        holder.t_name0.setText(model.getT_name());
-        holder.car_name0.setText(model.getCar_name());
-        holder.datee0.setText(model.getDatee());
-        holder.timee0.setText(model.getTimee());
+//        Log.d("TAG111", "onclick:" + model.getC_name());
+        holder.c_name0.setText(model.getName());
+        holder.t_name0.setText(model.getTrainer());
+        holder.car_name0.setText(model.getCar());
+        holder.datee0.setText(model.getDate());
+        holder.timee0.setText(model.getTime());
 
 
     }

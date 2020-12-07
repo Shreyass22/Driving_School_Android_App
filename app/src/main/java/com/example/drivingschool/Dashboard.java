@@ -1,11 +1,15 @@
 package com.example.drivingschool;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,9 +17,11 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -29,7 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class Dashboard extends AppCompatActivity implements View.OnClickListener{
+public class Dashboard extends Fragment implements View.OnClickListener{
 
     //variable
     private long backPressedTime;
@@ -38,25 +44,26 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
 
-        //on back press app exit
-    @Override
-    public void onBackPressed() {
-        if (backPressedTime + 3000 > System.currentTimeMillis()){
-            super.onBackPressed();
-//            System.exit(0);
-            return;
-        }
-        else {
-            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
-        }
-        backPressedTime = System.currentTimeMillis();
-    }
+    //on back press app exit
+//    @Override
+//    public void onBackPressed() {
+//        if (backPressedTime + 3000 > System.currentTimeMillis()){
+//            super.onBackPressed();
+////            System.exit(0);
+//            return;
+//        }
+//        else {
+//            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+//        }
+//        backPressedTime = System.currentTimeMillis();
+//    }
         //on back press app exit
 
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_dashboard, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -64,14 +71,14 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         //hooks : defining
         //hooks for navigation
-        drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout = rootView.findViewById(R.id.drawer_layout);
 
         //card on click listener starts-------------------------------------------------------------
         //hooks for cardview
-        instructions_card = (CardView) findViewById(R.id.instructions_card);
-        drivesafe_card = (CardView) findViewById(R.id.drivesafe_card);
-        contactus_card = (CardView) findViewById(R.id.contactus_card);
-        blahblah_card = (CardView) findViewById(R.id.blahblah_card);
+        instructions_card = (CardView) rootView.findViewById(R.id.instructions_card);
+        drivesafe_card = (CardView) rootView.findViewById(R.id.drivesafe_card);
+        contactus_card = (CardView) rootView.findViewById(R.id.contactus_card);
+        blahblah_card = (CardView) rootView.findViewById(R.id.blahblah_card);
         //Add Click listener to the cards
         instructions_card.setOnClickListener(this);
         drivesafe_card.setOnClickListener(this);
@@ -79,16 +86,37 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         blahblah_card.setOnClickListener(this);
         //continue from line 123 of this file.
         //card on click listener stops--------------------------------------------------------------
+        return rootView;
     }
+
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_dashboard);
+//    }
     // onClick event on card
     @Override
     public void onClick(View v) {
+        Fragment fm = new Fragment();
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         Intent c, c1, c2, c3;
         switch (v.getId()) {
-            case R.id.instructions_card : c = new Intent(this, InstructionsCard.class); startActivity(c); break;
-            case R.id.drivesafe_card : c1 = new Intent(this, DrivesafeCard.class); startActivity(c1); break;
-            case R.id.contactus_card : c2 = new Intent(this, ContactusCard.class); startActivity(c2); break;
-            case R.id.blahblah_card : c3 = new Intent(this, BlahblahCard.class); startActivity(c3); break;
+            case R.id.instructions_card :
+                ft.replace(R.id.drawer_layout,
+                    new InstructionsCard()).commit();
+               break;
+            case R.id.drivesafe_card :
+                ft.replace(R.id.drawer_layout,
+                        new DrivesafeCard()).commit();
+                break;
+            case R.id.contactus_card :
+                ft.replace(R.id.drawer_layout,
+                        new ContactusCard()).commit();
+                break;
+            case R.id.blahblah_card :
+                ft.replace(R.id.drawer_layout,
+                        new BlahblahCard()).commit();
+                break;
             default: break;
         }
     }

@@ -1,8 +1,10 @@
 package com.example.drivingschool;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,7 +13,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -30,7 +34,7 @@ import com.hsalf.smilerating.SmileRating;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class Rate extends AppCompatActivity {
+public class Rate extends Fragment {
 
     TextView feedback_name, feedback_mail, feedback_type;
     EditText feedback_msg;
@@ -38,6 +42,7 @@ public class Rate extends AppCompatActivity {
     DrawerLayout drawerLayout;
     Button submit_feedback;
     ProgressBar progess_barrr;
+    String feedback;
 
     private FirebaseUser firebaseUser;
     private FirebaseAuth firebaseAuth;
@@ -45,58 +50,64 @@ public class Rate extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private UserHelperClass usersData;
 
-    @Override
-    public void onBackPressed() {
-        if (backPressedTime + 3000 > System.currentTimeMillis()){
-            super.onBackPressed();
-//            System.exit(0);
-            return;
-        }
-        else {
-            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
-        }
-        backPressedTime = System.currentTimeMillis();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (backPressedTime + 3000 > System.currentTimeMillis()){
+//            super.onBackPressed();
+////            System.exit(0);
+//            return;
+//        }
+//        else {
+//            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+//        }
+//        backPressedTime = System.currentTimeMillis();
+//    }
 
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rate);
-        drawerLayout = findViewById(R.id.drawer_layout);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_rate, container, false);
+
+        drawerLayout = rootView.findViewById(R.id.drawer_layout);
 
         //db Firebase instance
         rootNode = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
-        feedback_name = findViewById(R.id.feedback_name);
-        feedback_mail = findViewById(R.id.feedback_mail);
-        feedback_msg = findViewById(R.id.feedback_msg);
-        feedback_type = findViewById(R.id.feedback_type);
-        submit_feedback = findViewById(R.id.submit_feedback);
-        progess_barrr = findViewById(R.id.progess_barrr);
+        feedback_name = rootView.findViewById(R.id.feedback_name);
+        feedback_mail = rootView.findViewById(R.id.feedback_mail);
+        feedback_msg = rootView.findViewById(R.id.feedback_msg);
+        feedback_type = rootView.findViewById(R.id.feedback_type);
+        submit_feedback = rootView.findViewById(R.id.submit_feedback);
+        progess_barrr = rootView.findViewById(R.id.progess_barrr);
 
         //rate
-        SmileRating smileRating = (SmileRating) findViewById(R.id.smile_rating);
+        SmileRating smileRating = (SmileRating) rootView.findViewById(R.id.smile_rating);
         smileRating.setOnSmileySelectionListener(new SmileRating.OnSmileySelectionListener() {
             @Override
             public void onSmileySelected(int smiley, boolean reselected) {
 
                 switch (smiley) {
                     case SmileRating.TERRIBLE:
-
-                        Toast.makeText(Rate.this, "TERRIBLE", Toast.LENGTH_SHORT).show();
+                        feedback = "TERRIBLE";
+                        Toast.makeText(getContext(), "TERRIBLE", Toast.LENGTH_SHORT).show();
                         break;
                     case SmileRating.BAD:
-                        Toast.makeText(Rate.this, "BAD", Toast.LENGTH_SHORT).show();
+                        feedback = "BAD";
+                        Toast.makeText(getContext(), "BAD", Toast.LENGTH_SHORT).show();
                         break;
                     case SmileRating.OKAY:
-                        Toast.makeText(Rate.this, "OKAY", Toast.LENGTH_SHORT).show();
+                        feedback = "OKAY";
+                        Toast.makeText(getContext(), "OKAY", Toast.LENGTH_SHORT).show();
                         break;
                     case SmileRating.GOOD:
-                        Toast.makeText(Rate.this, "GOOD", Toast.LENGTH_SHORT).show();
+                        feedback = "GOOD";
+                        Toast.makeText(getContext(), "GOOD", Toast.LENGTH_SHORT).show();
                         break;
                     case SmileRating.GREAT:
-                        Toast.makeText(Rate.this, "GREAT", Toast.LENGTH_SHORT).show();
+                        feedback = "GREAT";
+                        Toast.makeText(getContext(), "GREAT", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -104,8 +115,8 @@ public class Rate extends AppCompatActivity {
         smileRating.setOnRatingSelectedListener(new SmileRating.OnRatingSelectedListener() {
             @Override
             public void onRatingSelected(int level, boolean reselected) {
-                Toast.makeText(Rate.this, "Rating level "+ level, Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(getContext(), "Rating level "+ level, Toast.LENGTH_SHORT).show();
+                //feedback = level;
             }
         });
         //rate
@@ -129,38 +140,54 @@ public class Rate extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Rate.this, error.getMessage(), Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT);
             }
         });
 
+        submit_feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = feedback_name.getText().toString();
+                String mail = feedback_mail.getText().toString();
+                String type = feedback_type.getText().toString();
+                String msg = feedback_msg.getText().toString();
+
+                processinsertFeed(name, mail, type, msg);
+            }
+        });
+        return rootView;
     }
 
-    public void submit_feedback(View view) {
-        String name = feedback_name.getText().toString();
-        String mail = feedback_mail.getText().toString();
-        String type = feedback_type.getText().toString();
-        String msg = feedback_msg.getText().toString();
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_rate);
+//    }
 
-        processinsertFeed(name, mail, type, msg);
-
-    }
+//    public void submit_feedback(View view) {
+//
+//
+//    }
 
     private void processinsertFeed(String name, String mail, String type, String msg) {
         progess_barrr.setVisibility(View.VISIBLE);
-        databaseReference = rootNode.getReference("feedback").child(name); //realtimedb
+        FirebaseUser rUser = firebaseAuth.getCurrentUser(); //
+        String userID = rUser.getUid();  //
+        databaseReference = rootNode.getReference("feedback").child(userID); //realtimedb
         HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("name", name);
         hashMap.put("mail", mail);
         hashMap.put("type", type);
         hashMap.put("message", msg);
+        hashMap.put("level", feedback);
 
         databaseReference.setValue(hashMap).addOnCompleteListener(task1 -> {
             progess_barrr.setVisibility(View.GONE);
             if (task1.isSuccessful()) {
-                Toast.makeText(Rate.this, "Thanks for FeedBack", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Thanks for FeedBack", Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(Rate.this, Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

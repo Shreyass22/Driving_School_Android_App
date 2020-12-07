@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -42,6 +45,9 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
     FirebaseUser rUser;
     DatabaseReference databaseReference;
 
+//    FragmentManager fragmentManager;
+//    FragmentTransaction fragmentTransaction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         invalidateOptionsMenu();
@@ -56,10 +62,11 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         //hooks for navigation
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        Menu nav_Menu = navigationView.getMenu();
         toolbar = findViewById(R.id.toolbar);
 
         //toolbar
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         //navigation drawer menu
 //        Menu menu = navigationView.getMenu();
@@ -69,63 +76,110 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         navigationView.bringToFront();
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toogle);
+        toogle.setDrawerIndicatorEnabled(true);
         toogle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_dashboard);
+
+//        fragmentManager = getSupportFragmentManager();
+//        fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.fragment_container, new Dashboard());
+
 
 //        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
 //                new Dashboard()).commit();
-//        navigationView.setCheckedItem(R.id.nav_dashboard);
 
+        FirebaseUser rUser = firebaseAuth.getCurrentUser(); //
+        String userID = rUser.getUid();  //
+        databaseReference.child("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-        updateUI();
+                if (snapshot.child(userID).child("type").getValue(String.class).equals("Admin")) {
+
+                    loadFragment(new AdminDashboard());
+                    nav_Menu.findItem(R.id.nav_trainer).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_client).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_login).setVisible(false);
+                } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Trainer")) {
+
+                    loadFragment(new Trainer());
+                    nav_Menu.findItem(R.id.nav_admin).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_client).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_login).setVisible(false);
+                } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Client")) {
+
+                    loadFragment(new Client());
+                    nav_Menu.findItem(R.id.nav_trainer).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_admin).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_login).setVisible(false);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Email doesnot exist", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getApplicationContext(), "ERROR : 404", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+//        updateUI();
     }
 
-    private void updateUI() {
-
+    public void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
     }
 
-    //@Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        String userID = rUser.getUid();
-//        Log.d("tag1", "onPrepareOptionsMenu: ");
-//        databaseReference.child("users").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
-//                if (snapshot.child(userID).child("type").getValue(String.class).equals("Admin")) {
-//
-//                    menu.removeItem(R.id.nav_login);
-//                    menu.removeItem(R.id.nav_trainer);
-//                    menu.removeItem(R.id.nav_client);
-//
-//                } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Trainer")) {
-//
-//                    menu.removeItem(R.id.nav_login);
-//                    menu.removeItem(R.id.nav_admin);
-//                    menu.removeItem(R.id.nav_client);
-//                } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Client")) {
-//
-//                    menu.removeItem(R.id.nav_login);
-//                    menu.removeItem(R.id.nav_trainer);
-//                    menu.removeItem(R.id.nav_admin);
-//                } else {
-//                    Toast.makeText(NavigationDrawer.this, "doesnot exist", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(NavigationDrawer.this, "ERROR : 404", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        return super.onPrepareOptionsMenu(menu);
+//    private void updateUI() {
+////        invalidateOptionsMenu();
 //    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        String userID = rUser.getUid();
+        Log.d("tag1", "onPrepareOptionsMenu: ");
+        databaseReference.child("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.child(userID).child("type").getValue(String.class).equals("Admin")) {
+
+                    menu.removeItem(R.id.nav_login);
+                    menu.removeItem(R.id.nav_trainer);
+                    menu.removeItem(R.id.nav_client);
+
+                } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Trainer")) {
+
+                    menu.removeItem(R.id.nav_login);
+                    menu.removeItem(R.id.nav_admin);
+                    menu.removeItem(R.id.nav_client);
+                } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Client")) {
+
+                    menu.removeItem(R.id.nav_login);
+                    menu.removeItem(R.id.nav_trainer);
+                    menu.removeItem(R.id.nav_admin);
+                } else {
+                    Toast.makeText(NavigationDrawer.this, "doesnot exist", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(NavigationDrawer.this, "ERROR : 404", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return super.onPrepareOptionsMenu(menu);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+        return true;
+//        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -145,29 +199,24 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
 
         switch (item.getItemId()) {
             case R.id.nav_dashboard:
-                Intent intent22 = new Intent(NavigationDrawer.this, Dashboard.class);
-                startActivity(intent22);
-                finish();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new Dashboard()).commit();
                 break;
             case R.id.nav_instructions:
-                Intent intent2 = new Intent(NavigationDrawer.this, InstructionsCard.class);
-                startActivity(intent2);
-                finish();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new InstructionsCard()).commit();
                 break;
             case R.id.nav_admin:
-                Intent intent3 = new Intent(NavigationDrawer.this, AdminDashboard.class);
-                startActivity(intent3);
-                finish();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new AdminDashboard()).commit();
                 break;
             case R.id.nav_trainer:
-                Intent intent4 = new Intent(NavigationDrawer.this, Trainer.class);
-                startActivity(intent4);
-                finish();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new Trainer()).commit();
                 break;
             case R.id.nav_client:
-                Intent intent5 = new Intent(NavigationDrawer.this, Client.class);
-                startActivity(intent5);
-                finish();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new Client()).commit();
                 break;
             case R.id.nav_map:
                 Intent intent6 = new Intent(NavigationDrawer.this, Map.class);
@@ -180,23 +229,19 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                 finish();
                 break;
             case R.id.nav_update:
-                Intent intent8 = new Intent(NavigationDrawer.this, UserProfile.class);
-                startActivity(intent8);
-                finish();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new UserProfile()).commit();
                 break;
             case R.id.nav_logout:
                 logout(this);
-                finish();
                 break;
             case R.id.nav_aboutus:
-                Intent intent10 = new Intent(NavigationDrawer.this, ContactusCard.class);
-                startActivity(intent10);
-                finish();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ContactusCard()).commit();
                 break;
             case R.id.nav_rate:
-                Intent intent11 = new Intent(NavigationDrawer.this, Rate.class);
-                startActivity(intent11);
-                finish();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new Rate()).commit();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);

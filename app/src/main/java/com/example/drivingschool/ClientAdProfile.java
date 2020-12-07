@@ -1,7 +1,11 @@
 package com.example.drivingschool;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,7 +14,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -26,7 +33,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class ClientAdProfile extends AppCompatActivity {
+public class ClientAdProfile extends Fragment {
     private static final Pattern Password_Pattern =
             Pattern.compile("^" +
                     "(?=.*[0-9])" +         //at least 1 digit
@@ -43,43 +50,80 @@ public class ClientAdProfile extends AppCompatActivity {
     TextInputLayout cl_name, cl_email, cl_phone, cl_password;
     RadioGroup gender_radio_btn;
     ProgressBar add_progess_bar;
+    Button addDataCl;
 
     FirebaseDatabase rootNode;
     FirebaseAuth firebaseAuth;
     DatabaseReference reference;
 
+//    @Override
+//    public void onBackPressed() {
+//        if (backPressedTime + 3000 > System.currentTimeMillis()){
+//            super.onBackPressed();
+////            System.exit(0);
+//            return;
+//        }
+//        else {
+//            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+//        }
+//        backPressedTime = System.currentTimeMillis();
+//    }
+
+
+    @Nullable
     @Override
-    public void onBackPressed() {
-        if (backPressedTime + 3000 > System.currentTimeMillis()){
-            super.onBackPressed();
-//            System.exit(0);
-            return;
-        }
-        else {
-            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
-        }
-        backPressedTime = System.currentTimeMillis();
-    }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_client_ad_profile, container, false);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_client_ad_profile);
-        drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout = rootView.findViewById(R.id.drawer_layout);
 
 
 
-        cl_name = findViewById(R.id.cl_name);
-        cl_email = findViewById(R.id.cl_email);
-        cl_phone = findViewById(R.id.cl_phone);
-        cl_password = findViewById(R.id.cl_password);
-        gender_radio_btn = findViewById(R.id.gender_radio_btn);
-        add_progess_bar = findViewById(R.id.add_progess_bar);
+        cl_name = rootView.findViewById(R.id.cl_name);
+        cl_email = rootView.findViewById(R.id.cl_email);
+        cl_phone = rootView.findViewById(R.id.cl_phone);
+        cl_password = rootView.findViewById(R.id.cl_password);
+        gender_radio_btn = rootView.findViewById(R.id.gender_radio_btn);
+        add_progess_bar = rootView.findViewById(R.id.add_progess_bar);
 
         //db Firebase instance
         rootNode = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+
+        addDataCl = rootView.findViewById(R.id.add_btn33);
+        addDataCl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = cl_name.getEditText().getText().toString();
+                String email = cl_email.getEditText().getText().toString();
+                String phone = cl_phone.getEditText().getText().toString();
+                String password = cl_password.getEditText().getText().toString();
+                int checkId = gender_radio_btn.getCheckedRadioButtonId();
+                RadioButton selected_gender = gender_radio_btn.findViewById(checkId);
+                if (selected_gender == null) {
+                    Toast.makeText(getContext(), "Select Gender", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    final String gender = selected_gender.getText().toString();
+                    //validate
+                    if(!validateName() | !validateEmail() | !validatePhone() | !validatePassword()) {
+                        return;
+                    }
+                    else{
+                        processinsert(name, email, phone, password, gender);
+                    }
+                }
+            }
+        });
+
+        return rootView;
     }
+
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_client_ad_profile);
+//    }
 
     private Boolean validateName () {
         String val = cl_name.getEditText().getText().toString();
@@ -143,28 +187,8 @@ public class ClientAdProfile extends AppCompatActivity {
     }
 
     //save data in firebase on button click
-    public void addDataCl(View view) {
-
-        String name = cl_name.getEditText().getText().toString();
-        String email = cl_email.getEditText().getText().toString();
-        String phone = cl_phone.getEditText().getText().toString();
-        String password = cl_password.getEditText().getText().toString();
-        int checkId = gender_radio_btn.getCheckedRadioButtonId();
-        RadioButton selected_gender = gender_radio_btn.findViewById(checkId);
-        if (selected_gender == null) {
-            Toast.makeText(ClientAdProfile.this, "Select Gender", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            final String gender = selected_gender.getText().toString();
-            //validate
-            if(!validateName() | !validateEmail() | !validatePhone() | !validatePassword()) {
-                return;
-            }
-            else{
-                processinsert(name, email, phone, password, gender);
-            }
-        }
-    }
+//    public void addDataCl(View view) {
+//    }
 
     private void processinsert(String name, String email, String phone, String password, String gender) {
         add_progess_bar.setVisibility(View.VISIBLE);
@@ -187,19 +211,21 @@ public class ClientAdProfile extends AppCompatActivity {
                 reference.setValue(hashMap).addOnCompleteListener(task1 -> {
                     add_progess_bar.setVisibility(View.GONE);
                     if (task1.isSuccessful()) {
-                        Intent intent = new Intent(ClientAdProfile.this,ClientAdminCard.class);
-                        Toast.makeText(ClientAdProfile.this, "Client Registration Successful", Toast.LENGTH_SHORT).show();
-                        startActivity(intent);
-                        finish();
+                        Fragment fm = new Fragment();
+                        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                        ft.replace(R.id.drawer_layout, new ClientAdminCard()).commit();
+                        Toast.makeText(getContext(), "Client Registration Successful", Toast.LENGTH_SHORT).show();
+                        //startActivity(intent);
+                        //finish();
                     }
                     else {
-                        Toast.makeText(ClientAdProfile.this, Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
             else {
                 add_progess_bar.setVisibility(View.GONE);
-                Toast.makeText(ClientAdProfile.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });

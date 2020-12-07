@@ -68,7 +68,14 @@ public class Login extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        if(firebaseAuth.getCurrentUser() != null){
+            //that means user is already logged in
+            //so close this activity
+            finish();
 
+            //and open profile activity
+            startActivity(new Intent(getApplicationContext(), NavigationDrawer.class));
+        }
 
         forget_password.setOnClickListener(v -> startActivity(new Intent(Login.this, ForgetPassword.class)));
 
@@ -145,17 +152,17 @@ public class Login extends AppCompatActivity {
 
 //                            preferences.setDataLogin(Login.this, true);
 //                            preferences.setDataAs(Login.this, "Admin");
-                            startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
+                            startActivity(new Intent(getApplicationContext(), NavigationDrawer.class));
                         } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Trainer")) {
 
 //                            preferences.setDataLogin(Login.this, true);
 //                            preferences.setDataAs(Login.this, "Trainer");
-                            startActivity(new Intent(getApplicationContext(), Trainer.class));
+                            startActivity(new Intent(getApplicationContext(), NavigationDrawer.class));
                         } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Client")) {
 
 //                            preferences.setDataLogin(Login.this, true);
 //                            preferences.setDataAs(Login.this, "Client");
-                            startActivity(new Intent(getApplicationContext(), Client.class));
+                            startActivity(new Intent(getApplicationContext(), NavigationDrawer.class));
                         } else {
                             login_progess_bar.setVisibility(View.GONE);
                             Toast.makeText(Login.this, "Email doesnot exist", Toast.LENGTH_SHORT).show();
@@ -175,21 +182,6 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        //login with rdb
-//        firebaseAuth.signInWithEmailAndPassword(userEnteredName,userEnteredPassword).addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                Intent intent = new Intent(Login.this, Dashboard.class);
-//                Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent);
-//                finish();
-//            }
-//            else {
-//                login_progess_bar.setVisibility(View.GONE);
-//                Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
     }
 
     //onstart : when app starts
@@ -200,18 +192,6 @@ public class Login extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), Dashboard.class));
             finish();
         }
-        //as per RDB
-//        if (preferences.getDataLogin(this)) {
-//            if (preferences.getDataAs(this).equals("Admin")) {
-//                startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
-//                finish();
-//            } else if (preferences.getDataAs(this).equals("Trainer")) {
-//                startActivity(new Intent(getApplicationContext(), Trainer.class));
-//                finish();
-//            } else if (preferences.getDataAs(this).equals("Client")) {
-//                startActivity(new Intent(getApplicationContext(), Client.class));
-//                finish();
-//            }
-//        }
+
     }
 }

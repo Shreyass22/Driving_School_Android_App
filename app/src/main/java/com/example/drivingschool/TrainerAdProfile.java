@@ -1,7 +1,11 @@
 package com.example.drivingschool;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,7 +15,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -30,7 +37,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class TrainerAdProfile extends AppCompatActivity {
+public class TrainerAdProfile extends Fragment {
     private static final Pattern Password_Pattern =
             Pattern.compile("^" +
                     "(?=.*[0-9])" +         //at least 1 digit
@@ -47,45 +54,83 @@ public class TrainerAdProfile extends AppCompatActivity {
     TextInputLayout tr_name, tr_email, tr_phone, tr_password;
     RadioGroup gender_radio_btn;
     ProgressBar add_progess_bar;
+    Button addData;
 
     FirebaseDatabase rootNode;
     FirebaseAuth firebaseAuth,firebaseAuth1;
     DatabaseReference reference;
     FirebaseUser user;
 
+//    @Override
+//    public void onBackPressed() {
+//        if (backPressedTime + 3000 > System.currentTimeMillis()){
+//            super.onBackPressed();
+////            System.exit(0);
+//            return;
+//        }
+//        else {
+//            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+//        }
+//        backPressedTime = System.currentTimeMillis();
+//    }
+
+
+    @Nullable
     @Override
-    public void onBackPressed() {
-        if (backPressedTime + 3000 > System.currentTimeMillis()){
-            super.onBackPressed();
-//            System.exit(0);
-            return;
-        }
-        else {
-            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
-        }
-        backPressedTime = System.currentTimeMillis();
-    }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_trainer_ad_profile, container, false);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trainer_ad_profile);
-        drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout = rootView.findViewById(R.id.drawer_layout);
 
 
 
-        tr_name = findViewById(R.id.tr_name);
-        tr_email = findViewById(R.id.tr_email);
-        tr_phone = findViewById(R.id.tr_phone);
-        tr_password = findViewById(R.id.tr_password);
-        gender_radio_btn = findViewById(R.id.gender_radio_btn);
-        add_progess_bar = findViewById(R.id.add_progess_bar);
+        tr_name = rootView.findViewById(R.id.tr_name);
+        tr_email = rootView.findViewById(R.id.tr_email);
+        tr_phone = rootView.findViewById(R.id.tr_phone);
+        tr_password = rootView.findViewById(R.id.tr_password);
+        gender_radio_btn = rootView.findViewById(R.id.gender_radio_btn);
+        add_progess_bar = rootView.findViewById(R.id.add_progess_bar);
 
         //db Firebase instance
         rootNode = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
+
+        addData = rootView.findViewById(R.id.add_btn22);
+        addData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String name = tr_name.getEditText().getText().toString();
+                String email = tr_email.getEditText().getText().toString();
+                String phone = tr_phone.getEditText().getText().toString();
+                String password = tr_password.getEditText().getText().toString();
+                int checkId = gender_radio_btn.getCheckedRadioButtonId();
+                RadioButton selected_gender = gender_radio_btn.findViewById(checkId);
+                if (selected_gender == null) {
+                    Toast.makeText(getContext(), "Select Gender", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    final String gender = selected_gender.getText().toString();
+                    //validate
+                    if(!validateName() | !validateEmail() | !validatePhone() | !validatePassword()) {
+                        return;
+                    }
+                    else{
+                        processinsert(name, email, phone, password, gender);
+                    }
+                }
+            }
+        });
+
+        return rootView;
     }
+
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_trainer_ad_profile);
+//            }
 
     private Boolean validateName () {
         String val = tr_name.getEditText().getText().toString();
@@ -150,28 +195,8 @@ public class TrainerAdProfile extends AppCompatActivity {
 
 
     //save data in firebase on button click
-    public void addData(View view) {
-
-        String name = tr_name.getEditText().getText().toString();
-        String email = tr_email.getEditText().getText().toString();
-        String phone = tr_phone.getEditText().getText().toString();
-        String password = tr_password.getEditText().getText().toString();
-        int checkId = gender_radio_btn.getCheckedRadioButtonId();
-        RadioButton selected_gender = gender_radio_btn.findViewById(checkId);
-        if (selected_gender == null) {
-            Toast.makeText(TrainerAdProfile.this, "Select Gender", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            final String gender = selected_gender.getText().toString();
-            //validate
-            if(!validateName() | !validateEmail() | !validatePhone() | !validatePassword()) {
-                return;
-            }
-            else{
-                processinsert(name, email, phone, password, gender);
-            }
-        }
-    }
+//    public void addData(View view) {
+//    }
 
     private void processinsert(String name, String email, String phone, String password, String gender) {
         add_progess_bar.setVisibility(View.VISIBLE);
@@ -199,20 +224,21 @@ public class TrainerAdProfile extends AppCompatActivity {
                     if (task1.isSuccessful()) {
                         firebaseAuth.updateCurrentUser(user);
                         Log.d("TAG1", "processinsert: "+firebaseAuth.getCurrentUser().getUid().toString());
-                        Intent intent = new Intent(TrainerAdProfile.this,TrainerAdminCard.class);
-                        Toast.makeText(TrainerAdProfile.this, "Trainer Registration Successful", Toast.LENGTH_SHORT).show();
-                        startActivity(intent);
-                        finish();
+                        Fragment fm = new Fragment();
+                        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                        ft.replace(R.id.drawer_layout, new TrainerAdminCard()).commit();
+                        Toast.makeText(getContext(), "Trainer Registration Successful", Toast.LENGTH_SHORT).show();
+                        //finish();
                     }
                     else {
                         add_progess_bar.setVisibility(View.GONE);
-                        Toast.makeText(TrainerAdProfile.this, Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
             else {
                 add_progess_bar.setVisibility(View.GONE);
-                Toast.makeText(TrainerAdProfile.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });

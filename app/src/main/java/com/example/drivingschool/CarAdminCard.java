@@ -1,9 +1,11 @@
 package com.example.drivingschool;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +18,9 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -32,7 +36,7 @@ import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class CarAdminCard extends AppCompatActivity {
+public class CarAdminCard extends Fragment {
 
     private long backPressedTime;
     DrawerLayout drawerLayout;
@@ -40,24 +44,26 @@ public class CarAdminCard extends AppCompatActivity {
     RecyclerView recview_car;
     myadapterCar adapterCar;
 
-    @Override
-    public void onBackPressed() {
-        if (backPressedTime + 3000 > System.currentTimeMillis()){
-            super.onBackPressed();
-//            System.exit(0);
-            return;
-        }
-        else {
-            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
-        }
-        backPressedTime = System.currentTimeMillis();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (backPressedTime + 3000 > System.currentTimeMillis()){
+//            super.onBackPressed();
+////            System.exit(0);
+//            return;
+//        }
+//        else {
+//            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+//        }
+//        backPressedTime = System.currentTimeMillis();
+//    }
 
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_car_admin_card);
-        drawerLayout = findViewById(R.id.drawer_layout);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_car_admin_card, container, false);
+
+        drawerLayout = rootView.findViewById(R.id.drawer_layout);
 
 
 
@@ -65,8 +71,8 @@ public class CarAdminCard extends AppCompatActivity {
 //        f_add_car = (FloatingActionButton) findViewById(R.id.f_add_car);
 //        f_add_car.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(),CarAdProfile.class)));
 
-        recview_car = (RecyclerView) findViewById(R.id.recview_car);
-        recview_car.setLayoutManager(new LinearLayoutManager(this));
+        recview_car = (RecyclerView) rootView.findViewById(R.id.recview_car);
+        recview_car.setLayoutManager(new LinearLayoutManager(getContext()));
 
         FirebaseRecyclerOptions<UserHelperClassCar> options =
                 new FirebaseRecyclerOptions.Builder<UserHelperClassCar>()
@@ -90,14 +96,14 @@ public class CarAdminCard extends AppCompatActivity {
 
                 switch (direction) {
                     case ItemTouchHelper.LEFT:
-                        Toast.makeText(CarAdminCard.this, "Deleted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
                         adapterCar.delCr(pos);
                         adapterCar.notifyItemRemoved(pos);
                         break;
 
                     //archived
                     case ItemTouchHelper.RIGHT:
-                        Toast.makeText(CarAdminCard.this, "Archived", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Archived", Toast.LENGTH_SHORT).show();
 //                        final DatabaseReference trName = adapter.getRef(pos);
 //                        archivedTr.add(trName);
 //
@@ -111,9 +117,9 @@ public class CarAdminCard extends AppCompatActivity {
                                     float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(CarAdminCard.this, R.color.red))
+                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.red))
                         .addSwipeLeftActionIcon(R.drawable.icon_delete)
-                        .addSwipeRightBackgroundColor(ContextCompat.getColor(CarAdminCard.this,R.color.green))
+                        .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(),R.color.green))
                         .addSwipeRightActionIcon(R.drawable.icon_archive)
                         .create()
                         .decorate();
@@ -122,16 +128,23 @@ public class CarAdminCard extends AppCompatActivity {
             }
         }).attachToRecyclerView(recview_car);
 
+        return rootView;
     }
 
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_car_admin_card);
+//    }
+
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         adapterCar.startListening();
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         adapterCar.stopListening();
     }
