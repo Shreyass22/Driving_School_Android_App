@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddSchedule"></activity>
+        <activity android:name=".dialogcontentt"></activity>
+        <activity android:name=".AddSchedule" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -61,6 +62,7 @@
                app to run.
         -->
         <activity android:name=".UserProfile" />
+        <activity android:name=".dialodcontent" />
         <activity android:name=".SignUp" />
         <activity android:name=".Login" />
         <activity android:name=".Dashboard" />

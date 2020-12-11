@@ -138,42 +138,42 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
 ////        invalidateOptionsMenu();
 //    }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        String userID = rUser.getUid();
-        Log.d("tag1", "onPrepareOptionsMenu: ");
-        databaseReference.child("users").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                if (snapshot.child(userID).child("type").getValue(String.class).equals("Admin")) {
-
-                    menu.removeItem(R.id.nav_login);
-                    menu.removeItem(R.id.nav_trainer);
-                    menu.removeItem(R.id.nav_client);
-
-                } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Trainer")) {
-
-                    menu.removeItem(R.id.nav_login);
-                    menu.removeItem(R.id.nav_admin);
-                    menu.removeItem(R.id.nav_client);
-                } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Client")) {
-
-                    menu.removeItem(R.id.nav_login);
-                    menu.removeItem(R.id.nav_trainer);
-                    menu.removeItem(R.id.nav_admin);
-                } else {
-                    Toast.makeText(NavigationDrawer.this, "doesnot exist", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(NavigationDrawer.this, "ERROR : 404", Toast.LENGTH_SHORT).show();
-            }
-        });
-        return super.onPrepareOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+//        String userID = rUser.getUid();
+//        Log.d("tag1", "onPrepareOptionsMenu: ");
+//        databaseReference.child("users").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                if (snapshot.child(userID).child("type").getValue(String.class).equals("Admin")) {
+//
+//                    menu.removeItem(R.id.nav_login);
+//                    menu.removeItem(R.id.nav_trainer);
+//                    menu.removeItem(R.id.nav_client);
+//
+//                } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Trainer")) {
+//
+//                    menu.removeItem(R.id.nav_login);
+//                    menu.removeItem(R.id.nav_admin);
+//                    menu.removeItem(R.id.nav_client);
+//                } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Client")) {
+//
+//                    menu.removeItem(R.id.nav_login);
+//                    menu.removeItem(R.id.nav_trainer);
+//                    menu.removeItem(R.id.nav_admin);
+//                } else {
+//                    Toast.makeText(NavigationDrawer.this, "doesnot exist", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(NavigationDrawer.this, "ERROR : 404", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        return super.onPrepareOptionsMenu(menu);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -219,7 +219,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                         new Client()).commit();
                 break;
             case R.id.nav_map:
-                Intent intent6 = new Intent(NavigationDrawer.this, Map.class);
+                Intent intent6 = new Intent(getApplicationContext(), Map.class);
                 startActivity(intent6);
                 finish();
                 break;

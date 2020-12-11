@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 
 public class myadapterSchedule extends FirebaseRecyclerAdapter<UserHelperClassSchedule, myadapterSchedule.myviewholderSchedule> {
 
@@ -33,7 +35,7 @@ public class myadapterSchedule extends FirebaseRecyclerAdapter<UserHelperClassSc
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull myadapterSchedule.myviewholderSchedule holder, int position, @NonNull UserHelperClassSchedule model) {
+    protected void onBindViewHolder(@NonNull myadapterSchedule.myviewholderSchedule holder, final int position, @NonNull UserHelperClassSchedule model) {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("schedule");
@@ -45,6 +47,17 @@ public class myadapterSchedule extends FirebaseRecyclerAdapter<UserHelperClassSc
         holder.datee0.setText(model.getDate());
         holder.timee0.setText(model.getTime());
 
+//        holder.timee0.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                final DialogPlus dialogPlus = DialogPlus.newDialog(holder.c_name0.getContext())
+//                        .setContentHolder(new ViewHolder(R.layout.dialodcontent))
+//                        .setExpanded(true, 800)
+//                        .create();
+//
+//                dialogPlus.show();
+//            }
+//        });
 
     }
 

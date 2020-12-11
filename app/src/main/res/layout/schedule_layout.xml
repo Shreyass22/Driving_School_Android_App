@@ -19,6 +19,7 @@
         app:cardElevation="10dp">
 
         <LinearLayout
+            android:id="@+id/linear_sch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="20dp"
