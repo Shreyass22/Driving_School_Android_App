@@ -15,7 +15,7 @@
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="40dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextColor="#fff">
@@ -38,7 +38,7 @@
                 android:id="@+id/admin_schdule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="43dp"
+                android:layout_marginTop="23dp"
                 android:fontFamily="@font/aclonica"
                 android:text="Schdule :"
                 android:textSize="30dp"
