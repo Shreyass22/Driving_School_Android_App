@@ -53,13 +53,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 
-public class UserProfile extends Fragment {
+public class UserProfile extends AppCompatActivity {
 
     private long backPressedTime;
     private DrawerLayout drawerLayout;
@@ -76,37 +75,46 @@ public class UserProfile extends Fragment {
     private UserHelperClass usersData;
     private Button update_data;
 
-//    @Override
-//    public void onBackPressed() {
-//        if (backPressedTime + 3000 > System.currentTimeMillis()) {
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 3000 > System.currentTimeMillis()) {
 //            super.onBackPressed();
-////            System.exit(0);
-//            return;
-//        } else {
-//            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
-//        }
-//        backPressedTime = System.currentTimeMillis();
+//            System.exit(0);
+            startActivity(new Intent(UserProfile.this, NavigationDrawer.class));
+            return;
+        } else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        backPressedTime = System.currentTimeMillis();
+    }
+
+
+//    @Nullable
+//    @Override
+//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        View rootView = inflater.inflate(R.layout.activity_user_profile, container, false);
+//
+//        return rootView;
 //    }
 
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_user_profile, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user_profile);
 
-        drawerLayout = rootView.findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
 
 
         //hooks
-        full_name = rootView.findViewById(R.id.full_name);
-        email_profilee = rootView.findViewById(R.id.email_profilee);
-        full_name_profile = rootView.findViewById(R.id.full_name_profile);
-        type_profilee = rootView.findViewById(R.id.type_profilee);
-        email_profile = rootView.findViewById(R.id.email_profile);
-        phone_profile = rootView.findViewById(R.id.phone_profile);
-        password_profile = rootView.findViewById(R.id.password_profile);
-        profile_user = rootView.findViewById(R.id.profile_user);
-        update_data = rootView.findViewById(R.id.update_data);
+        full_name = findViewById(R.id.full_name);
+        email_profilee = findViewById(R.id.email_profilee);
+        full_name_profile = findViewById(R.id.full_name_profile);
+        type_profilee = findViewById(R.id.type_profilee);
+        email_profile = findViewById(R.id.email_profile);
+        phone_profile = findViewById(R.id.phone_profile);
+        password_profile = findViewById(R.id.password_profile);
+        profile_user = findViewById(R.id.profile_user);
+        update_data = findViewById(R.id.update_data);
 
         storageReference = FirebaseStorage.getInstance().getReference().child("profile_images");
         firebaseAuth = FirebaseAuth.getInstance();
@@ -132,7 +140,7 @@ public class UserProfile extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT);
             }
         });
 
@@ -147,20 +155,13 @@ public class UserProfile extends Fragment {
         profile_user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CropImage.activity().setAspectRatio(1, 1).start(getActivity());
+                CropImage.activity().setAspectRatio(1, 1).start(UserProfile.this);
             }
         });
 
         getImageInfo();
 
-        return rootView;
     }
-
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_user_profile);
-//    }
 
     private void getImageInfo() {
         databaseReference.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
@@ -189,7 +190,7 @@ public class UserProfile extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                startActivity(new Intent(getContext(), Login.class));
+//                startActivity(new Intent(getApplicationContext(), Login.class));
             }
         });
     }
@@ -203,18 +204,18 @@ public class UserProfile extends Fragment {
             imageUri = result.getUri();
             profile_user.setImageURI(imageUri);
         } else {
-            Toast.makeText(getContext(), "Error, try again", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Error, try again", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void uploadProfileImage() {
-        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Set your Profile");
         progressDialog.setMessage("Please wait, While we are setting your data");
         progressDialog.show();
 
         if (imageUri != null) {
-            final StorageReference fileRef = storageReference.child(firebaseAuth.getUid() + ".jpg");
+            final StorageReference fileRef = storageReference.child(firebaseAuth.getCurrentUser().getUid() + ".jpg");
             storageTask = fileRef.putFile(imageUri);
 
             storageTask.continueWithTask(new Continuation() {
@@ -235,14 +236,15 @@ public class UserProfile extends Fragment {
                         HashMap<String, Object> userMap = new HashMap<>();
                         userMap.put("image", myUri);
 
-                        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).updateChildren(userMap);
+                        databaseReference.child(firebaseAuth.getUid()).updateChildren(userMap);
                         progressDialog.dismiss();
+
                     }
                 }
             });
         } else {
             progressDialog.dismiss();
-            Toast.makeText(getContext(), "Image not selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Image not selected", Toast.LENGTH_SHORT).show();
         }
 
     }

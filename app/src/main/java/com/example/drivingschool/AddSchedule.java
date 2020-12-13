@@ -210,6 +210,7 @@ public class AddSchedule extends Fragment {
         hashMap.put("car", car_name);
         hashMap.put("date", datee);
         hashMap.put("time", timee);
+        hashMap.put("totalAttended", "0.0");
         // Car add
         hashMap.put("type", "schedule");
 

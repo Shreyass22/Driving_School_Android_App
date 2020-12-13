@@ -16,7 +16,6 @@
 
 
     <Button
-        android:id="@+id/present"
         android:layout_below="@+id/presentvalue"
         android:onClick="present"
         android:layout_width="wrap_content"

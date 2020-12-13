@@ -6,16 +6,18 @@ public class UserHelperClassSchedule {
     private String car;
     private String date;
     private String time;
+    private String totalAttended;
 
     public UserHelperClassSchedule() {
     }
 
-    public UserHelperClassSchedule(String name, String trainer, String car, String date, String time) {
+    public UserHelperClassSchedule(String name, String trainer, String car, String date, String time, String totalAttended) {
         this.name = name;
         this.trainer = trainer;
         this.car = car;
         this.date = date;
         this.time = time;
+        this.totalAttended = totalAttended;
     }
 
     public String getName() {
@@ -56,5 +58,13 @@ public class UserHelperClassSchedule {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getTotalAttended() {
+        return totalAttended;
+    }
+
+    public void setTotalAttended(String totalAttended) {
+        this.totalAttended = totalAttended;
     }
 }

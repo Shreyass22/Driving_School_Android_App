@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,11 +19,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
+import java.util.HashMap;
+
 public class myadapterSchedule extends FirebaseRecyclerAdapter<UserHelperClassSchedule, myadapterSchedule.myviewholderSchedule> {
 
+    FirebaseDatabase rootNode;
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+    double i;
 
     /**
      * Initialize a {@link RecyclerView.Adapter} that listens to a Firebase query. See
@@ -36,9 +41,12 @@ public class myadapterSchedule extends FirebaseRecyclerAdapter<UserHelperClassSc
 
     @Override
     protected void onBindViewHolder(@NonNull myadapterSchedule.myviewholderSchedule holder, final int position, @NonNull UserHelperClassSchedule model) {
+        rootNode = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("schedule");
+
+        String name = model.getName().toString();
 
 //        Log.d("TAG111", "onclick:" + model.getC_name());
         holder.c_name0.setText(model.getName());
@@ -46,18 +54,24 @@ public class myadapterSchedule extends FirebaseRecyclerAdapter<UserHelperClassSc
         holder.car_name0.setText(model.getCar());
         holder.datee0.setText(model.getDate());
         holder.timee0.setText(model.getTime());
+        holder.attended.setText(model.getTotalAttended());
 
-//        holder.timee0.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                final DialogPlus dialogPlus = DialogPlus.newDialog(holder.c_name0.getContext())
-//                        .setContentHolder(new ViewHolder(R.layout.dialodcontent))
-//                        .setExpanded(true, 800)
-//                        .create();
-//
-//                dialogPlus.show();
-//            }
-//        });
+        holder.present.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                i++;
+                holder.attended.setText(String.valueOf(i));
+                String userID = firebaseUser.getUid();  //
+                databaseReference = rootNode.getReference("schedule"); //realtimedb
+                HashMap<String,Object> hashMap = new HashMap<>();
+                hashMap.put("totalAttended", holder.attended.getText());
+                databaseReference.child(getRef(position).getKey()).updateChildren(hashMap);
+
+                if (i == 20) {
+                    myadapterSchedule.this.delSch(position);
+                }
+            }
+        });
 
     }
 
@@ -73,7 +87,8 @@ public class myadapterSchedule extends FirebaseRecyclerAdapter<UserHelperClassSc
     }
 
     public class myviewholderSchedule extends RecyclerView.ViewHolder {
-        TextView c_name0, t_name0, car_name0, datee0, timee0;
+        TextView c_name0, t_name0, car_name0, datee0, timee0, attended;
+        ImageView present;
 
         public myviewholderSchedule(@NonNull View itemView) {
             super(itemView);
@@ -82,6 +97,8 @@ public class myadapterSchedule extends FirebaseRecyclerAdapter<UserHelperClassSc
             car_name0 = (TextView) itemView.findViewById(R.id.car_name);
             datee0 = (TextView) itemView.findViewById(R.id.datee);
             timee0 = (TextView) itemView.findViewById(R.id.timee);
+            attended = (TextView) itemView.findViewById(R.id.attended);
+            present = itemView.findViewById(R.id.present);
         }
     }
 }

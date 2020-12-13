@@ -229,8 +229,9 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                 finish();
                 break;
             case R.id.nav_update:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new UserProfile()).commit();
+                Intent intent8 = new Intent(NavigationDrawer.this, UserProfile.class);
+                startActivity(intent8);
+                finish();
                 break;
             case R.id.nav_logout:
                 logout(this);
