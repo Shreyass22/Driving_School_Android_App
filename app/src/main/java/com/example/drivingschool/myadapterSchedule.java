@@ -59,7 +59,17 @@ public class myadapterSchedule extends FirebaseRecyclerAdapter<UserHelperClassSc
         holder.present.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // providing value of attendance from Firebase to i
+                String valuei;
+                valuei = (String) holder.attended.getText();
+                i = Double.parseDouble((String) valuei);
+                Log.d("checkkk", "onclick" + Double.parseDouble((String) valuei));
+                Log.d("valueofi", String.valueOf(i));
+                // code ends of value assigning to i
+
                 i++;
+
                 holder.attended.setText(String.valueOf(i));
                 String userID = firebaseUser.getUid();  //
                 databaseReference = rootNode.getReference("schedule"); //realtimedb
