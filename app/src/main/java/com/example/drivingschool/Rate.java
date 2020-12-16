@@ -34,7 +34,7 @@ import com.hsalf.smilerating.SmileRating;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class Rate extends Fragment {
+public class Rate extends AppCompatActivity {
 
     TextView feedback_name, feedback_mail, feedback_type;
     EditText feedback_msg;
@@ -50,40 +50,47 @@ public class Rate extends Fragment {
     private DatabaseReference databaseReference;
     private UserHelperClass usersData;
 
-//    @Override
-//    public void onBackPressed() {
-//        if (backPressedTime + 3000 > System.currentTimeMillis()){
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 3000 > System.currentTimeMillis()) {
 //            super.onBackPressed();
-////            System.exit(0);
-//            return;
-//        }
-//        else {
-//            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
-//        }
-//        backPressedTime = System.currentTimeMillis();
+//            System.exit(0);
+            startActivity(new Intent(Rate.this, NavigationDrawer.class));
+            return;
+        } else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        backPressedTime = System.currentTimeMillis();
+    }
+
+
+//    @Nullable
+//    @Override
+//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        View rootView = inflater.inflate(R.layout.activity_rate, container, false);
+//        return rootView;
 //    }
 
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_rate, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_rate);
 
-        drawerLayout = rootView.findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
 
         //db Firebase instance
         rootNode = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
-        feedback_name = rootView.findViewById(R.id.feedback_name);
-        feedback_mail = rootView.findViewById(R.id.feedback_mail);
-        feedback_msg = rootView.findViewById(R.id.feedback_msg);
-        feedback_type = rootView.findViewById(R.id.feedback_type);
-        submit_feedback = rootView.findViewById(R.id.submit_feedback);
-        progess_barrr = rootView.findViewById(R.id.progess_barrr);
+        feedback_name = findViewById(R.id.feedback_name);
+        feedback_mail = findViewById(R.id.feedback_mail);
+        feedback_msg = findViewById(R.id.feedback_msg);
+        feedback_type = findViewById(R.id.feedback_type);
+        submit_feedback = findViewById(R.id.submit_feedback);
+        progess_barrr = findViewById(R.id.progess_barrr);
 
         //rate
-        SmileRating smileRating = (SmileRating) rootView.findViewById(R.id.smile_rating);
+        SmileRating smileRating = (SmileRating) findViewById(R.id.smile_rating);
         smileRating.setOnSmileySelectionListener(new SmileRating.OnSmileySelectionListener() {
             @Override
             public void onSmileySelected(int smiley, boolean reselected) {
@@ -91,23 +98,23 @@ public class Rate extends Fragment {
                 switch (smiley) {
                     case SmileRating.TERRIBLE:
                         feedback = "TERRIBLE";
-                        Toast.makeText(getContext(), "TERRIBLE", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "TERRIBLE", Toast.LENGTH_SHORT).show();
                         break;
                     case SmileRating.BAD:
                         feedback = "BAD";
-                        Toast.makeText(getContext(), "BAD", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "BAD", Toast.LENGTH_SHORT).show();
                         break;
                     case SmileRating.OKAY:
                         feedback = "OKAY";
-                        Toast.makeText(getContext(), "OKAY", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "OKAY", Toast.LENGTH_SHORT).show();
                         break;
                     case SmileRating.GOOD:
                         feedback = "GOOD";
-                        Toast.makeText(getContext(), "GOOD", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "GOOD", Toast.LENGTH_SHORT).show();
                         break;
                     case SmileRating.GREAT:
                         feedback = "GREAT";
-                        Toast.makeText(getContext(), "GREAT", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "GREAT", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -115,7 +122,7 @@ public class Rate extends Fragment {
         smileRating.setOnRatingSelectedListener(new SmileRating.OnRatingSelectedListener() {
             @Override
             public void onRatingSelected(int level, boolean reselected) {
-                Toast.makeText(getContext(), "Rating level "+ level, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Rating level "+ level, Toast.LENGTH_SHORT).show();
                 //feedback = level;
             }
         });
@@ -140,7 +147,7 @@ public class Rate extends Fragment {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT);
             }
         });
 
@@ -155,14 +162,7 @@ public class Rate extends Fragment {
                 processinsertFeed(name, mail, type, msg);
             }
         });
-        return rootView;
     }
-
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_rate);
-//    }
 
 //    public void submit_feedback(View view) {
 //
@@ -184,10 +184,10 @@ public class Rate extends Fragment {
         databaseReference.setValue(hashMap).addOnCompleteListener(task1 -> {
             progess_barrr.setVisibility(View.GONE);
             if (task1.isSuccessful()) {
-                Toast.makeText(getContext(), "Thanks for FeedBack", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Thanks for FeedBack", Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(getContext(), Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

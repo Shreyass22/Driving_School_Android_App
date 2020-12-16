@@ -43,7 +43,7 @@ public class AdminDashboard extends Fragment implements View.OnClickListener {
     private long backPressedTime;
     DrawerLayout drawerLayout;
     private CardView trainer_card, car_card, client_card;
-    myadapterSchedule madapter;
+    myadapterScheduleC madapterC;
     RecyclerView sch_recev;
 
     //on back press app exit
@@ -79,8 +79,8 @@ public class AdminDashboard extends Fragment implements View.OnClickListener {
                         .setQuery(FirebaseDatabase.getInstance().getReference("schedule"), UserHelperClassSchedule.class)
                         .build();
 
-        madapter = new myadapterSchedule(options);
-        sch_recev.setAdapter(madapter);
+        madapterC = new myadapterScheduleC(options);
+        sch_recev.setAdapter(madapterC);
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -96,8 +96,8 @@ public class AdminDashboard extends Fragment implements View.OnClickListener {
                 switch (direction) {
                     case ItemTouchHelper.LEFT:
                         Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                        madapter.delSch(pos);
-                        madapter.notifyItemRemoved(pos);
+                        madapterC.delSch(pos);
+                        madapterC.notifyItemRemoved(pos);
                         break;
 
                     //archived
@@ -215,12 +215,12 @@ public class AdminDashboard extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-        madapter.startListening();
+        madapterC.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        madapter.stopListening();
+        madapterC.stopListening();
     }
 }

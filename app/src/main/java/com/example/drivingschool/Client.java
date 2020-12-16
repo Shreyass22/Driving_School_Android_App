@@ -28,7 +28,7 @@ public class Client extends Fragment {
     private long backPressedTime;
     DrawerLayout drawerLayout;
     RecyclerView sch_recev;
-    myadapterSchedule adapter;
+    myadapterScheduleC adapterC;
 
 //    @Override
 //    public void onBackPressed() {
@@ -61,8 +61,8 @@ public class Client extends Fragment {
                         .setQuery(FirebaseDatabase.getInstance().getReference().child("schedule"), UserHelperClassSchedule.class)
                         .build();
 
-        adapter = new myadapterSchedule(options);
-        sch_recev.setAdapter(adapter);
+        adapterC = new myadapterScheduleC(options);
+        sch_recev.setAdapter(adapterC);
 
 
 
@@ -79,13 +79,13 @@ public class Client extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        adapter.startListening();
+        adapterC.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        adapter.stopListening();
+        adapterC.stopListening();
     }
 
 }

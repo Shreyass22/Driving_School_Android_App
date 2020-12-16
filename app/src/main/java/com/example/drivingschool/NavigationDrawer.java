@@ -241,9 +241,9 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                         new ContactusCard()).commit();
                 break;
             case R.id.nav_rate:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new Rate()).commit();
-                break;
+                Intent intent9 = new Intent(NavigationDrawer.this, Rate.class);
+                startActivity(intent9);
+                finish();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
