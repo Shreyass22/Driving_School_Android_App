@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".dialogcontentt"></activity>
+        <activity android:name=".RateDash"></activity>
+        <activity android:name=".dialogcontentt" />
         <activity android:name=".AddSchedule" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

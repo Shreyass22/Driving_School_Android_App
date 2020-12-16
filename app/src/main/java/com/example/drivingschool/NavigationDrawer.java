@@ -102,18 +102,21 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                     nav_Menu.findItem(R.id.nav_trainer).setVisible(false);
                     nav_Menu.findItem(R.id.nav_client).setVisible(false);
                     nav_Menu.findItem(R.id.nav_login).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_rate).setVisible(false);
                 } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Trainer")) {
 
                     loadFragment(new Trainer());
                     nav_Menu.findItem(R.id.nav_admin).setVisible(false);
                     nav_Menu.findItem(R.id.nav_client).setVisible(false);
                     nav_Menu.findItem(R.id.nav_login).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_rate).setVisible(false);
                 } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Client")) {
 
                     loadFragment(new Client());
                     nav_Menu.findItem(R.id.nav_trainer).setVisible(false);
                     nav_Menu.findItem(R.id.nav_admin).setVisible(false);
                     nav_Menu.findItem(R.id.nav_login).setVisible(false);
+                    nav_Menu.findItem(R.id.rate_dashh).setVisible(false);
                 } else {
                     Toast.makeText(getApplicationContext(), "Email doesnot exist", Toast.LENGTH_SHORT).show();
                 }
@@ -243,6 +246,11 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
             case R.id.nav_rate:
                 Intent intent9 = new Intent(NavigationDrawer.this, Rate.class);
                 startActivity(intent9);
+                finish();
+
+            case R.id.rate_dashh:
+                Intent intent10 = new Intent(NavigationDrawer.this, RateDash.class);
+                startActivity(intent10);
                 finish();
         }
         drawerLayout.closeDrawer(GravityCompat.START);

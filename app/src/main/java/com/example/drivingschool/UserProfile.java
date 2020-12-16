@@ -236,7 +236,7 @@ public class UserProfile extends AppCompatActivity {
                         HashMap<String, Object> userMap = new HashMap<>();
                         userMap.put("image", myUri);
 
-                        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).updateChildren(userMap);
+                        databaseReference.child(firebaseAuth.getUid()).updateChildren(userMap);
                         progressDialog.dismiss();
 
                     }

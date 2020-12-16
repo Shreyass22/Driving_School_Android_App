@@ -60,6 +60,11 @@
                 android:id="@+id/nav_rate"
                 android:icon="@drawable/icon_rate"
                 android:title="Rate" />
+
+            <item
+                android:id="@+id/rate_dashh"
+                android:icon="@drawable/icon_rateed"
+                android:title="Rate" />
         </menu>
     </item>
 
