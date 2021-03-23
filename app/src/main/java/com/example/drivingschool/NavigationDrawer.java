@@ -110,6 +110,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                     nav_Menu.findItem(R.id.nav_client).setVisible(false);
                     nav_Menu.findItem(R.id.nav_login).setVisible(false);
                     nav_Menu.findItem(R.id.nav_rate).setVisible(false);
+                    nav_Menu.findItem(R.id.rate_dashh).setVisible(false);
                 } else if (snapshot.child(userID).child("type").getValue(String.class).equals("Client")) {
 
                     loadFragment(new Client());
@@ -247,11 +248,13 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                 Intent intent9 = new Intent(NavigationDrawer.this, Rate.class);
                 startActivity(intent9);
                 finish();
+                break;
 
             case R.id.rate_dashh:
                 Intent intent10 = new Intent(NavigationDrawer.this, RateDash.class);
                 startActivity(intent10);
                 finish();
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

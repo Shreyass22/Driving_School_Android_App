@@ -171,9 +171,9 @@ public class CarAdProfile extends Fragment {
         reference.setValue(hashMap).addOnCompleteListener(task1 -> {
             add_progess_bar.setVisibility(View.GONE);
             if (task1.isSuccessful()) {
-                Fragment fm = new Fragment();
-                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                ft.add(R.id.drawer_layout, new CarAdminCard()).commit();
+//                Fragment fm = new Fragment();
+//                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+//                ft.add(R.id.drawer_layout, new CarAdminCard()).commit();
                 Toast.makeText(getContext(), "Car Registration Successful", Toast.LENGTH_SHORT).show();
 
 
