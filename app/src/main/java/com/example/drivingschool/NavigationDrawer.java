@@ -50,7 +50,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        invalidateOptionsMenu();
+//        invalidateOptionsMenu();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
 

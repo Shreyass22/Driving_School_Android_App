@@ -81,9 +81,12 @@ public class RetriveMapsActivity extends FragmentActivity implements OnMapReadyC
                 Double latitude = snapshot.child("latitude").getValue(Double.class);
                 Double longitude = snapshot.child("longitude").getValue(Double.class);
                 Log.d("loc", latitude + "," + longitude + " location");
-                LatLng location = new LatLng(latitude,longitude);
-                mMap.addMarker(new MarkerOptions().position(location).title(getCompleteAddress(latitude,longitude)));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 14F));
+                if(latitude != null ||longitude != null){
+                    LatLng location = new LatLng(latitude,longitude);
+                    mMap.addMarker(new MarkerOptions().position(location).title(getCompleteAddress(latitude,longitude)));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 14F));
+                }
+
 
             }
 
