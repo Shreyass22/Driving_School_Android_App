@@ -214,19 +214,19 @@ public class SignUp extends AppCompatActivity {
                 // specify if the user is Client
                 hashMap.put("type", "Client");
 
+//                if (!hasValidPreConditions()) return;
+//                checkAndUpdateUserPrefNumber();
+//
+//                com.example.drivingschool.SmsHelper.sendDebugSms(String.valueOf(reg_phone.getEditText().getText()),
+//                        com.example.drivingschool.SmsHelper.SMS_CONDITION
+//                        + " This SMS is Automatically send, Hello" + name);
+//                Toast.makeText(getApplicationContext(), R.string.toast_sending_sms, Toast.LENGTH_SHORT).show();
+
                 reference.setValue(hashMap).addOnCompleteListener(task1 -> {
                     login_progess_bar.setVisibility(View.GONE);
                     if (task1.isSuccessful()) {
-                        if (!hasValidPreConditions()) return;
-                        checkAndUpdateUserPrefNumber();
-
-                        com.example.drivingschool.SmsHelper.sendDebugSms(String.valueOf(reg_phone.getEditText().getText()), com.example.drivingschool.SmsHelper.SMS_CONDITION
-                                + " This SMS is Automatically send, Hello toast");
-                        Toast.makeText(getApplicationContext(), R.string.toast_sending_sms, Toast.LENGTH_SHORT).show();
-
-
-                        Intent intent = new Intent(SignUp.this,Login.class);
                         Toast.makeText(SignUp.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SignUp.this,Login.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         finish();
