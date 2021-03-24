@@ -53,6 +53,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -74,6 +75,8 @@ public class UserProfile extends AppCompatActivity {
     private StorageReference storageReference;
     private UserHelperClass usersData;
     private Button update_data;
+    FirebaseDatabase rootNode1;
+    DatabaseReference reference1;
 
     @Override
     public void onBackPressed() {
@@ -119,6 +122,7 @@ public class UserProfile extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference().child("profile_images");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+        rootNode1 = FirebaseDatabase.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         databaseReference.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -148,7 +152,14 @@ public class UserProfile extends AppCompatActivity {
         update_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+//                String name = full_name_profile.getEditText().getText().toString();
+//                String email = email_profile.getEditText().getText().toString();
+//                String phone = phone_profile.getEditText().getText().toString();
+//                register(name, email, phone);
+
                 uploadProfileImage();
+
             }
         });
 
@@ -206,6 +217,32 @@ public class UserProfile extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(), "Error, try again", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void register(String name, String email, String phone) {
+//        login_progess_bar.setVisibility(View.VISIBLE);
+        FirebaseUser rUser = firebaseAuth.getCurrentUser(); //
+        String userID = rUser.getUid();  //
+        reference1 = rootNode1.getReference("users").child(userID); //realtimedb
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userId", userID);
+        hashMap.put("name", name);
+        hashMap.put("email", email);
+        hashMap.put("phone", phone);
+
+        reference1.updateChildren(hashMap).addOnCompleteListener(task1 -> {
+//                    login_progess_bar.setVisibility(View.GONE);
+            if (task1.isSuccessful()) {
+                Intent intent = new Intent(UserProfile.this, Login.class);
+                Toast.makeText(UserProfile.this, "Update Done Successful", Toast.LENGTH_SHORT).show();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(UserProfile.this, Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void uploadProfileImage() {

@@ -1,15 +1,25 @@
 package com.example.drivingschool;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -56,6 +66,12 @@ public class SignUp extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     DatabaseReference reference;
 
+    private static final String TAG = "MainActivity";
+    private static final String PREF_USER_MOBILE_PHONE = "9702061635";
+    private static final int SMS_PERMISSION_CODE = 0;
+    private String mUserMobilePhone ;
+    private SharedPreferences mSharedPreferences;
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +90,18 @@ public class SignUp extends AppCompatActivity {
         btn_login = findViewById(R.id.btn_login);
         gender_radio_btn = findViewById(R.id.gender_radio_btn);
         login_progess_bar = findViewById(R.id.login_progess_bar);
+
+        if (!hasReadSmsPermission()) {
+            showRequestPermissionsInfoAlertDialog();
+        }
+
+        initViews();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mUserMobilePhone = mSharedPreferences.getString(PREF_USER_MOBILE_PHONE, "");
+        if (!TextUtils.isEmpty(mUserMobilePhone)) {
+            reg_phone.getEditText().setText(mUserMobilePhone);
+        }
+
     }
 
     public void btn_login(View view) {
@@ -189,6 +217,14 @@ public class SignUp extends AppCompatActivity {
                 reference.setValue(hashMap).addOnCompleteListener(task1 -> {
                     login_progess_bar.setVisibility(View.GONE);
                     if (task1.isSuccessful()) {
+                        if (!hasValidPreConditions()) return;
+                        checkAndUpdateUserPrefNumber();
+
+                        com.example.drivingschool.SmsHelper.sendDebugSms(String.valueOf(reg_phone.getEditText().getText()), com.example.drivingschool.SmsHelper.SMS_CONDITION
+                                + " This SMS is Automatically send, Hello toast");
+                        Toast.makeText(getApplicationContext(), R.string.toast_sending_sms, Toast.LENGTH_SHORT).show();
+
+
                         Intent intent = new Intent(SignUp.this,Login.class);
                         Toast.makeText(SignUp.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -206,4 +242,78 @@ public class SignUp extends AppCompatActivity {
             }
         });
     }
+
+    private void initViews() {
+        reg_phone = findViewById(R.id.reg_phone);
+//        findViewById(R.id.btn_normal_sms).setOnClickListener(this);
+//        findViewById(R.id.btn_conditional_sms).setOnClickListener(this);
+    }
+
+    /**
+     * Checks if stored SharedPreferences value needs updating and updates \o/
+     */
+    private void checkAndUpdateUserPrefNumber() {
+        if (TextUtils.isEmpty(mUserMobilePhone) && !mUserMobilePhone.equals(reg_phone.getEditText().getText().toString())) {
+            mSharedPreferences
+                    .edit()
+                    .putString(PREF_USER_MOBILE_PHONE, reg_phone.getEditText().getText().toString())
+                    .apply();
+        }
+    }
+
+
+    /**
+     * Validates if the app has readSmsPermissions and the mobile phone is valid
+     *
+     * @return boolean validation value
+     */
+    private boolean hasValidPreConditions() {
+        if (!hasReadSmsPermission()) {
+            requestReadAndSendSmsPermission();
+            return false;
+        }
+
+        if (!com.example.drivingschool.SmsHelper.isValidPhoneNumber(reg_phone.getEditText().getText().toString())) {
+            Toast.makeText(getApplicationContext(), R.string.error_invalid_phone_number, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Optional informative alert dialog to explain the user why the app needs the Read/Send SMS permission
+     */
+    private void showRequestPermissionsInfoAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.permission_alert_dialog_title);
+        builder.setMessage(R.string.permission_dialog_message);
+        builder.setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                requestReadAndSendSmsPermission();
+            }
+        });
+        builder.show();
+    }
+
+    /**
+     * Runtime permission shenanigans
+     */
+    private boolean hasReadSmsPermission() {
+        return ContextCompat.checkSelfPermission(SignUp.this,
+                Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(SignUp.this,
+                        Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestReadAndSendSmsPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(SignUp.this, Manifest.permission.READ_SMS)) {
+            Log.d(TAG, "shouldShowRequestPermissionRationale(), no permission requested");
+            return;
+        }
+        ActivityCompat.requestPermissions(SignUp.this, new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS},
+                SMS_PERMISSION_CODE);
+    }
+
 }
